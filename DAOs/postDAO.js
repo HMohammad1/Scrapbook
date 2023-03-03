@@ -205,6 +205,17 @@ function addReact(postID, userID, reactID, callback){
 function updateReact(userID, postID, react, callback){
     let query = "UPDATE post_reactions SET reaction = ? WHERE react_from = ? AND postID = ?";
     let params = [react, userID, postID];
+
+    DB.executeQuery(query, params, function(err, rows, fields){
+
+        if(!err){
+            return callback(null, true);
+        }
+        else{
+            return callback(err, false);
+        }
+
+    });
 }
 
 function userReactedToPost(userID, postID, callback){
