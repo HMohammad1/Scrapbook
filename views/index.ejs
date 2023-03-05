@@ -44,6 +44,9 @@
         <div id="Login" class="tabcontent">
             <form name="login" action="/API/login" method="post">
                 <div class="username">
+                    <label for="ID"> <% if (IDerror) { %>
+                        <%= message %>
+                    <% } %> </label>
                     <input id="ID" name="ID" placeholder="Username / Email"/>
                 </div>
                 <div class="password">
