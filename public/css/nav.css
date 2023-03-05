@@ -43,11 +43,17 @@
 
     width: 4vh;
     height: 4vh;
-
+    display: none;
 }
 
 
+
+
 @media (max-width: 500px) {
+
+    .nav-btn{
+        display: block;
+    }
 
     .page-content{
 
