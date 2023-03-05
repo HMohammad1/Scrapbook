@@ -1,0 +1,20 @@
+    <div class="profile col">
+        <div id="data">
+            <ul>
+                <li><a class="active" onclick="onProfile()">My Profile: Welcome <%= user.profile.display%></a></li>
+                <li><a href="#news">Friends</a></li>
+                <li><a href="#contact">Add Friend</a></li>
+                <li><a href="#about">Friend Requests</a></li>
+                <li><a href="#about">Settings</a></li>
+            </ul>
+        </div>
+        <div id="overlayProfile">
+            <%- include('../profile'); %>
+        </div>
+        <div style="padding:20px">
+            <button id="bbb" class="postButton" onclick="onPost()">Create Post</button>
+        </div>
+        <div id="overlay" class="createPostButton">
+            <%- include('../addPost'); %>
+        </div>
+    </div>

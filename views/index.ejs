@@ -3,63 +3,41 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type ="text/javascript" src="/js/mainPage.js"></script>
+    <script type ="text/javascript" src="/js/navigation.js"></script>
     <script type ="text/javascript" src="/js/simpleMap.js"></script>
+    <script type ="text/javascript" src="/js/application.js"></script>
+    <script type ="text/javascript" src="/js/demo.js"></script>
     <link rel ="stylesheet" href="/css/mainPage.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/9cacf08ace.js" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+
+        <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <%- include("partials/header"); %>
 <div class="wrapper">
-    <div class="userDetails">
-
-        <div class="tab">
-            <button class="tablinks" onclick="openPage(event, 'Login')">Login</button>
-            <button class="tablinks" onclick="openPage(event, 'Sign Up!')" id="defaultOpen">Sign Up</button>
-        </div>
-
-        <div id="Sign Up!" class="tabcontent">
-            <form name="contact-details" action="/API/signup" method="post">
-                <div class="personal-info">
-                    <div class="username">
-                        <input id="username" name="username" placeholder="Username"/>
-                        <input id="disp_name" name="disp_name" placeholder="Display Name"/>
-                    </div>
-                    <div class="contact-name">
-                        <input id="fname" name="fname" placeholder="First Name">
-                        <input id="lname" name="lname" placeholder="Last Name">
-                    </div>
-                    <div class="contact-details">
-                        <input id="email" name="email" placeholder="Email Address">
-                    </div>
-                </div>
-                <div class="password">
-                    <input id="pw1" name="pw1" placeholder="Password"/>
-                    <input id="pw2" name="pw2" placeholder="Confirm Password"/>
-                </div>
-                <div class="row">
-                    <input type="submit" name="submit"/>
-                </div>
-            </form>
-        </div>
-
-        <div id="Login" class="tabcontent">
-            <form name="login" action="/API/login" method="post">
-                <div class="username">
-                    <input id="ID" name="ID" placeholder="Username / Email"/>
-                </div>
-                <div class="password">
-                    <input id="pw" name="pw" placeholder="Password"/>
-                </div>
-                <div class="row">
-                    <input type="submit" name="submit"/>
-                </div>
-            </form>
-        </div>
+    <div class="col sidebar">
+        <%# if not logged in show login / signup fields %>
+        <% if (typeof(user) === 'undefined') { %>
+            <%- include("partials/sidebar/login"); %>      
+        <% } else { %>
+            <%- include("partials/sidebar/application"); %>
+        <% } %>
     </div>
-
-    <div id = "map" class="image" >
-
-    </div>
-
+    <div id="map" class="image"></div>
 </div>
 
 
@@ -69,5 +47,8 @@
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBY4bqQwcoN1yq_6XNFB3K-cDiXlD2k5I&callback=initMap">
 </script>
+
+<%- include("partials/footer"); %>
+
 </body>
 </html>
