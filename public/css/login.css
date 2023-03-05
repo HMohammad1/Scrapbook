@@ -1,0 +1,127 @@
+.sidebar{
+
+}
+
+.tabcontent{
+
+    margin-top: 35px;
+
+}
+
+#signup{
+
+    display: none;
+
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    float: left;
+    border: none;
+    outline: none;
+    display: block;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 20px;
+    width: 50%;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #d3d3d3;
+}
+
+.tablinks{
+    background-color: #fdfdfd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #f8f8f8;
+}
+
+.tab button:not(.active){
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
+
+input.form-control{
+    border: none;
+    width: 85%;
+    height: 40px;
+
+    display: block;
+    margin: 0 auto;
+
+    font-size: 18px;
+}
+
+input#ID{
+
+    margin-bottom: 20px;
+
+}
+
+input#pw{
+
+    margin-bottom: 75px;
+
+}
+
+#signup input{
+
+    margin-bottom: 15px;
+
+}
+
+.contact-name{
+    width: 85%;
+    display: block;
+    margin: 0 auto;
+
+}
+
+#fname, #lname{
+    width: 49% !important;
+    display: inline;
+
+}
+
+
+#signup .personal-info, #signup .username{
+    margin-bottom: 40px;
+}
+
+#signup .password{
+    margin-bottom: 50px;
+}
+
+button#submit{
+
+    width: 75%;
+    height: 40px;
+
+    border: none;
+
+    background-color: #FF0000;
+    border-radius: 10px;
+    color: #f8f8f8;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    display: block;
+    margin: 0 auto;
+
+}
+
+
+
+
+

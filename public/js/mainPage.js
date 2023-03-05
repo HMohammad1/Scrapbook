@@ -1,14 +1,24 @@
-function openPage(evt, pageType) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(pageType).style.display = "block";
-    evt.currentTarget.className += " active";
-}
+$(document).ready(function(){
 
+    // swap active tabs
+    $("body").on("click", ".tablinks:not(.active)", function(){
+
+        $(".tablinks.active").removeClass("active");
+        $(this).addClass("active");
+
+        if($(this).hasClass("login")){
+
+            $(".tabcontent").css("display", "none");
+            $(".tabcontent#login").css("display","block");
+        }
+        else{
+            $(".tabcontent").css("display", "none");
+            $(".tabcontent#signup").css("display","block");
+        }
+
+
+    });
+
+
+
+});

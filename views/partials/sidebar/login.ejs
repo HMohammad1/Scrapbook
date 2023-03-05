@@ -1,46 +1,47 @@
-
+    <link rel="stylesheet" href="/css/login.css">
     <div class="col userDetails">
         <div class="tab">
-            <button class="tablinks" onclick="openPage(event, 'Login')">Login</button>
-            <button class="tablinks" onclick="openPage(event, 'Sign Up!')" id="defaultOpen">Sign Up</button>
+            <button class="tablinks login active">Login</button>
+            <button class="tablinks signup">Sign Up</button>
         </div>
-        <div id="Sign Up!" class="tabcontent">
+        <div id="signup" class="tabcontent">
             <form name="contact-details" action="/API/signup" method="post">
                 <div class="personal-info">
-                    <div class="username">
-                        <input id="username" name="username" placeholder="Username"/>
-                        <input id="disp_name" name="disp_name" placeholder="Display Name"/>
+                    <div class="row contact-name">
+                        <input id="fname" class="col form-control" name="fname" placeholder="First Name">
+                        <input id="lname" class="col form-control" name="lname" placeholder="Last Name">
                     </div>
-                    <div class="contact-name">
-                        <input id="fname" name="fname" placeholder="First Name">
-                        <input id="lname" name="lname" placeholder="Last Name">
-                    </div>
-                    <div class="contact-details">
-                        <input id="email" name="email" placeholder="Email Address">
-                    </div>
+                        <input id="email" name="email" class="form-control" placeholder="Email Address">
+                        <input type="date" id="DOB" class="form-control"name="DOB"/>
+                </div>
+                <div class="username">
+                    <input id="username" name="username" class="form-control" placeholder="Username"/>
+                    <input id="disp_name" name="disp_name" class="form-control"placeholder="Display Name"/>
+                </div>
+                <div class="contact-details">
                 </div>
                 <div class="password">
-                    <input id="pw1" name="pw1" placeholder="Password"/>
-                    <input id="pw2" name="pw2" placeholder="Confirm Password"/>
+                    <input type="password" id="pw1" name="pw1" class="form-control" placeholder="Password"/>
+                    <input  type="password" id="pw2" name="pw2" class="form-control" placeholder="Confirm Password"/>
                 </div>
                 <div class="row">
-                    <input type="submit" name="submit"/>
+                    <button class="btn btn-danger" type="submit" name="submit" id="submit"> Sign-up </button>
                 </div>
             </form>
         </div>
-        <div id="Login" class="tabcontent">
+        <div id="login" class="tabcontent active">
             <form name="login" action="/API/login" method="post">
                 <div class="username">
                     <label for="ID"> <% if (typeof(IDerror) !== 'undefined' && IDerror == true) { %>
                         <%= message %>
                     <% } %> </label>
-                    <input id="ID" name="ID" placeholder="Username / Email"/>
+                    <input id="ID" name="ID" class="form-control" placeholder="Username / Email"/>
                 </div>
                 <div class="password">
-                    <input id="pw" name="pw" placeholder="Password"/>
+                    <input type="password" id="pw" name="pw" class="form-control" placeholder="Password"/>
                 </div>
                 <div class="row">
-                    <input type="submit" name="submit"/>
+                    <button class="btn btn-danger" type="submit" name="submit" id="submit"> Log-in </button>
                 </div>
             </form>
         </div>

@@ -32,7 +32,6 @@ app.use(
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-  console.log(req.session.user);
   res.render("index", {user: req.session.user}); //no need for ejs extension
 });
 
