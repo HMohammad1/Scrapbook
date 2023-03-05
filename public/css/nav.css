@@ -1,0 +1,41 @@
+.header > #title{
+
+    font-size: 2em;
+    font-family: Nunito;
+    font-weight: 200;
+    transition: text-shadow 0.2s ease-in;
+    background-image: var(--title-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: var(--title-colour);
+    cursor: pointer;
+
+}
+
+.sidebar{
+    z-index: 5;
+}
+
+#map{
+    z-index: 1;
+}
+
+
+.header{
+
+    height: 5vh;
+
+    background-color: #333d;
+    justify-content: center;
+}
+
+@media (max-width: 500px) {
+
+    .sidebar{
+        width: 100vw;
+        height: 95vh;
+        background-color: #fff;
+        z-index: 5;
+    }
+
+}

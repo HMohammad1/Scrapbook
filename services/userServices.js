@@ -234,7 +234,7 @@ const login = (req, res) => {
                     req.session.user = user;
                     req.session.save();
                     //res.send(JSON.stringify(user));
-                    res.render("application", {user: user});
+                    res.render("index", {user: user});
 
                 });
             }
