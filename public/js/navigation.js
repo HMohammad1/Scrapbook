@@ -21,8 +21,19 @@ $(document).ready(function(){
 
     });
 
+    $("body").on("click", "a, button, .menu-item", function(){
+
+        $(".prog-bar").animate({width: "100%"}, 400, "linear");
+
+    })
 
 
+    $("body").on("click", ".menu-item", function(){
+
+        item = $(this).id();
+        
+
+    });
 
 
 
