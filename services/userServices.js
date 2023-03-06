@@ -347,14 +347,7 @@ const removeFriend = (req, res) =>{
 
 
 // returns an array of profiles that correspond to all the current user's friends
-const getFriendProfiles = (req,res) =>{
-
-    // check user is logged in
-    if(req.session.user === undefined){
-        return res.send("You must be logged in.");
-    }
-
-    var userID = req.session.user.userID;
+function getFriendProfiles(userID, callback){
     
     userDAO.fetchAllFriendIDs(userID, function(err, rows){
 
@@ -364,25 +357,29 @@ const getFriendProfiles = (req,res) =>{
             var friendProfiles = [];
 
             // for each returned ID fetch the corresponding profile
+            profilesToFetch = rows.length;
             rows.forEach(row => {
-
+                
                 // get the profile
                 getProfileByID(row.userID, function(profile){
                     // only push successfully retrieved profiles
                     if(profile){
                        
                         friendProfiles.push(profile);
+                        if(friendProfiles.length === profilesToFetch){
+                            return callback(friendProfiles);
+                        }
 
                     }
+                    else{
+                        profilesToFetch--;
+                    }
                 });
+
             });
-
-            // return populated friend array
-            res.send(JSON.stringify(friendProfiles));
-
         }
         else{
-            throw err;
+            return callback(false);
         }
 
     });

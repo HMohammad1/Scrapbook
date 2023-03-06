@@ -34,7 +34,7 @@ router.get("/API/postComments/:postID", postServices.getPostComments);
 router.get("/API/addReact/:postID/:reaction");
 router.get("/API/removeReact/:postID");
 
-// permanent profile link
+// permanent menu item links
 router.get("/profile/:username", (req, res) =>{
 
     if(typeof(req.session.user.profile !== 'undefined') && req.session.user.profile.username == req.params.username){
@@ -50,8 +50,35 @@ router.get("/profile/:username", (req, res) =>{
         });
     }
 });
+
+router.get("/friends", (req, res) =>{
+
+    // check user is logged in
+    if(req.session.user === undefined){
+        return res.redirect(302, '/');
+    }
+
+    userServices.getFriendProfiles(req.session.user.userID, function(friends){
+
+        if(!friends){
+            return res.send(500);
+        }
+
+        // prompt to add friends if none are in the DB
+        if(friends.length == 0){
+            empty = true;
+        }
+        else{
+            empty = false;
+        }
+
+        return res.render("index", {sidebar: "friends", friends: friends, empty: empty});
+    });
+
+
+});
   
-//menu items
+//dynamic menu items
 router.get("/API/profile/:username", (req, res) =>{
     if(typeof(req.session.user) !== 'undefined' && req.session.user.profile.username == req.params.username){
         return res.render("partials/profile", {profile: req.session.user.profile, myprofile: true});
@@ -67,6 +94,33 @@ router.get("/API/profile/:username", (req, res) =>{
             }
         });
     }
+});
+
+router.get("/API/friends", (req, res) =>{
+
+    // check user is logged in
+    if(req.session.user === undefined){
+        return res.status(403);
+    }
+
+    userServices.getFriendProfiles(req.session.user.userID, function(friends){
+
+        if(!friends){
+            return res.send(500);
+        }
+
+        // prompt to add friends if none are in the DB
+        if(friends.length == 0){
+            empty = true;
+        }
+        else{
+            empty = false;
+        }
+
+        return res.render("partials/sidebar/friends", {friends: friends, empty: empty});
+    });
+
+
 });
 
 console.log("EXPORTING ROUTER");

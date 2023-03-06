@@ -334,7 +334,7 @@ function deleteFriendRequest(user1, user2, callback){
 }
 
 // returns userIDs for a users friends list 
-function fetchAllFriendIDs(userID){
+function fetchAllFriendIDs(userID, callback){
 
     let query = `SELECT req_from AS userID 
                  FROM friend_requests

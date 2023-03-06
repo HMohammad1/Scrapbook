@@ -1,5 +1,6 @@
 // global for holding menu status
 menuOpen = true;
+navcounter = 1;
 
 $(document).ready(function(){
 
@@ -32,6 +33,7 @@ $(document).ready(function(){
 
         // get ID 
         menu = $(this).attr("id");
+        text = $(this).children(".menu-text").text();
 
         $.get(`/API/${menu}`, function(data, textStatus, xhr){
 
@@ -43,8 +45,8 @@ $(document).ready(function(){
             }
 
             // update history
-            stateObj = {id : 2};
-            window.history.replaceState(stateObj, "My Profile", `/${menu}`);
+            stateObj = {id : navcounter++};
+            window.history.replaceState(stateObj, text, `/${menu}`);
 
         });
     });
