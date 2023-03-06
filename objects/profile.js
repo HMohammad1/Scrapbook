@@ -1,7 +1,8 @@
 class Profile{
 
-    constructor(username, display, fname, lname, pfp, colour){
+    constructor(userID, username, display, fname, lname, pfp, colour){
 
+        this.userID = userID;
         this.username = username;
         this.display = display;
         this.fname = fname;

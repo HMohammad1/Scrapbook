@@ -238,6 +238,40 @@ function getProfileByID(userID, callback){
     });
 }
 
+// returns all data for a profile
+function getProfileByUsername(username, callback){
+
+    let query = `
+        SELECT  user_logins.username AS username,
+                user_profiles.display_name AS display,
+                user_profiles.fname AS fname,
+                user_profiles.lname AS lname,
+                user_profiles.colour AS colour,
+                user_pfp.link AS pfp
+        FROM user_logins
+        INNER JOIN user_profiles ON user_logins.userID = user_profiles.userID
+        INNER JOIN user_pfp ON user_logins.userID = user_pfp.userID
+        WHERE user_logins.username = ?    
+        `;
+    let params = [username];
+
+    DB.executeQuery(query, params, function(err, rows, fields){
+        
+        if(!err){
+            if(rows.length == 0){
+                return callback(null, false);
+            }
+            else{
+                return callback(null, rows[0]);
+            }
+        }
+        else{
+
+            return callback(err, null);
+        }
+    });
+}
+
 
 function insertFriendRequest(sentBy, sentTo, callback){
 
@@ -335,6 +369,7 @@ module.exports = {
 
     getUserByID,
     getProfileByID,
+    getProfileByUsername,
     fetchPaswordByEmail,
     fetchPaswordByUsername,
     emailExists,

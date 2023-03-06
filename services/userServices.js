@@ -150,7 +150,7 @@ function getUserByID(userID, callback){
             }
 
             // create profile
-            var profile = new Profile(data.username, data.display, data.fname, data.lname, data.pfp, data.colour);
+            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.colour);
             // create user object
             var user = new User(userID, data.email, profile);
             return callback(user);
@@ -171,7 +171,25 @@ function getProfileByID(userID, callback){
         // fetch row from DB
         userDAO.getProfileByID(userID, function(err, data){
             // create profile
-            var profile = new Profile(data.username, data.display, data.fname, data.lname, data.pfp, data.colour);
+            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.colour);
+            return callback(profile);
+        });
+    }
+    catch{
+        return callback(false);
+    }
+
+
+}
+
+// return a user profile from their username
+function getProfileByUsername(userID, callback){
+
+    try{
+        // fetch row from DB
+        userDAO.getProfileByUsername(userID, function(err, data){
+            // create profile
+            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.colour);
             return callback(profile);
         });
     }
@@ -381,6 +399,7 @@ module.exports = {
     logout,
     getUserByID,
     getProfileByID,
+    getProfileByUsername,
     sendFriendRequest,
     updateFriendRequest,
     removeFriend,

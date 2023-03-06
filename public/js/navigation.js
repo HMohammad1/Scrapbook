@@ -43,7 +43,7 @@ $(document).ready(function(){
             }
 
             // update history
-            stateObj = {id : 1};
+            stateObj = {id : 2};
             window.history.replaceState(stateObj, "My Profile", `/${menu}`);
 
         });
