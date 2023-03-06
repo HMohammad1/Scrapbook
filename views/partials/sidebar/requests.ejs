@@ -1,0 +1,17 @@
+<script type ="text/javascript" src="/js/requests.js"></script>
+<link rel="stylesheet" href="/css/addFriend.css">
+<div class="row prog-bar"></div>
+<div class="row menu-item" id="friend-requests">
+    <i class="menu-icon bi bi-person-fill-add"></i>
+    <span class="menu-text">Friend Requests</span>
+</div>
+<% requests.forEach(request => { %>
+    <div class="row friend-result" id="profile/<%= request.profile.username %>">
+        <img src="<%= request.profile.pfp %>" class="profile-icon">
+        <span class="menu-text"><%= request.profile.username %></span>
+        <div class="req-btns">
+            <button class="btn req-btn accept" id="<%=request.reqID %>"> Accept </button>
+            <button class="btn req-btn decline" id="<%=request.reqID %>"> Decline </button>
+        </div>
+    </div>
+<% }) %>

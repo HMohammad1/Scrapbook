@@ -27,6 +27,7 @@ function executeQuery(query, params, callback) {
         else if (connection) {
             // start the transation
             connection.query("START TRANSACTION");
+            console.log(query);
             connection.query(query, params, function(err, rows, fields) {
                 connection.release();
                 if (err) {

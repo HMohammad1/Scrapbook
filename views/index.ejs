@@ -42,6 +42,8 @@
             <%- include("partials/profile", {profile: profile, myprofile: myprofile}); %>
         <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "friends"){ %>
             <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
+        <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "add-friend"){ %>
+            <%- include("partials/sidebar/addFriends"); %>
         <%} else if (typeof(user) === 'undefined') { %>
             <%- include("partials/sidebar/login"); %>
         <% } else { %>

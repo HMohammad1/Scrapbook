@@ -284,8 +284,7 @@ function insertFriendRequest(sentBy, sentTo, callback){
             return callback(true);
         }
         else{
-
-            throw err;
+            return callback(false);
         }
     });
 
@@ -334,6 +333,35 @@ function deleteFriendRequest(user1, user2, callback){
 }
 
 // returns userIDs for a users friends list 
+function fetchPending(userID, callback){
+
+    let query = `SELECT req_from AS userID, sent, requestID as reqID
+                 FROM friend_requests
+                 WHERE req_to = ? AND accepted IS NULL
+                 
+                 UNION ALL
+                 
+                 SELECT req_to AS userID, sent, requestID as reqID
+                 FROM friend_requests
+                 WHERE req_from = ? AND accepted IS NULL
+                 `;
+
+    let params = [userID, userID];
+
+    DB.executeQuery(query, params, function(err, rows, fields){
+        
+        if(!err){
+            return callback(null, rows);
+        }
+        else{
+
+            return callback(err, null);
+        }
+    });
+
+}
+
+// returns userIDs for a users friends list 
 function fetchAllFriendIDs(userID, callback){
 
     let query = `SELECT req_from AS userID 
@@ -363,6 +391,24 @@ function fetchAllFriendIDs(userID, callback){
 }
 
 
+function searchUsername(string, callback){
+
+    let query = "SELECT userID FROM user_logins WHERE username LIKE ? ORDER BY username ASC";
+    let params = [string+'%'];
+
+    DB.executeQuery(query, params, function(err, rows, fields){
+        
+        if(!err){
+            return callback(null, rows);
+        }
+        else{
+
+            return callback(err, null);
+        }
+    });
+
+}
+
 
 
 module.exports = {
@@ -380,6 +426,8 @@ module.exports = {
     insertPFP,
     insertFriendRequest,
     updateFriendRequest,
+    fetchPending,
     deleteFriendRequest,
-    fetchAllFriendIDs
+    fetchAllFriendIDs,
+    searchUsername
 }

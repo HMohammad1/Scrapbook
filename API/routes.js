@@ -4,6 +4,7 @@ console.log("OPENING ROUTER");
 const express = require("express");
 const userServices = require("../services/userServices");
 const postServices = require("../services/postServices");
+const { searchUsername } = require("../DAOs/userDAO");
 
 //define a router and create routes
 const router = express.Router();
@@ -77,6 +78,17 @@ router.get("/friends", (req, res) =>{
 
 
 });
+
+router.get("/add-friend", (req, res) =>{
+
+    // check user is logged in
+    if(req.session.user === undefined){
+        return res.redirect(302, '/');
+    }
+
+    return res.render("index", {sidebar: "add-friend", user: req.session.user});
+
+});
   
 //dynamic menu items
 router.get("/API/profile/:username", (req, res) =>{
@@ -122,6 +134,41 @@ router.get("/API/friends", (req, res) =>{
 
 
 });
+
+router.get("/API/add-friend", (req, res) =>{
+
+    // check user is logged in
+    if(req.session.user === undefined){
+        return res.status(403);
+    }
+
+    return res.render("partials/sidebar/addFriends");
+
+});
+
+router.get("/API/friend-requests", (req, res) =>{
+
+    // check user is logged in
+    if(req.session.user === undefined){
+        return res.status(403);
+    }
+
+    userServices.fetchAllPendingRequests(req.session.user.userID, function(requests){
+
+        // error check
+        if(!requests){
+            res.status(500);
+            return;
+        }
+
+        return res.render("partials/sidebar/requests", {requests: requests});
+    });
+
+});
+
+
+router.get("/API/searchUsername/:string", userServices.searchUsername);
+
 
 console.log("EXPORTING ROUTER");
 //export router

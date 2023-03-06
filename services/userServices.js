@@ -12,6 +12,7 @@
 // import user + profile objects
 var User = require ('../objects/user.js');
 var Profile = require ('../objects/profile.js');
+var Request = require("../objects/request.js");
 
 const userDAO = require ('../DAOs/userDAO.js');
 const { res } = require('express');
@@ -276,8 +277,8 @@ const logout = (req, res) =>{
 const sendFriendRequest = (req, res) => {
 
     // check user is logged in
-    if(req.session.user === undefined){
-        return res.send("You must be logged in to send a friend request");
+    if(typeof(req.session.user) === 'undefined'){
+        res.status(403);
     }
 
     var userID = req.session.user.userID;
@@ -285,11 +286,15 @@ const sendFriendRequest = (req, res) => {
     
     userDAO.insertFriendRequest(userID, sendTo, function(result){
 
+        console.log(result);
+
         if(result){
-            res.send("Request succesfully sent");
+            res.status(200);
+            return res.send();
         }
         else{
-            throw err;
+            res.status(500);
+            return res.send();
         }
 
     });
@@ -304,7 +309,7 @@ const updateFriendRequest = (req, res) =>{
 
         // check user is logged in
         if(req.session.user === undefined){
-            return res.send("You must be logged in to update a friend request");
+            return res.redirect(302, "/");
         }
     
         var reqID = req.fields.reqID;
@@ -313,13 +318,55 @@ const updateFriendRequest = (req, res) =>{
         userDAO.updateFriendRequest(reqID, status, function(result){
     
             if(result){
-                res.send("Request succesfully updated");
+                res.status(200);
+                return res.send();
             }
             else{
-                throw err;
+                res.status(500);
+                return res.send();
             }
     
         });
+
+}
+
+
+
+function fetchAllPendingRequests(userID, callback){
+
+    userDAO.fetchPending(userID, function(err, rows){
+
+        if(err){
+            return callback(false);
+        }
+
+        // init array
+        var requests = [];
+
+        // for each returned ID fetch the corresponding profile
+        profilesToFetch = rows.length;
+        rows.forEach(row => {
+            
+            // get the profile
+            getProfileByID(row.userID, function(profile){
+                // only push successfully retrieved profiles
+                if(profile){
+                    
+                    var req = new Request(row.reqID, 'Pending', row.sent, profile)
+
+                    requests.push(req);
+                    if(requests.length === profilesToFetch){
+                        return callback(requests);
+                    }
+
+                }
+                else{
+                    profilesToFetch--;
+                }
+            });
+
+        });
+    });
 
 }
 
@@ -387,6 +434,87 @@ function getFriendProfiles(userID, callback){
 
 }
 
+// returns an array of profiles that correspond to the provided array of userIDs
+function getProfiles(userIDs, callback){
+    
+    // for each returned ID fetch the corresponding profile
+    profilesToFetch = userIDs.length;
+
+    // init array
+    userProfiles = [];
+
+    userIDs.forEach(userID => {
+        
+        // get the profile
+        getProfileByID(userID, function(profile){
+            // only push successfully retrieved profiles
+            if(profile){
+                
+                userProfiles.push(profile);
+                if(userProfiles.length === profilesToFetch){
+                    return callback(friendProfiles);
+                }
+
+            }
+            else{
+                profilesToFetch--;
+            }
+        });
+
+    });
+
+}
+
+
+// takes a partial username and returns potential matches
+const searchUsername = (req, res) =>{
+
+    string = req.params.string;
+    if(string == ''){
+        return res.status(200);
+    }
+
+    userDAO.searchUsername(string, function(err, rows){
+
+        if(!err){
+
+            // init array
+            var friendProfiles = [];
+
+            // for each returned ID fetch the corresponding profile
+            profilesToFetch = rows.length;
+            rows.forEach(row => {
+                
+                // get the profile
+                getProfileByID(row.userID, function(profile){
+                    // only push successfully retrieved profiles
+                    if(profile){
+                       
+                        friendProfiles.push(profile);
+                        if(friendProfiles.length === profilesToFetch){
+                            res.status(200);
+                            return res.send(JSON.stringify(friendProfiles));
+                        }
+
+                    }
+                    else{
+                        profilesToFetch--;
+                    }
+                });
+
+            });
+        }
+        else{
+            return res.status(500);
+        }
+
+    });
+
+
+
+
+}
+
 
 // export member functions for use elsewhere
 module.exports = {
@@ -399,8 +527,10 @@ module.exports = {
     getProfileByUsername,
     sendFriendRequest,
     updateFriendRequest,
+    fetchAllPendingRequests,
     removeFriend,
-    getFriendProfiles
+    getFriendProfiles,
+    searchUsername
     
 
 }
