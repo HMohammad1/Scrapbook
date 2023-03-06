@@ -30,9 +30,23 @@ $(document).ready(function(){
 
     $("body").on("click", ".menu-item", function(){
 
-        item = $(this).id();
-        
+        // get ID 
+        menu = $(this).attr("id");
 
+        $.get(`/API/${menu}`, function(data, textStatus, xhr){
+
+            $(".prog-bar").css("width", "0px");
+
+            // error check
+            if(xhr.status == 200){
+                $(".sidebar").html(data);
+            }
+
+            // update history
+            stateObj = {id : 1};
+            window.history.replaceState(stateObj, "My Profile", `/${menu}`);
+
+        });
     });
 
 

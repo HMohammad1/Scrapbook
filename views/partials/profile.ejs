@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type ="text/javascript" src="/public/js/application.js"></script>
-    <link rel = "stylesheet" href="/css/profile.css">
-</head>
-<body>
 
+    <script type ="text/javascript" src="/js/profile.js"></script>
     <div class="profile">
         <div class="btn-text-left">
             <button class="left-aligned" onclick="off()">Back</button>
@@ -34,11 +27,9 @@
                 <button class="left-right-aligned">Scraps</button>
             </div>
         </section>
-
-
     </div>
-
-
-
-</body>
-</html>
+    <div class="posts-holder" id="<%= user.userID %>">
+        <div class="spinner-border text-danger" role="status">
+            <span class="sr-only">Loading <%= user.profile.disp_name %>'s Posts</span>
+          </div>
+    </div>

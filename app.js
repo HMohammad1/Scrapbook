@@ -54,6 +54,28 @@ app.get("/addPost", (req, res) => {
 });
 
 
+app.get("/myprofile", (req, res) =>{
+
+  if(typeof(req.session.user !== 'undefined')){
+    res.render("index", {user: req.session.user, sidebar: "myprofile"});
+  }
+  else{
+    res.render("index");
+  }
+});
+
+//menu items
+app.get("/API/myprofile", (req, res) =>{
+    if(typeof(req.session.user) !== 'undefined'){
+      res.status(200);
+      return res.render('partials/profile', {user: req.session.user});
+    }
+    else{
+      res.status(404);
+    }
+});
+
+
 //dynamic routing for public files
 app.use(express.static(__dirname + "/public"));
 

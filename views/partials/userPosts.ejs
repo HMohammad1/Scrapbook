@@ -1,0 +1,20 @@
+<% posts.forEach(post => { %>
+
+    <div class="col post-icon" id="<%= post.postID %>">
+        <div class="row post-title">
+            <%= post.title %>
+        </div>
+        <div class="row img-holder">
+            <img src="<%= post.media[0] %>" class="post-img">
+        </div>
+        <div class="row post-details">
+            <div class="col post-coords">
+                <%= post.coords[0] %>, <%= post.coords[1] %>
+            </div>
+            <div class="col post-date">
+                <%= post.date %>
+            </div>
+        </div>
+    </div>
+
+<% }) %>

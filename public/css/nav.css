@@ -80,6 +80,7 @@ body{
 
 .menu-item:hover{
     background-color: #d3d3d3;
+    cursor: pointer;
 }
 
 .menu-icon{

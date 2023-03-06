@@ -26,7 +26,7 @@ function uploadMedia(postID, data, callback){
 
     var rawIMG = fs.readFileSync(data.path);
     var filename = encodeURIComponent(data.name.replace(/\s/g, "-"));
-    var newPath = path.join(__dirname, `../public/img/${postID}/${filename}`);
+    var newPath = path.join(__dirname, `/img/${postID}/${filename}`);
 
     fs.writeFile(newPath, rawIMG, function(err){
         if(err){
@@ -157,20 +157,33 @@ const getUserPosts = (req, res) =>{
     // userID from GET request
     var userID = req.params.userID;
 
-    postDAO.getAllUserPostIDs(userID, function(rows){
+    postDAO.getAllUserPostIDs(userID, function(err, rows){
 
         if(!rows){
-            res.send(404);
+            res.status(404);
+            return;
+        }
+        else if(err){
+            console.log(err);
+            res.status(500);
+            return;
         }
         else{
 
             // init post array
             posts = [];
-            
+
+
+            console.log("hello?");
+
             // counter for posts to fetch
             var postsToFetch = rows.length;
 
+            console.log("hello?");
+
             rows.forEach(row =>{
+
+                console.log("hello?");
 
                 // get post object and add to array
                 fetchPostByID(row.postID, function(post){
@@ -181,7 +194,9 @@ const getUserPosts = (req, res) =>{
                         posts.push(post);
                         if(posts.length === postsToFetch){
                             // once all IDs processed return the array
-                            res.send(JSON.stringify(posts));
+                            console.log(posts);
+                            res.status(200);
+                            return res.render("partials/userPosts", {posts: posts});
                         }
 
                     }
