@@ -47,8 +47,20 @@ body{
     height: 5px;
     width: 0%;
     background-color: #ff0000;
+
     margin-left: 0px !important;
     margin-right: 0px !important;
+
+}
+
+@keyframes loading {
+    from{width: 0%;}
+    to{width: 100%;}
+}
+
+.prog-bar.loading{
+
+    animation: loading 0.8s ease infinite;
 
 }
 
