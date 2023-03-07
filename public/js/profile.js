@@ -9,7 +9,7 @@ $(document).ready(function(){
 
         $(".prog-bar").removeClass("loading");
 
-        if(xhr.status == 200){
+        if(xhr.status === 200){
             $(".posts-holder").html(data);
         }
         else{

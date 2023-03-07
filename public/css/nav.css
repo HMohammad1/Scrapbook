@@ -161,3 +161,7 @@ body{
     }
 
 }
+
+.page-content {
+    height: 100vw;
+}

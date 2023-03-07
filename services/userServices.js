@@ -49,9 +49,9 @@ function generateUserID(){
 const createAccount = (req, res) => {
 
     // check passwords match
-    if (req.fields.pw1 != req.fields.pw2){
+    if (req.fields.pw1 !== req.fields.pw2){
         console.log(`Password mismatch`);
-        res.render("signup", {passwordError: true, message: "Passwords do not match"});
+        res.render("Index", {passwordError: true, message: "Passwords do not match"});
     }
 
     try{
@@ -59,7 +59,7 @@ const createAccount = (req, res) => {
         userDAO.emailExists(req.fields.email, function(err, result){
             if(result){
                 console.log(`Email: ${req.fields.email} is already in use`);
-                return res.render("signup", {emailError: true, message: "This email is already linked to a Scrapmap account. <a href='/login'> Log-in here! </a>"});
+                return res.render("Index", {emailError: true, message: "This email is already linked to a Scrapmap account. <a href='/login'> Log-in here! </a>"});
             }
             else if(err){
                 throw err;
@@ -69,7 +69,7 @@ const createAccount = (req, res) => {
                 userDAO.usernameExists(req.fields.username, function(err, result){
                     if(result){
                         console.log(`Username: ${req.fields.username} is already in use`);
-                        return res.render("signup", {usernameError: true, message: "This username is already taken."});
+                        return res.render("Index", {usernameError: true, message: "This username is already taken."});
                     }
                     else if(err){
                         throw err;
@@ -118,7 +118,7 @@ const createAccount = (req, res) => {
 
                                                             // returns output as string
                                                             //res.send(JSON.stringify(user));
-                                                            res.render("application", {user: user});
+                                                            res.redirect("/", 302);
                                                         });
                                                     }
                                                 });

@@ -11,16 +11,25 @@
                         <input id="fname" class="col form-control" name="fname" placeholder="First Name">
                         <input id="lname" class="col form-control" name="lname" placeholder="Last Name">
                     </div>
+                        <label for="email"> <% if (typeof(emailError) !== 'undefined' && emailError === true) { %>
+                            <%= message %>
+                        <% } %> </label>
                         <input id="email" name="email" class="form-control" placeholder="Email Address">
                         <input type="date" id="DOB" class="form-control"name="DOB"/>
                 </div>
                 <div class="username">
+                    <label for="username"> <% if (typeof(usernameError) !== 'undefined' && usernameError === true) { %>
+                            <%= message %>
+                        <% } %> </label>
                     <input id="username" name="username" class="form-control" placeholder="Username"/>
                     <input id="disp_name" name="disp_name" class="form-control"placeholder="Display Name"/>
                 </div>
                 <div class="contact-details">
                 </div>
                 <div class="password">
+                    <label for="pw2"> <% if (typeof(passwordError) !== 'undefined' && passwordError === true) { %>
+                            <%= message %>
+                        <% } %> </label>
                     <input type="password" id="pw1" name="pw1" class="form-control" placeholder="Password"/>
                     <input  type="password" id="pw2" name="pw2" class="form-control" placeholder="Confirm Password"/>
                 </div>
@@ -32,12 +41,15 @@
         <div id="login" class="tabcontent active">
             <form name="login" action="/API/login" method="post">
                 <div class="username">
-                    <label for="ID"> <% if (typeof(IDerror) !== 'undefined' && IDerror == true) { %>
+                    <label for="ID"> <% if (typeof(IDerror) !== 'undefined' && IDerror === true) { %>
                         <%= message %>
                     <% } %> </label>
                     <input id="ID" name="ID" class="form-control" placeholder="Username / Email"/>
                 </div>
                 <div class="password">
+                    <label for="pw"> <% if (typeof(pwError) !== 'undefined' && pwError === true) { %>
+                            <%= message %>
+                        <% } %> </label>
                     <input type="password" id="pw" name="pw" class="form-control" placeholder="Password"/>
                 </div>
                 <div class="row">

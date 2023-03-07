@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/9cacf08ace.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 
@@ -33,28 +34,33 @@
 
 </head>
 <body>
-    <%- include("partials/header"); %>
-<div class="wrapper">
-    <div class="col sidebar">
-        <div class="row prog-bar"></div>
-        <%# if not logged in show login / signup fields %>
-        <% if(typeof(sidebar) !== 'undefined' && sidebar == "profile"){ %>
-            <%- include("partials/profile", {profile: profile, myprofile: myprofile}); %>
-        <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "friends"){ %>
-            <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
-        <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "add-friend"){ %>
-            <%- include("partials/sidebar/addFriends"); %>
-        <%} else if (typeof(user) === 'undefined') { %>
-            <%- include("partials/sidebar/login"); %>
-        <% } else { %>
-            <%- include("partials/sidebar/menu"); %>
-        <% } %>
+<%- include("partials/header"); %>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-3 border border-dark h-100 p-1">
+
+                <div class="col sidebar">
+                    <div class="row prog-bar"></div>
+                    <%# if not logged in show login / signup fields %>
+                    <% if(typeof(sidebar) !== 'undefined' && sidebar == "profile"){ %>
+                        <%- include("partials/profile", {profile: profile, myprofile: myprofile}); %>
+                    <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "friends"){ %>
+                        <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
+                    <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "add-friend"){ %>
+                        <%- include("partials/sidebar/addFriends"); %>
+                    <%} else if (typeof(user) === 'undefined') { %>
+                        <%- include("partials/sidebar/login"); %>
+                    <% } else { %>
+                        <%- include("partials/sidebar/menu"); %>
+                    <% } %>
+                </div>
+
+            </div>
+            <div class="col-9 h-100 p-0">
+                <div id="map" class="image"></div>
+            </div>
+        </div>
     </div>
-    <div id="map" class="image"></div>
-</div>
-
-
-
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBY4bqQwcoN1yq_6XNFB3K-cDiXlD2k5I&callback=initMap">
 </script>
