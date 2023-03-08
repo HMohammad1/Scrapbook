@@ -1,0 +1,59 @@
+<script type ="text/javascript" src="/js/post.js"></script>
+<link rel="stylesheet" href="/css/post.css">
+<div class="map-overlay">
+    <div class="col post-holder">
+        <div class="row post-heading">
+            <h1><%= post.title %></h1>
+        </div>
+        <div class="row img-holder-main carousel slide">
+            <div class="carousel-inner">
+                <% post.media.forEach(src => { %>
+                    <div class="carousel-item active">
+                        <img src="<%= src %>" class="d-block w-100" alt="...">
+                    </div>
+                <% }) %>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <div class="row post-reactions">
+            <div class="col reaction-icons">
+                <div class="row">
+                        <% post.reacts.forEach(react => { %>
+                            <div class="col reaction">
+                                <%- react.icon %>
+                                <div class="react-counter"><%= react.left_by.length %></div>
+                            </div>
+                        <% }) %>
+                </div>
+            </div>
+            <div class="col add-reaction">
+                <button class="btn react-btn">Add Reaction</button>
+            </div>
+        </div>
+        <div class="row post-desc">
+            <%= post.desc %>
+        </div>
+        <div class="row add-comment">
+            <div class="col">
+                <div class="row add-comment">
+                    <input type="text" placeholder="Add a comment" class="form-control comment-input"/>
+                </div>
+                <div class="row comment-btn-holder">
+                    <button class="btn add-btn" disabled="disabled">Post Comment</button>
+                </div>
+            </div>
+        </div>
+        <div class="post-comments">
+            <div class="spinner-border text-danger" role="status">
+                <span class="sr-only">Loading comments...</span>
+              </div>
+        </div>
+    </div>
+</div>

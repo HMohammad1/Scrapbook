@@ -1,0 +1,32 @@
+.post-holder{
+
+    display: block;
+    margin: 0 auto;
+
+    width: 50%;
+    height: 100%;
+    background-color: #f8f8f8;
+
+
+}
+
+.post-heading{
+
+    height: 60px;
+    width: 100%;
+    text-align: center;
+
+}
+
+.img-holder-main{
+
+    height: 700px;
+    width: 100%;
+
+}
+
+.post-reactions{
+
+    height: 70px;
+    width: 100%;
+}

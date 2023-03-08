@@ -165,7 +165,7 @@ function getPostComments(postID, callback){
 // gets all posts a user has made
 function getAllUserPostIDs(userID, callback){
 
-    let query = "SELECT postID FROM posts WHERE posted_by = ?";
+    let query = "SELECT postID FROM posts WHERE posted_by = ? ORDER BY posted DESC";
     let params = [userID];
 
     DB.executeQuery(query, params, function(err, rows, fields){

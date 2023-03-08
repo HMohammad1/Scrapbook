@@ -38,24 +38,20 @@
 <%- include("partials/header"); %>
     <div class="container-fluid h-100">
         <div class="row h-100">
-            <div class="col-3 border border-dark h-100 p-1">
-
-                <div class="col sidebar">
-                    <div class="row prog-bar"></div>
-                    <%# if not logged in show login / signup fields %>
-                    <% if(typeof(sidebar) !== 'undefined' && sidebar == "profile"){ %>
-                        <%- include("partials/profile", {profile: profile, myprofile: myprofile}); %>
-                    <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "friends"){ %>
-                        <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
-                    <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "add-friend"){ %>
-                        <%- include("partials/sidebar/addFriends"); %>
-                    <%} else if (typeof(user) === 'undefined') { %>
-                        <%- include("partials/sidebar/login"); %>
-                    <% } else { %>
-                        <%- include("partials/sidebar/menu"); %>
-                    <% } %>
-                </div>
-
+            <div class="col-3 border border-dark h-100 p-1 sidebar">
+                <div class="row prog-bar"></div>
+                <%# if not logged in show login / signup fields %>
+                <% if(typeof(sidebar) !== 'undefined' && sidebar == "profile"){ %>
+                    <%- include("partials/profile", {profile: profile, myprofile: myprofile}); %>
+                <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "friends"){ %>
+                    <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
+                <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "add-friend"){ %>
+                    <%- include("partials/sidebar/addFriends"); %>
+                <%} else if (typeof(user) === 'undefined') { %>
+                    <%- include("partials/sidebar/login"); %>
+                <% } else { %>
+                    <%- include("partials/sidebar/menu"); %>
+                <% } %>
             </div>
             <div class="col-9 h-100 p-0">
                 <div id="map" class="image"></div>

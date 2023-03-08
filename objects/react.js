@@ -1,14 +1,16 @@
-class Reacts{
+class React{
 
-    constructor(){
+    constructor(icon){
 
-        this.love = [];
-        this.happy = [];
-        this.laugh = [];
-        this.sad = [];
-        this.angry = [];
+        this.icon = icon;
+        this.left_by = [];
+
+    }
+
+    addUser(userID){
+        this.left_by.push(userID);
     }
 
 }
 
-module.exports = Reacts;
+module.exports = React;

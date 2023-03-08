@@ -2,7 +2,7 @@
 var User = require ('../objects/user.js');
 var Profile = require ('../objects/profile.js');
 var Post = require('../objects/post.js');
-var Reacts = require('../objects/react.js');
+var React = require('../objects/react.js');
 
 const session = require("express-session");
 
@@ -173,17 +173,10 @@ const getUserPosts = (req, res) =>{
             // init post array
             posts = [];
 
-
-            console.log("hello?");
-
             // counter for posts to fetch
             var postsToFetch = rows.length;
 
-            console.log("hello?");
-
             rows.forEach(row =>{
-
-                console.log("hello?");
 
                 // get post object and add to array
                 fetchPostByID(row.postID, function(post){
@@ -230,7 +223,8 @@ const getPostByID = (req, res) => {
 
                 // post doesn't exist -- 404
                 if(postData === undefined){
-                    return res.send("404");
+                    res.status(404)
+                    return res.send();
                 }
 
                 console.log(postData);
@@ -246,10 +240,11 @@ const getPostByID = (req, res) => {
 
                         getAllPostReacts(postID, function(reacts){
 
+                            console.log(reacts);
                             // create post w/ profile & media links
                             var post = new Post(postID, [postData.lat, postData.long], links, postData.title, postData.descr, postData.posted, profile, reacts);
 
-                            res.send(JSON.stringify(post));
+                            return res.render("partials/overlays/post", {post: post});
                         });
                     });
                 });
@@ -449,30 +444,35 @@ function getAllPostReacts(postID, callback){
         }
         // fetch reacts
         else{
-            postDAO.addReact(postID, function(err, rows){
+            postDAO.getPostReacts(postID, function(err, rows){
 
                 if(result){
-                    //init obj
-                    var reacts = new Reacts;
 
+                    // init react objects
+                    var happy = new React('<i class="bi bi-emoji-smile-fill"></i>');
+                    var laugh = new React('<i class="bi bi-emoji-laughing-fill"></i>');
+                    var love = new React('<i class="bi bi-emoji-heart-eyes-fill"></i>');
+                    var sad = new React('<i class="bi bi-emoji-frown-fill"></i>');
+                    var angry = new React('<i class="bi bi-emoji-angry-fill"></i>');
+                    
                     // sort rows into each category
                     rows.forEach(row =>{
 
                         switch(row.reaction){
                             case "love":
-                                reacts.love.push(row.react_from);
+                                love.addUser(row.react_from);
                                 break;
                             case "happy":
-                                reacts.happy.push(row.react_from);
+                                happy.addUser(row.react_from);
                                 break;
                             case "laugh":
-                                reacts.laugh.push(row.react_from);
+                                laugh.addUser(row.react_from);
                                 break;
                             case "sad":
-                                reacts.sad.push(row.react_from);
+                                sad.addUser(row.react_from);
                                 break;
                             case "angry":
-                                reacts.angry.push(row.react_from);
+                                angry.addUser(row.react_from);
                                 break;
                             default:
                                 // if not recognised do nothing
@@ -481,6 +481,21 @@ function getAllPostReacts(postID, callback){
 
                     });
 
+                    //init array for holding reacts
+                    var reacts = [happy, laugh, love, sad, angry];
+
+                    // order reacts in descending order of popularity for this post
+                    reacts.sort(function(a,b){
+                        if(a.left_by.length > b.left_by.length){
+                            return -1;
+                        }
+                        else if(a.left_by.length < b.left_by.length){
+                            return 1
+                        }
+                        else{
+                            return 0;
+                        }
+                    });
                     // return populated object
                     return callback(reacts);
                 }
