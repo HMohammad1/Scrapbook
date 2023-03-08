@@ -3,7 +3,7 @@ var User = require ('../objects/user.js');
 var Profile = require ('../objects/profile.js');
 var Post = require('../objects/post.js');
 var React = require('../objects/react.js');
-
+var Comment = require('../objects/comment.js');
 const session = require("express-session");
 
 const userServices = require('../services/userServices.js');
@@ -332,31 +332,37 @@ const getPostComments = (req, res) =>{
 
     var postID = req.params.postID;
 
-
-    postDAO.getPostComments(postID, function(rows){
+    postDAO.getPostComments(postID, function(err, rows){
 
         // error check
-        if(!rows){
-            res.send(500);
+        if(err){
+            res.status(500);
+            res.send();
         }
         else{
 
             // init comment array
             comments = [];
 
+            if(rows.length == 0){
+                res.status(404);
+                return res.send();
+            }
+
             rows.forEach(row =>{
 
                 // fetch profile for commenter
                 userServices.getProfileByID(row.userID, function(profile){
 
-                    comments.push([rows.text, profile]);
-
+                    temp = new Comment(row.TEXT, profile);
+                    comments.push(temp);
+                    if(comments.length == rows.length){
+                        // return populated comment array
+                        res.status(200)
+                        return res.render("partials/postComments", {comments: comments});
+                    }
                 });
             });
-
-            // return populated comment array
-            res.send(JSON.stringify(comments));
-
         }
     });
 
