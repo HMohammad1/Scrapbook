@@ -1,6 +1,6 @@
 <% posts.forEach(post => { %>
 
-    <div class="col post-icon" id="<%= post.postID %>">
+    <div class="col post-icon" id="<%= post.postID %>" data-lat="<%= post.coords[0] %>" data-long="<%= post.coords[1] %>">
         <div class="row post-title">
             <%= post.title %>
         </div>

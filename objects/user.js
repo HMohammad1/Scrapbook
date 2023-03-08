@@ -6,12 +6,20 @@ class User{
         this.userID = userID;
         this.email = email;
         this.profile = profile;
+        // TESTING VARS ONLY
+        this.coords = [55.909095, -3.319584];;
         
     }
 
     getCoords() {
-        // TESTING VARS ONLY
-        return [55.909095, -3.319584];
+        
+        return this.coords;
+
+    }
+
+    updateCoords(lat, long){
+
+        this.coords = [lat, long];
 
     }
 

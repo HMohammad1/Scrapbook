@@ -15,6 +15,11 @@ router.post("/API/signup", userServices.createAccount);
 router.post("/API/login", userServices.login);
 router.get("/API/logout", userServices.logout);
 
+// route to update / get a users location
+router.post("/API/updateLocation", userServices.updateLocation);
+router.get("/API/getLocation", userServices.getUserLocation);
+
+
 // route to get & create a post
 router.get("/API/post/:ID", postServices.getPostByID);
 router.post("/API/upload", postServices.createPost);

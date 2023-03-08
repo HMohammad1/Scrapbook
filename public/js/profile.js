@@ -11,6 +11,8 @@ $(document).ready(function(){
 
         if(xhr.status === 200){
             $(".posts-holder").html(data);
+            // update visibility after posts loaded
+            updateLocation();
         }
         else{
             console.log(xhr);

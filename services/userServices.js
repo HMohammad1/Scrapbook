@@ -516,6 +516,42 @@ const searchUsername = (req, res) =>{
 }
 
 
+// update the user's location
+const updateLocation = (req,res) =>{
+
+    // check user is logged in
+    if(typeof(req.session.user) !== 'undefined'){
+
+        // this is janky as fuck
+        var user = Object.assign(new User(), req.session.user);
+        user.updateCoords(req.fields.lat, req.fields.long);
+        req.session.user = user;
+
+        res.status(200);
+        return res.send();
+    }
+    else{
+        res.status(403);
+        return res.send();
+    }
+
+}
+
+const getUserLocation = (req, res) =>{
+
+    // check user is logged in
+    if(typeof(req.session.user) !== 'undefined'){
+        res.status(200);
+        return res.send(req.session.user.getCoords());
+    }
+    else{
+        res.status(403);
+        return res.send();
+    }
+}
+
+
+
 // export member functions for use elsewhere
 module.exports = {
 
@@ -530,7 +566,8 @@ module.exports = {
     fetchAllPendingRequests,
     removeFriend,
     getFriendProfiles,
-    searchUsername
+    searchUsername,
+    updateLocation,
+    getUserLocation
     
-
 }

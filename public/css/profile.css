@@ -103,6 +103,18 @@ p {
 
 }
 
+.post-icon.disabled{
+
+    filter: saturate(0.5);
+
+}
+
+.post-icon.disabled:hover{
+
+    cursor: not-allowed;
+
+}
+
 .post-title, .post-details{
     width: 180px;
     height: 30px;
@@ -116,6 +128,12 @@ p {
 .post-img{
     height: 180px;
     width: 180px;
+}
+
+.post-icon.disabled > .img-holder > img{
+
+    filter: blur(10px) grayscale(0.6);
+
 }
 
 .post-title{
