@@ -30,3 +30,21 @@
     height: 70px;
     width: 100%;
 }
+
+.reaction > .bi{
+
+    color: red;
+    width: 1em;
+    height: 1em;
+    font-size: 45px;
+
+}
+
+.reaction > .bi:hover{
+
+    text-shadow: 6px 6px 3px rgba(252, 118, 108, 0.5);;
+    filter: saturate(0.8);
+    cursor: pointer;
+
+}
+

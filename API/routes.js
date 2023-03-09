@@ -44,7 +44,7 @@ router.get("/API/removeReact/:postID");
 router.get("/profile/:username", (req, res) =>{
 
     if(typeof(req.session.user.profile !== 'undefined') && req.session.user.profile.username == req.params.username){
-        res.render("index", {profile: req.session.user.profile, sidebar: "profile", myprofile: true});
+        res.render("index", {profile: req.session.user.profile, sidebar: "profile", myprofile: true, openPost: false});
     }
     else{
         userServices.getProfileByUsername(req.params.username, function(profile){
@@ -52,7 +52,23 @@ router.get("/profile/:username", (req, res) =>{
                 res.send(404);
                 return;
             }
-            res.render("index", {profile: profile, sidebar: "profile", myprofile: false});
+            res.render("index", {profile: profile, sidebar: "profile", myprofile: false, openPost: false});
+        });
+    }
+});
+
+router.get("/profile/:username/:postID", (req, res) =>{
+
+    if(typeof(req.session.user.profile !== 'undefined') && req.session.user.profile.username == req.params.username){
+        res.render("index", {profile: req.session.user.profile, sidebar: "profile", myprofile: true, openPost: req.params.postID});
+    }
+    else{
+        userServices.getProfileByUsername(req.params.username, function(profile){
+            if(!profile){
+                res.send(404);
+                return;
+            }
+            res.render("index", {profile: profile, sidebar: "profile", myprofile: false, openPost: req.params.postID});
         });
     }
 });
@@ -98,7 +114,7 @@ router.get("/add-friend", (req, res) =>{
 //dynamic menu items
 router.get("/API/profile/:username", (req, res) =>{
     if(typeof(req.session.user) !== 'undefined' && req.session.user.profile.username == req.params.username){
-        return res.render("partials/profile", {profile: req.session.user.profile, myprofile: true});
+        return res.render("partials/profile", {profile: req.session.user.profile, myprofile: true, openPost: false});
     }
     else{
         userServices.getProfileByUsername(req.params.username, function(profile){
@@ -107,7 +123,7 @@ router.get("/API/profile/:username", (req, res) =>{
                 return;
             }
             else{
-                return res.render("partials/profile", {profile: profile, myprofile: false});
+                return res.render("partials/profile", {profile: profile, myprofile: false, openPost: false});
             }
         });
     }

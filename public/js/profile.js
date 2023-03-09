@@ -13,11 +13,26 @@ $(document).ready(function(){
             $(".posts-holder").html(data);
             // update visibility after posts loaded
             updateLocation();
+
+            // open a post if one was open
+            openPost = $(".posts-holder").attr("data-openpost");
+            console.log(openPost);
+            if(openPost !== undefined){
+                $(`.post-icon#${openPost}`).trigger("click");
+            }
+
         }
         else{
             console.log(xhr);
         }
     });
+
+    $("body").on("click", ".map-overlay", function(){
+        $(this).fadeOut(400, function(){
+            $(this).remove();
+        });
+
+    })
 
 
     // open a post in the full overlay
@@ -28,7 +43,7 @@ $(document).ready(function(){
 
         // close any open overlays
         $(".map-overlay").fadeOut(400, function(){
-            $(".map-overlay").remove();
+            $(this).remove();
         });
 
         $.get(`/API/post/${postID}`, function(data, textStatus, xhr){
@@ -36,7 +51,14 @@ $(document).ready(function(){
             // OK
             if(xhr.status == 200){
                 $(data).insertBefore("#map");
-                // load comments
+                // update history
+                stateObj = {id : navcounter++};
+                newURL = window.location.href.replace(/\/[^\/]*$/, `/${postID}`);
+                window.history.pushState(stateObj, "Scrapmap", newURL);
+                
+                // change open post
+                $(".posts-holder").attr("data-openpost", postID);
+
             }
             // out of range
             else if(xhr.status == 403){

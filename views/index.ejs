@@ -42,7 +42,7 @@
                 <div class="row prog-bar"></div>
                 <%# if not logged in show login / signup fields %>
                 <% if(typeof(sidebar) !== 'undefined' && sidebar == "profile"){ %>
-                    <%- include("partials/profile", {profile: profile, myprofile: myprofile}); %>
+                    <%- include("partials/profile", {profile: profile, myprofile: myprofile, openPost: openPost}); %>
                 <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "friends"){ %>
                     <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
                 <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "add-friend"){ %>

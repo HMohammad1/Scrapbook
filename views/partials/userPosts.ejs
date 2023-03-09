@@ -1,4 +1,8 @@
-<% posts.forEach(post => { %>
+<% posts.forEach((post, index) => { %>
+
+    <% if (index % 2 == 0) { %>
+        <div class="row posts-row">
+    <% } %>
 
     <div class="col post-icon" id="<%= post.postID %>" data-lat="<%= post.coords[0] %>" data-long="<%= post.coords[1] %>">
         <div class="row post-title">
@@ -16,5 +20,9 @@
             </div>
         </div>
     </div>
+
+    <% if (index % 2 == 1) { %>
+        </div>
+    <% } %>
 
 <% }) %>

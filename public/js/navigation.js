@@ -46,7 +46,7 @@ $(document).ready(function(){
 
             // update history
             stateObj = {id : navcounter++};
-            window.history.replaceState(stateObj, text, `/${menu}`);
+            window.history.pushState(stateObj, text, `/${menu}`);
 
         });
     });
