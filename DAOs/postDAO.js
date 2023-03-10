@@ -221,12 +221,13 @@ function updateReact(userID, postID, react, callback){
 function userReactedToPost(userID, postID, callback){
 
     let query = "SELECT count(reaction) AS reacted FROM post_reactions WHERE react_from = ? AND postID = ?";
-    let params = [userID, postID];
+    let params = [postID, userID];
 
     DB.executeQuery(query, params, function(err, rows, fields){
 
         if(!err){
-            if(reacted > 0){
+            if(rows[0].reacted > 0){
+                console.log(`User #${userID} has reacted to post #${postID}`);
                 return callback(null, true);
             }
             else{
@@ -244,7 +245,7 @@ function userReactedToPost(userID, postID, callback){
 
 function removeReact(userID, postID, callback){
 
-    let query =  "DELETE FROM post_reactions WHERE reaction_from = ? AND postID = ?";
+    let query =  "DELETE FROM post_reactions WHERE react_from = ? AND postID = ?";
     let params = [userID, postID];
 
     DB.executeQuery(query, params, function(err, rows, fields){

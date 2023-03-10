@@ -244,7 +244,7 @@ const getPostByID = (req, res) => {
                             // create post w/ profile & media links
                             var post = new Post(postID, [postData.lat, postData.long], links, postData.title, postData.descr, postData.posted, profile, reacts);
 
-                            return res.render("partials/overlays/post", {post: post});
+                            return res.render("partials/overlays/post", {post: post, user:req.session.user});
                         });
                     });
                 });
@@ -345,7 +345,8 @@ const getPostComments = (req, res) =>{
             comments = [];
 
             if(rows.length == 0){
-                res.status(404);
+                // post exists but no comments
+                res.status(206);
                 return res.send();
             }
 
@@ -371,25 +372,25 @@ const getPostComments = (req, res) =>{
 // add a react to a post based upon the GET param in the link
 const addPostReact = (req, res) =>{
 
-    var react = req.params.react;
+    var react = req.params.reaction;
     var postID = req.params.postID;
     var userID = req.session.user.userID;
 
     // not a valid react -- respond with error
-    if(typeof(react) != String){
-        res.send(400);
-    }
+    // if(typeof(react) != String){
+    //    return res.sendStatus(400);
+    // }
 
     // check post exists
     postDAO.postIDexists(postID, function(err, result){
 
         // if error send 500
         if(err){
-            res.send(500);
+           return res.sendStatus(500);
         }
         // if post doesn't exist send error 
         else if(!result){
-            res.send(404)
+            return res.sendStatus(404)
         }
         // no error and post + react are valid -- add / update react
         else{
@@ -398,7 +399,7 @@ const addPostReact = (req, res) =>{
             postDAO.userReactedToPost(userID, postID, function(err, result){
                     
                 if(err){
-                    res.send(500);
+                    return res.sendStatus(500);
                 }
                 // if user has existing react update it
                 else if(result){
@@ -407,11 +408,11 @@ const addPostReact = (req, res) =>{
 
                         if(result){
                             // OK
-                            res.send(200);
+                            return res.sendStatus(200);
                         }
                         else{
                             console.log(err);
-                            res.send(400);
+                            return res.sendStatus(400);
                         }
                     });
                 }
@@ -419,14 +420,14 @@ const addPostReact = (req, res) =>{
                 else{
                     postDAO.addReact(postID, userID, react, function(err, result){
 
-                        if(result){
+                        if(!err){
                             // OK
-                            res.send(200);
+                            return res.sendStatus(200);
                         }
                         else{
                             // server should err if react is invalid
                             console.log(err);
-                            res.send(400);
+                            return res.sendStatus(400);
                         }
     
                     });
@@ -435,6 +436,30 @@ const addPostReact = (req, res) =>{
             });               
         }
     });
+}
+
+
+// sorts reacts in descending order and removes any empty reacts
+function sortReacts(reacts){
+
+
+    // order reacts in descending order of popularity for this post
+    reacts = reacts.sort(function(a,b){
+        if(a.left_by.length > b.left_by.length){
+            return -1;
+        }
+        else if(a.left_by.length < b.left_by.length){
+            return 1
+        }
+        else{
+            return 0;
+        }
+    });
+
+    // remove empty reacts
+    reacts = reacts.filter(react => react.left_by.length > 0);
+
+    return reacts;
 }
 
 
@@ -455,11 +480,11 @@ function getAllPostReacts(postID, callback){
                 if(result){
 
                     // init react objects
-                    var happy = new React('<i class="bi bi-emoji-smile-fill"></i>');
-                    var laugh = new React('<i class="bi bi-emoji-laughing-fill"></i>');
-                    var love = new React('<i class="bi bi-emoji-heart-eyes-fill"></i>');
-                    var sad = new React('<i class="bi bi-emoji-frown-fill"></i>');
-                    var angry = new React('<i class="bi bi-emoji-angry-fill"></i>');
+                    var happy = new React('<i class="bi bi-emoji-smile-fill" id="happy"></i>');
+                    var laugh = new React('<i class="bi bi-emoji-laughing-fill" id="laugh"></i>');
+                    var love = new React('<i class="bi bi-emoji-heart-eyes-fill" id="love"></i>');
+                    var sad = new React('<i class="bi bi-emoji-frown-fill" id="sad"></i>');
+                    var angry = new React('<i class="bi bi-emoji-angry-fill" id="angry"></i>');
                     
                     // sort rows into each category
                     rows.forEach(row =>{
@@ -490,18 +515,9 @@ function getAllPostReacts(postID, callback){
                     //init array for holding reacts
                     var reacts = [happy, laugh, love, sad, angry];
 
-                    // order reacts in descending order of popularity for this post
-                    reacts.sort(function(a,b){
-                        if(a.left_by.length > b.left_by.length){
-                            return -1;
-                        }
-                        else if(a.left_by.length < b.left_by.length){
-                            return 1
-                        }
-                        else{
-                            return 0;
-                        }
-                    });
+                    // sort + filter
+                    reacts = sortReacts(reacts);
+
                     // return populated object
                     return callback(reacts);
                 }
@@ -527,17 +543,17 @@ const removePostReact = (req, res) =>{
 
         // if error callback null
         if(err){
-            res.send(404);
+            res.sendStatus(404);
         }
 
         postDAO.removeReact(userID, postID, function(err, result){
             if(result){
                 // OK
-                res.send(200);
+                res.sendStatus(200);
             }
             else{
                 console.log(err);
-                res.send(500);
+                res.sendStatus(500);
             }
         });
 

@@ -40,11 +40,51 @@
 
 }
 
-.reaction > .bi:hover{
+.react-counter{
 
-    text-shadow: 6px 6px 3px rgba(252, 118, 108, 0.5);;
-    filter: saturate(0.8);
+    background-color: black;
+    color: #f8f8f8;
+    border-radius: 50%;
+
+    font-size: 16px;
+    line-height: 15px;
+    text-align: center;
+
+    width: 16px;
+    height: 16px;
+
+    position: relative !important;
+    bottom: 22px;
+    left: 30px;
+
+}
+
+.react-counter > .spinner-border{
+
+    height: 10px;
+    width: 10px;
+    font-size: 12px;
+
+}
+
+.reaction > .bi:hover{
     cursor: pointer;
+    text-shadow: 6px 6px 3px rgba(252, 118, 108, 0.5);
+}
+
+.reaction.added > .bi{
+    filter:saturate(1.5);
+}
+
+.reaction.added > .bi:hover{
+    filter:saturate(0);
+}
+
+.reaction:not(.added) > .bi:hover{
+
+
+    filter: saturate(1.5);
+
 
 }
 

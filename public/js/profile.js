@@ -1,3 +1,5 @@
+var overlayed = false;
+
 $(document).ready(function(){
 
     // get userID
@@ -16,8 +18,8 @@ $(document).ready(function(){
 
             // open a post if one was open
             openPost = $(".posts-holder").attr("data-openpost");
-            console.log(openPost);
             if(openPost !== undefined){
+                overlayed = true;
                 $(`.post-icon#${openPost}`).trigger("click");
             }
 
@@ -27,9 +29,15 @@ $(document).ready(function(){
         }
     });
 
-    $("body").on("click", ".map-overlay", function(){
+    $("body").on("click", ".map-overlay", function(e){
+        // check if bg clicked directly
+        if(e.target !== this){
+            return;
+        }
+
         $(this).fadeOut(400, function(){
             $(this).remove();
+            overlayed = false;
         });
 
     })
@@ -40,7 +48,7 @@ $(document).ready(function(){
 
         // get id
         postID = $(this).attr("ID");
-
+        
         // close any open overlays
         $(".map-overlay").fadeOut(400, function(){
             $(this).remove();
@@ -51,13 +59,24 @@ $(document).ready(function(){
             // OK
             if(xhr.status == 200){
                 $(data).insertBefore("#map");
+
                 // update history
                 stateObj = {id : navcounter++};
-                newURL = window.location.href.replace(/\/[^\/]*$/, `/${postID}`);
+                if(overlayed){
+                    // replace postID in URL with new one
+                    newURL = window.location.href.replace(/\/[^\/]*$/, `/${postID}`);
+                }
+                else{
+                    // append postID to URL
+                    newURL = `${window.location.href}/${postID}`;
+                }
+
                 window.history.pushState(stateObj, "Scrapmap", newURL);
-                
                 // change open post
                 $(".posts-holder").attr("data-openpost", postID);
+
+                // set overlayed
+                overlayed = true;
 
             }
             // out of range

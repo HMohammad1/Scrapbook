@@ -37,8 +37,8 @@ router.post("/API/addComment", postServices.addComment);
 router.get("/API/postComments/:postID", postServices.getPostComments);
 
 // react functions
-router.get("/API/addReact/:postID/:reaction");
-router.get("/API/removeReact/:postID");
+router.get("/API/addReact/:postID/:reaction", postServices.addPostReact);
+router.get("/API/removeReact/:postID", postServices.removePostReact);
 
 // permanent menu item links
 router.get("/profile/:username", (req, res) =>{
