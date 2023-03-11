@@ -41,6 +41,9 @@ $(document).ready(function(){
     // add a react when icon clicked
     $("body").on("click", ".reaction >.bi", function(){
 
+        // add spinner
+        $("#reacts-row").html('<div class="spinner-border text-danger" role="status"><span class="sr-only">Updating Reactions...</span></div>')
+
         // get reaction type & postID
         react = $(this).attr("id");
         console.log(react);
@@ -62,20 +65,14 @@ $(document).ready(function(){
         // send request to server
         $.get(url, function(data, textStatus, xhr){
 
+            //replace spinner with new reacts
+
+
             // error check
             if(xhr.status == 200){
 
-                // set to new value
-                counterVal = newVal;
-                $(this).siblings('.react-counter').text(newVal);                
-                
-                // update class
-                if(!icon.parent(".reaction").hasClass("added")){
-                    icon.parent(".reaction").addClass("added");
-                }
-                else{
-                    icon.parent(".reaction").removeClass("added");
-                }
+                $(".post-reactions").html(data);
+                reactsExpanded = false;
 
             }else{
                 console.log("Something went wrong");

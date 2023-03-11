@@ -407,8 +407,16 @@ const addPostReact = (req, res) =>{
                     postDAO.updateReact(postID, userID, react, function(err, result){
 
                         if(result){
-                            // OK
-                            return res.sendStatus(200);
+                            // fetch updated reactions
+                            getAllPostReacts(postID, function(reacts){
+                                if(!reacts){
+                                    // if failed 
+                                    return res.sendStatus(206);
+                                }
+                                // OK
+                                res.status(200);
+                                return res.render('partials/post/reactions', {reacts: reacts, user: req.session.user});
+                            });
                         }
                         else{
                             console.log(err);
@@ -421,8 +429,16 @@ const addPostReact = (req, res) =>{
                     postDAO.addReact(postID, userID, react, function(err, result){
 
                         if(!err){
-                            // OK
-                            return res.sendStatus(200);
+                            // fetch updated reactions
+                            getAllPostReacts(postID, function(reacts){
+                                if(!reacts){
+                                    // if failed 
+                                    return res.sendStatus(206);
+                                }
+                                // OK
+                                res.status(200);
+                                return res.render('partials/post/reactions', {reacts: reacts, user: req.session.user});
+                            });
                         }
                         else{
                             // server should err if react is invalid
@@ -548,12 +564,21 @@ const removePostReact = (req, res) =>{
 
         postDAO.removeReact(userID, postID, function(err, result){
             if(result){
-                // OK
-                res.sendStatus(200);
+
+                // fetch updated reactions
+                getAllPostReacts(postID, function(reacts){
+                    if(!reacts){
+                        // if failed 
+                       return res.sendStatus(206);
+                    }
+                    // OK
+                    res.status(200);
+                    return res.render('partials/post/reactions', {reacts: reacts, user: req.session.user});
+                });
             }
             else{
                 console.log(err);
-                res.sendStatus(500);
+                return res.sendStatus(500);
             }
         });
 

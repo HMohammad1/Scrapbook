@@ -23,29 +23,7 @@
             </button>
         </div>
         <div class="row post-reactions">
-            <div class="col reaction-icons">
-                <div class="row" id="reacts-row">
-                    <% if (post.reacts.length > 0) { %>
-                        <% post.reacts.forEach(react => { %>
-                            <div class="col reaction<% if (react.left_by.includes(user.userID)) { %>
-                                   added
-                                <% } %>">
-                                <%- react.icon %>
-                                <div class="react-counter">
-                                    <%= react.left_by.length %>
-                                </div>
-                            </div>
-                        <% }) %>
-                    <% } else {%>
-                        <div class="react-text">
-                            This post has no reacts yet.
-                        </div>
-                    <% } %>
-                </div>
-            </div>
-            <div class="col add-reaction">
-                <button class="btn react-btn">More Reactions</button>
-            </div>
+            <%- include('../post/reactions', {reacts: post.reacts, user: user}); %>
         </div>
         <div class="row post-desc">
             <%= post.desc %>
@@ -56,7 +34,7 @@
                     <input type="text" placeholder="Add a comment" class="form-control comment-input"/>
                 </div>
                 <div class="row comment-btn-holder">
-                    <button class="btn add-btn" disabled="disabled">Post Comment</button>
+                    <button class="btn danger add-btn" disabled="disabled">Post Comment</button>
                 </div>
             </div>
         </div>

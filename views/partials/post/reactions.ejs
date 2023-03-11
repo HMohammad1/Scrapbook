@@ -1,0 +1,23 @@
+<div class="col reaction-icons">
+    <div class="row" id="reacts-row">
+        <% if (reacts.length > 0) { %>
+            <% reacts.forEach(react => { %>
+                <div class="col reaction<% if (react.left_by.includes(user.userID)) { %>
+                    added
+                    <% } %>">
+                    <%- react.icon %>
+                    <div class="react-counter">
+                        <%= react.left_by.length %>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else {%>
+            <div class="react-text">
+                This post has no reacts yet.
+            </div>
+        <% } %>
+    </div>
+</div>
+<div class="col add-reaction">
+    <button class="btn react-btn">More Reactions</button>
+</div>
