@@ -3,7 +3,7 @@ $(document).ready(function(){
     postID = $(".post-holder").attr("ID");
 
     // hide comment btns
-    $(".comment-btn-holder").fadeOut(1);
+    $(".comment-btn-holder > .btn").fadeOut(1);
 
     var prevReacted = false;
     // check if user has left a reaction on load
@@ -156,8 +156,12 @@ $(document).ready(function(){
     $(".comment-input").on("keyup", function(){
         console.log("fired");
         if($(this).val() != ""){
-            $(".comment-btn-holder").fadeIn(200);
+            $(".comment-btn-holder > .btn").fadeIn(200);
             $(".comment-btn").removeAttr("disabled");
+        }
+        else{
+            $(".comment-btn").attr("disabled", "disabled");
+            $(".comment-btn-holder > .btn").fadeOut(200);
         }
     });
 
@@ -166,7 +170,7 @@ $(document).ready(function(){
         // clear input and hide buttons
         $(".comment-input").val("");
         $(".comment-btn").attr("disabled", "disabled");
-        $(".comment-btn-holder").fadeOut(200);
+        $(".comment-btn-holder > .btn").fadeOut(200);
 
     });
 
