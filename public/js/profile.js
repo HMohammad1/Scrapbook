@@ -48,6 +48,11 @@ $(document).ready(function(){
 
         // get id
         postID = $(this).attr("ID");
+
+        // if on mobile close menu
+        if($(window).width() <= 500){
+            $(".nav-btn").trigger("click");
+        }
         
         // close any open overlays
         $(".map-overlay").fadeOut(400, function(){

@@ -133,4 +133,13 @@
 }
 
 
+@media (max-width: 500px) {
 
+    .map-overlay{
+        width: 100vw !important;
+    }
+
+    .post-holder{
+        width: 100vw !important;
+    }
+}
