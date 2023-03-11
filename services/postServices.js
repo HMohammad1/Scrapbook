@@ -311,17 +311,17 @@ function fetchPostByID(postID, callback){
 const addComment = (req, res) =>{
 
     // get vars from POST
-    var userID = req.fields.userID;
+    var userID = req.session.user.userID;
     var postID = req.fields.postID;
     var comment = req.fields.comment;
 
-    postDAO.addComment(postID, userID, comment, function(result){
+    postDAO.addPostComment(postID, userID, comment, function(err, result){
 
-        if(result){
-            res.send("comment succesfully posted");
+        if(!err){
+            res.sendStatus(200);
         }
         else{
-            res.send(500);
+            return res.sendStatus(500);
         }
     });
 
@@ -360,7 +360,7 @@ const getPostComments = (req, res) =>{
                     if(comments.length == rows.length){
                         // return populated comment array
                         res.status(200)
-                        return res.render("partials/postComments", {comments: comments});
+                        return res.render("partials/post/postComments", {comments: comments, user:req.session.user});
                     }
                 });
             });

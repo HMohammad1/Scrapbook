@@ -144,7 +144,7 @@ function addPostComment(postID, userID, comment, callback){
 // get all comments and their associated userIDs
 function getPostComments(postID, callback){
 
-    let query = `SELECT text AS TEXT, comment_from as userID FROM post_comments WHERE postID = ?`
+    let query = `SELECT text AS TEXT, comment_from as userID FROM post_comments WHERE postID = ? ORDER BY commentID DESC`
     let params = [postID];
 
     DB.executeQuery(query, params, function(err, rows, fields){

@@ -2,18 +2,34 @@ $(document).ready(function(){
 
     postID = $(".post-holder").attr("ID");
 
-    $.get(`/API/postComments/${postID}`, function(data, textStatus, xhr){
+    // hide comment btns
+    $(".comment-btn-holder").fadeOut(1);
 
-        if(xhr.status == 200){
-            $(".post-comments").html(data);
-        }
-        else if(xhr.status == 206){
-            $(".post-comments").html("This post has no comments.");
-        }
-        else{
-            console.log(xhr);
-        }
-    });
+    var prevReacted = false;
+    // check if user has left a reaction on load
+    if($(".raction.added").length > 0){
+        prevReacted = true;
+    }
+
+
+    function getComments(){
+        $(".post-comments").html($('<div class="spinner-border text-danger" role="status"><span class="sr-only">Updating Reactions...</span></div>'));
+        $.get(`/API/postComments/${postID}`, function(data, textStatus, xhr){
+
+            if(xhr.status == 200){
+                $(".post-comments").html(data);
+            }
+            else if(xhr.status == 206){
+                $(".post-comments").html("This post has no comments.");
+            }
+            else{
+                console.log(xhr);
+            }
+        });
+    }
+
+    // get comments on page load
+    getComments();
 
 
     // hover for react icons
@@ -42,7 +58,7 @@ $(document).ready(function(){
     $("body").on("click", ".reaction >.bi", function(){
 
         // add spinner
-        $("#reacts-row").html('<div class="spinner-border text-danger" role="status"><span class="sr-only">Updating Reactions...</span></div>')
+        $("#reacts-row").html($('<div class="spinner-border text-danger" role="status"><span class="sr-only">Updating Reactions...</span></div>'));
 
         // get reaction type & postID
         react = $(this).attr("id");
@@ -50,13 +66,13 @@ $(document).ready(function(){
         postID = $(".post-holder").attr("id");
 
         // adding or removing 
-        if(!$(this).parent(".reaction").hasClass("added")){
-            url = `/API/addReact/${postID}/${react}`;
-            newVal = parseInt(counterVal)+1;
-        }
-        else{
+        if($(this).parent(".reaction").hasClass("added") || prevReacted){
             url = `/API/removeReact/${postID}`;
             newVal = parseInt(counterVal)-1;
+        }
+        else{
+            url = `/API/addReact/${postID}/${react}`;
+            newVal = parseInt(counterVal)+1;
         }
 
         // hold icon before ajax trigger
@@ -135,5 +151,42 @@ $(document).ready(function(){
         }
 
     });
+
+    // show comment buttons after typing
+    $(".comment-input").on("keyup", function(){
+        console.log("fired");
+        if($(this).val() != ""){
+            $(".comment-btn-holder").fadeIn(200);
+            $(".comment-btn").removeAttr("disabled");
+        }
+    });
+
+    $("body").on("click", ".comment-btn.cancel", function(){
+
+        // clear input and hide buttons
+        $(".comment-input").val("");
+        $(".comment-btn").attr("disabled", "disabled");
+        $(".comment-btn-holder").fadeOut(200);
+
+    });
+
+    $("body").on("click", ".comment-btn.add", function(){
+
+        // set spinner
+        $(this).text('<div class="spinner-border text-light" role="status"><span class="sr-only">Adding comment...</span></div>');
+
+        comment = $("#comment").val();
+        //add new comment
+        $.post("/API/addComment", {comment: comment, postID: postID}, function(data, status, xhr){
+            
+            // reset inputs
+            $(".comment-btn.cancel").trigger("click");
+            $(".comment-btn.add").text("Post");
+            // update comments section
+            getComments();
+        });
+
+    });
+
 
 });
