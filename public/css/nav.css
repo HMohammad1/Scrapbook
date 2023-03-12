@@ -3,6 +3,10 @@ body{
     font-size: 20px;
 }
 
+.post-font-size {
+    font-size: 10px;
+}
+
 .header > #title{
 
     font-size: 2em;
