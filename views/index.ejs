@@ -38,7 +38,7 @@
 <%- include("partials/header"); %>
     <div class="container-fluid h-100">
         <div class="row h-100">
-            <div class="col-3 border border-dark h-100 p-1 sidebar">
+            <div class="col-md-4 col-lg-3 col-xl-2 border border-dark h-100 p-1 sidebar">
                 <div class="row prog-bar"></div>
                 <%# if not logged in show login / signup fields %>
                 <% if(typeof(sidebar) !== 'undefined' && sidebar == "profile"){ %>
@@ -53,16 +53,19 @@
                     <%- include("partials/sidebar/menu"); %>
                 <% } %>
             </div>
-            <div class="col-9 h-100 p-0">
+            <div class="col-md-8 col-lg-9 col-xl-10 p-0">
                 <div id="map" class="image"></div>
             </div>
+        </div>
+        <div class="row h-5">
+            <%- include("partials/footer"); %>
         </div>
     </div>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBY4bqQwcoN1yq_6XNFB3K-cDiXlD2k5I&callback=initMap">
 </script>
 
-<%- include("partials/footer"); %>
+
 
 </body>
 </html>

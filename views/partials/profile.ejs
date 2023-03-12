@@ -1,45 +1,48 @@
+<script type="text/javascript" src="/js/profile.js"></script>
+<div class="row prog-bar"></div>
+<div class="row p-1">
+    <div class="col-6 border border-danger">
+        <button class="btn btn-default btn-lg button"><i class="fa fa-close"></i></button>
+    </div>
 
-    <script type ="text/javascript" src="/js/profile.js"></script>
-    <div class="row prog-bar"></div>
-    <div class="profile">
-        <div class="btn-text-left">
-            <button class="left-aligned" onclick="off()">Back</button>
+    <% if (myprofile) { %>
+        <div class="col-6 border border-danger d-flex justify-content-end">
+            <button type="button" class="btn btn-default btn-lg text-center"><a href="/API/logout"><i
+                            class="fa fa-sign-out"></i><br>Logout</a></button>
         </div>
-
-        <% if (myprofile) { %>
-            <div class="btn-text-right">
-                <a href="/API/logout">log out</a>
-            </div>
-        <% } %>
+    <% } %>
+</div>
+<div class="row p-1">
+    <div class="col-12  border border-danger">
         <div>
-            <img src="/Images/ok.jpg" alt="Italian Trulli" class="centre">
-        </div>
-
-        <h2><%= profile.display%></h2>
-
-        <p> Hey welcome to my page!</p>
-
-
-<!--        <section style="padding-top: 20px">-->
-            <div class="btn-text-left">
-                <button class="left-aligned">Friends</button>
-            </div>
-            <div class="btn-text-right">
-                <button class="left-right-aligned">Scraps</button>
-            </div>
-<!--        </section>-->
-<br><br>
-        <div class="row menu-item settings">
-            <i class="menu-icon bi bi-gear-fill"></i>
-            <span class="menu-text">Settings</span>
+            <img src="<%= profile.pfp %>" class="profile-icon2 centre">
         </div>
     </div>
-
-
-
-
-    <div class="posts-holder" id="<%= profile.userID %>" data-openpost="<%= openPost %>">
-        <div class="spinner-border text-danger" role="status">
-            <span class="sr-only">Updating Reactions...</span>
-          </div>
+</div>
+<br>
+<h2><%= profile.display %></h2>
+<p> Hey welcome to my page!</p>
+<br>
+<div class="row p-1">
+    <div class="col-6 p-0 border border-danger">
+        <button class="btn btn-danger profile-button">Friends</button>
     </div>
+    <div class="col-6 p-0 border border-danger">
+        <button class="btn btn-danger profile-button">Scraps</button>
+    </div>
+</div>
+<div class="row p-1">
+    <div class="col-12 p-0 border border-danger">
+        <button class="btn btn-danger profile-button">Edit Profile</button>
+    </div>
+</div>
+
+<div class="row p-0">
+    <div class="col-12">
+        <div class="posts-holder" id="<%= profile.userID %>">
+            <div class="spinner-border text-danger" role="status">
+                <span class="sr-only">Loading <%= profile.disp_name %>'s Posts</span>
+            </div>
+        </div>
+    </div>
+</div>
