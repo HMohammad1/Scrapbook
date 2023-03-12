@@ -1,7 +1,7 @@
 <% posts.forEach((post, index) => { %>
 
     <% if (index % 2 == 0) { %>
-        <div class="row posts-row">
+        <div class="row posts-row d-flex justify-content-center">
     <% } %>
 
     <div class="col post-icon" id="<%= post.postID %>" data-lat="<%= post.coords[0] %>" data-long="<%= post.coords[1] %>">
