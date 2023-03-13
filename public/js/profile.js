@@ -101,3 +101,31 @@ $(document).ready(function(){
     });
 
 });
+
+function myFunction() {
+    if (document.getElementById('myDIV2')) {
+
+        if (document.getElementById('myDIV2').style.display === 'none') {
+            document.getElementById('myDIV2').style.display = 'block';
+            document.getElementById('myDIV3').style.display = 'none';
+        }
+        else {
+            document.getElementById('myDIV2').style.display = 'none';
+            document.getElementById('myDIV3').style.display = 'block';
+        }
+    }
+
+
+}
+
+function change()
+{
+    var btn = document.getElementById("profileButton");
+    if (document.getElementById("profileButton").innerHTML === 'Edit Profile') {
+        btn.innerHTML = 'Save Changes';
+    } else {
+        btn.innerHTML = 'Edit Profile';
+    }
+
+
+}

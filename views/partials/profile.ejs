@@ -1,19 +1,19 @@
 <script type="text/javascript" src="/js/profile.js"></script>
 <div class="row prog-bar"></div>
 <div class="row p-1">
-    <div class="col-6 border border-danger">
+    <div class="col-6 ">
         <button class="btn btn-default btn-lg button"><i class="fa fa-close"></i></button>
     </div>
 
     <% if (myprofile) { %>
-        <div class="col-6 border border-danger d-flex justify-content-end">
+        <div class="col-6 d-flex justify-content-end">
             <button type="button" class="btn btn-default btn-lg text-center"><a href="/API/logout"><i
                             class="fa fa-sign-out"></i><br>Logout</a></button>
         </div>
     <% } %>
 </div>
 <div class="row p-1">
-    <div class="col-12  border border-danger">
+    <div class="col-12  ">
         <div>
             <img src="<%= profile.pfp %>" class="profile-icon2 centre">
         </div>
@@ -24,25 +24,50 @@
 <p> Hey welcome to my page!</p>
 <br>
 <div class="row p-1">
-    <div class="col-6 p-0 border border-danger">
+    <div class="col-6 p-1 ">
         <button class="btn btn-danger profile-button">Friends</button>
     </div>
-    <div class="col-6 p-0 border border-danger">
+    <div class="col-6 p-1 ">
         <button class="btn btn-danger profile-button">Scraps</button>
     </div>
 </div>
 <div class="row p-1">
-    <div class="col-12 p-0 border border-danger">
-        <button class="btn btn-danger profile-button">Edit Profile</button>
+    <div class="col-12 p-1">
+        <button class="btn btn-danger profile-button" id="profileButton" value="Edit Profile" onclick="change(); myFunction()">Edit Profile</button>
     </div>
 </div>
 
-<div class="row p-0">
+<div class="row p-2" id="myDIV2">
     <div class="col-12 p-0">
         <div class="posts-holder" id="<%= profile.userID %>">
             <div class="spinner-border text-danger" role="status">
                 <span class="sr-only">Loading <%= profile.disp_name %>'s Posts</span>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="row p-2" id="myDIV3">
+    <div class="col-12 p-2 profileColours">
+        <p class="text-left ">Profile Colour</p>
+        <button class="btn btn-danger buttonStyles"></button>
+        <button style="background-color: orangered" class="btn btn-danger buttonStyles"></button>
+        <button style="background-color: green" class="btn btn-danger buttonStyles"></button>
+        <button style="background-color: blue" class="btn btn-danger buttonStyles"></button>
+        <button style="background-color: purple" class="btn btn-danger buttonStyles"></button>
+    </div>
+    <div class="col-12 p-2 profileColours">
+        <p class="text-left ">Show Real name on Profile</p>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+        </div>
+    </div>
+    <div class="col-12 p-2 profileColours">
+        <p class="text-left ">Post Visibility: Public</p>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault"></label>
         </div>
     </div>
 </div>
