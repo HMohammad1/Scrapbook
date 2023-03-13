@@ -127,6 +127,7 @@ p {
     text-align: center;
     color: #f8f8f8;
     background-color: red;
+    z-index: 2;
     
 
 }
@@ -139,6 +140,7 @@ p {
 .post-icon.disabled > .img-holder > img{
 
     filter: blur(10px) grayscale(0.6);
+    z-index: 1;
 
 }
 
