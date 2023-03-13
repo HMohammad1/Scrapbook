@@ -376,8 +376,7 @@ function fetchPending(userID, callback){
 
     let query = `SELECT req_from AS userID, sent, requestID as reqID
                  FROM friend_requests
-                 WHERE req_to = ? AND accepted IS NULL
-                 `;
+                 WHERE req_to = ? AND accepted IS NULL`;
 
     let params = [userID];
 

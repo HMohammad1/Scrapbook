@@ -191,6 +191,8 @@ router.get("/API/settings", (req, res) =>{
 
 router.get("/API/friend-requests", (req, res) =>{
 
+
+
     // check user is logged in
     if(req.session.user === undefined){
         return res.status(403);
@@ -203,6 +205,8 @@ router.get("/API/friend-requests", (req, res) =>{
             res.status(500);
             return;
         }
+
+        console.log("hello?");
 
         return res.render("partials/sidebar/requests", {requests: requests});
     });

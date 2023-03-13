@@ -351,6 +351,11 @@ function fetchAllPendingRequests(userID, callback){
         // init array
         var requests = [];
 
+        // if empty return with empty profile set
+        if(rows.length == 0){
+            return callback(requests);
+        }
+
         // for each returned ID fetch the corresponding profile
         profilesToFetch = rows.length;
         rows.forEach(row => {

@@ -35,13 +35,19 @@ $(document).ready(function(){
         menu = $(this).attr("id");
         text = $(this).children(".menu-text").text();
 
+
         $.get(`/API/${menu}`, function(data, textStatus, xhr){
+
+            console.log(xhr);
 
             $(".prog-bar").css("width", "0px");
 
             // error check
             if(xhr.status == 200){
                 $(".sidebar").html(data);
+            }
+            else{
+                console.log(xhr)
             }
 
             // update history
