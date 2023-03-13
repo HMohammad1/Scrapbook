@@ -99,7 +99,8 @@ function getPostByID(postID, callback){
                 descr as descr,
                 posted as posted,
                 latitude as 'lat',
-                longitude as 'long'
+                longitude as 'long',
+                public as 'priv'
         FROM posts
         WHERE postID = ?`
 

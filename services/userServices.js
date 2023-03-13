@@ -41,11 +41,6 @@ function hashPassword(password, callback) {
     });
 }
 
-function generateUserID(){
-
-    
-}
-
 const createAccount = (req, res) => {
 
     // check passwords match
@@ -147,6 +142,46 @@ const createAccount = (req, res) => {
     }
 }
 
+
+const updateProfile = (req, res) =>{
+
+    // get values from form
+    userID = req.session.user.userID;
+    newBio = req.fields.newBio;
+    newDisp = req.fields.newDisp;
+    newColour = req.fields.newColour;
+
+    // check if any have changed
+    if(newBio == "" || typeof(newBio) === 'undefined'){
+        newBio = req.session.user.profile.bio;
+    }
+    if(newDisp == "" || typeof(newDisp) === 'undefined'){
+        newDisp = req.session.user.profile.disp_name;
+    }
+    if(newColour == "" || typeof(newColour) === 'undefined'){
+        newColour = req.session.user.profile.colour;
+    }
+
+    userDAO.updateProfile(userID, newBio, newDisp, newColour, function(err, result){
+        if(err){
+            return res.sendStatus(500);
+        }
+        else{
+            req.session.user.profile.bio = newBio;
+            req.session.user.profile.disp_name = newDisp;
+            req.session.user.profile.colour = newColour;
+
+            res.status(200);
+            return res.send([newBio, newDisp, newColour]);
+        }
+
+
+    });
+
+
+}
+
+
 // returns a populated user object complete with profile -- if just a profile is needed user getProfile functions
 function getUserByID(userID, callback){
 
@@ -159,7 +194,7 @@ function getUserByID(userID, callback){
             }
 
             // create profile
-            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.colour);
+            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.bio, data.colour);
             // create user object
             var user = new User(userID, data.email, profile);
             return callback(user);
@@ -180,7 +215,7 @@ function getProfileByID(userID, callback){
         // fetch row from DB
         userDAO.getProfileByID(userID, function(err, data){
             // create profile
-            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.colour);
+            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.bio, data.colour);
             return callback(profile);
         });
     }
@@ -198,7 +233,7 @@ function getProfileByUsername(userID, callback){
         // fetch row from DB
         userDAO.getProfileByUsername(userID, function(err, data){
             // create profile
-            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.colour);
+            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.bio, data.colour);
             return callback(profile);
         });
     }
@@ -587,6 +622,7 @@ module.exports = {
     createAccount,
     login,
     logout,
+    updateProfile,
     getUserByID,
     getProfileByID,
     getProfileByUsername,
@@ -595,6 +631,7 @@ module.exports = {
     fetchAllPendingRequests,
     removeFriend,
     getFriendProfiles,
+    areFriends,
     searchUsername,
     updateLocation,
     getUserLocation

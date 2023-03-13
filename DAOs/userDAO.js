@@ -69,6 +69,22 @@ function insertPFP(userID, callback){
 }
 
 
+function updateProfile(userID, bio, disp, colour, callback){
+
+    let query = "UPDATE user_profiles SET bio=?, display_name=?, colour=? WHERE userID = ?";
+    let params = [bio, disp, colour, userID];
+
+    DB.executeQuery(query, params, function(err, rows){
+        if(err){
+            return callback(err, null);
+        }
+        else{
+            return callback(null, true);
+        }
+    });
+}
+
+
 // links the current IP of a user to their account
 function logIP(userID){
 
@@ -196,6 +212,7 @@ function getUserByID(userID, callback){
                 user_profiles.fname AS fname,
                 user_profiles.lname AS lname,
                 user_profiles.colour AS colour,
+                user_profiles.bio AS bio,
                 user_pfp.link AS pfp
         FROM user_logins
         INNER JOIN user_profiles ON user_logins.userID = user_profiles.userID
@@ -229,6 +246,7 @@ function getProfileByID(userID, callback){
                 user_profiles.fname AS fname,
                 user_profiles.lname AS lname,
                 user_profiles.colour AS colour,
+                user_profiles.bio AS bio,
                 user_pfp.link AS pfp
         FROM user_logins
         INNER JOIN user_profiles ON user_logins.userID = user_profiles.userID
@@ -263,6 +281,7 @@ function getProfileByUsername(username, callback){
                 user_profiles.fname AS fname,
                 user_profiles.lname AS lname,
                 user_profiles.colour AS colour,
+                user_profiles.bio AS bio,
                 user_pfp.link AS pfp
         FROM user_logins
         INNER JOIN user_profiles ON user_logins.userID = user_profiles.userID
@@ -450,6 +469,7 @@ module.exports = {
     getProfileByUsername,
     fetchPaswordByEmail,
     fetchPaswordByUsername,
+    updateProfile,
     emailExists,
     usernameExists,
     userIDexists,
