@@ -47,6 +47,8 @@
                     <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
                 <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "add-friend"){ %>
                     <%- include("partials/sidebar/addFriends"); %>
+                <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "settings"){ %>
+                    <%- include("partials/sidebar/settings"); %>
                 <%} else if (typeof(user) === 'undefined') { %>
                     <%- include("partials/sidebar/login"); %>
                 <% } else { %>

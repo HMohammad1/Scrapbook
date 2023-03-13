@@ -110,6 +110,17 @@ router.get("/add-friend", (req, res) =>{
     return res.render("index", {sidebar: "add-friend", user: req.session.user});
 
 });
+
+router.get("/settings", (req, res) =>{
+
+    // check user is logged in
+    if(req.session.user === undefined){
+        return res.redirect(302, '/');
+    }
+
+    return res.render("index", {sidebar: "settings", user: req.session.user});
+
+});
   
 //dynamic menu items
 router.get("/API/profile/:username", (req, res) =>{
@@ -164,6 +175,17 @@ router.get("/API/add-friend", (req, res) =>{
     }
 
     return res.render("partials/sidebar/addFriends");
+
+});
+
+router.get("/API/settings", (req, res) =>{
+
+    // check user is logged in
+    if(req.session.user === undefined){
+        return res.status(403);
+    }
+
+    return res.render("partials/sidebar/settings");
 
 });
 
