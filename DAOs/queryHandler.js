@@ -6,12 +6,14 @@ config({path: `.env.${process.env.NODE_ENV}`});
 var env = process.env.NODE_ENV;
 var testENV = env === 'test';
 
+console.log(process.env.DB_HOST);
+
 var pool = mysql.createPool({
     connectionLimit: 74,
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PW,
-    //port: 3306,
+    port: process.env.DB_PORT,
     database: process.env.DB_NAME,
     debug: process.env.DB_DEBUG
 });

@@ -189,7 +189,7 @@ const getUserPosts = (req, res) =>{
                             // once all IDs processed return the array
                             console.log(posts);
                             res.status(200);
-                            return res.render("partials/userPosts", {posts: posts});
+                            return res.render("partials/userPosts", {posts: posts, user: req.session.user});
                         }
 
                     }
