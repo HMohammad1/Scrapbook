@@ -35,6 +35,22 @@ function insertLogin(userID, username, email, hash, callback){
 
 }
 
+function insertSettings(userID, callback){
+
+    let query = "INSERT INTO user_settings (userID) VALUES (?)";
+    let params = [userID];
+
+    DB.executeQuery(query, params, function(err, rows){
+        if(err){
+            return callback(err, null)
+        }
+        else{
+            return callback(null, true);
+        }   
+    });
+
+}
+
 // assign default pfp
 function insertPFP(userID, callback){
 
@@ -332,21 +348,38 @@ function deleteFriendRequest(user1, user2, callback){
 
 }
 
+function areFriends(user1, user2, callback){
+
+    let query = "SELECT accepted FROM friend_requests WHERE req_from = (? OR ?) AND req_to = (? OR ?)";
+    let params = [user1, user2, user1, user2];
+
+    DB.executeQuery(query, params, function(err, rows, fields){
+        
+        if(!err){
+            if(rows[0].accepted == 1){
+                return callback(null, true);
+            }
+            else{
+                return callback(null, false);
+            }
+        }
+        else{
+            return callback(err, null);
+        }
+    });
+
+}
+
+
 // returns userIDs for a users friends list 
 function fetchPending(userID, callback){
 
     let query = `SELECT req_from AS userID, sent, requestID as reqID
                  FROM friend_requests
                  WHERE req_to = ? AND accepted IS NULL
-                 
-                 UNION ALL
-                 
-                 SELECT req_to AS userID, sent, requestID as reqID
-                 FROM friend_requests
-                 WHERE req_from = ? AND accepted IS NULL
                  `;
 
-    let params = [userID, userID];
+    let params = [userID];
 
     DB.executeQuery(query, params, function(err, rows, fields){
         
@@ -424,10 +457,12 @@ module.exports = {
     insertLogin,
     insertProfile,
     insertPFP,
+    insertSettings,
     insertFriendRequest,
     updateFriendRequest,
     fetchPending,
     deleteFriendRequest,
+    areFriends,
     fetchAllFriendIDs,
     searchUsername
 }
