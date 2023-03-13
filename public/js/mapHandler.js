@@ -1,7 +1,6 @@
 // 15s between updates
 var updateWindow = 15000;
 var updateTimer;
-const met50 = 0.0004505;
 
 // global variable to store coords position
 var pos = [0, 0];
@@ -126,10 +125,10 @@ function initMap(location) {
     function over50(property, currentLocation) {
 
         // get distance between point 1 and point 2
-        var distance = Math.sqrt((Math.pow((currentLocation.lat - property.location.lat), 2)) + (Math.pow((currentLocation.lng - property.location.lng), 2)));
+        var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
         
         // if distance is over 50 metres return true else return false
-        if (distance > met50) {
+        if (distance > 50) {
             return true;
         }
 

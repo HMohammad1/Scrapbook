@@ -81,7 +81,7 @@ p {
 
 .posts-holder{
 
-    margin-top: 50px;
+    margin-top: 20px;
     height: 60vh !important;
 
     overflow-y: scroll;
@@ -168,7 +168,7 @@ p {
     width: 100%;
 }
 
-/* 
+
 @media (max-width: 500px) {
 
     .profile{
@@ -183,6 +183,18 @@ p {
         height: 100vw !important;
     }
 
-} */
+}
 
+#myDIV3 {
+    display: none;
+}
 
+.profileColours {
+    border-bottom: 3px solid #BABABA;
+}
+
+.buttonStyles {
+    width: 20px;
+    height: 20px;
+    border: 0;
+}
