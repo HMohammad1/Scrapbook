@@ -110,15 +110,23 @@ const createAccount = (req, res) => {
                                                         throw err;
                                                     }
                                                     else{
-                                                        // retrive full user data from server
-                                                        getUserByID(userID, function(user){
-                                                            // bind user to session
-                                                            req.session.user = user;
-                                                            req.session.save();
+                                                        // add default settings
+                                                        userDAO.insertSettings(userID, function(err, result){
+                                                            if(err){
+                                                                res.sendStatus(500);
+                                                            }
+                                                            else{
+                                                                // retrive full user data from server
+                                                                getUserByID(userID, function(user){
+                                                                    // bind user to session
+                                                                    req.session.user = user;
+                                                                    req.session.save();
 
-                                                            // returns output as string
-                                                            //res.send(JSON.stringify(user));
-                                                            res.redirect("/", 302);
+                                                                    // returns output as string
+                                                                    //res.send(JSON.stringify(user));
+                                                                    res.redirect("/", 302);
+                                                                });
+                                                            }
                                                         });
                                                     }
                                                 });
@@ -430,9 +438,25 @@ function getFriendProfiles(userID, callback){
         }
 
     });
-
-
 }
+
+// check if two users are friends
+function areFriends(user1, user2){
+
+    userDAO.areFriends(user1, user2, function(err, result){
+
+        if(err){
+            return null;
+        }
+        else{
+            return result;
+        }
+
+    });
+}
+
+
+
 
 // returns an array of profiles that correspond to the provided array of userIDs
 function getProfiles(userIDs, callback){
