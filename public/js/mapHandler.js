@@ -34,13 +34,13 @@ function currentLocation() {
         pos.push(position.coords.longitude);
 
 
-        initMap(location);
+        //initMap(location);
         
     };
 
     // error function if location not found
     const error = () => {
-        alert('Unable to retrieve location');
+        console.log('Unable to retrieve location');
         
     };
 
