@@ -17,6 +17,7 @@ const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
 const { array } = require('yargs');
+const { areFriends } = require('../DAOs/userDAO.js');
 
 // moves an image/video into a public folder that corresponds to its postID
 function uploadMedia(postID, data, callback){
@@ -242,9 +243,15 @@ const getPostByID = (req, res) => {
 
                             console.log(reacts);
                             // create post w/ profile & media links
-                            var post = new Post(postID, [postData.lat, postData.long], links, postData.title, postData.descr, postData.posted, profile, reacts);
-
-                            return res.render("partials/overlays/post", {post: post, user:req.session.user});
+                            var post = new Post(postID, [postData.lat, postData.long], links, postData.title, postData.descr, postData.posted, postData.priv, profile, reacts);
+                            
+                            // if public or friends only or own post
+                            if(postData.priv == 1 || userServices.areFriends(req.session.user.userID, postData.profile.userID) || req.session.user.userID == postData.profile.userID){
+                                return res.render("partials/overlays/post", {post: post, user:req.session.user});
+                            }
+                            else{
+                                return res.sendStatus(403);
+                            }
                         });
                     });
                 });

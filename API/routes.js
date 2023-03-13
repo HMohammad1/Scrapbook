@@ -15,6 +15,9 @@ router.post("/API/signup", userServices.createAccount);
 router.post("/API/login", userServices.login);
 router.get("/API/logout", userServices.logout);
 
+// route to update profile
+router.post("/API/updateProfile", userServices.updateProfile);
+
 // route to update / get a users location
 router.post("/API/updateLocation", userServices.updateLocation);
 router.get("/API/getLocation", userServices.getUserLocation);
@@ -205,9 +208,6 @@ router.get("/API/friend-requests", (req, res) =>{
             res.status(500);
             return;
         }
-
-        console.log("hello?");
-
         return res.render("partials/sidebar/requests", {requests: requests});
     });
 

@@ -20,8 +20,8 @@
     </div>
 </div>
 <br>
-<h2><%= profile.display %></h2>
-<p> Hey welcome to my page!</p>
+<div id="disp-name"><h2><%= profile.display %></h2></div>
+<div id="bio"><p> <%= profile.bio %> </p></div>
 <br>
 <div class="row p-1">
     <div class="col-6 p-1 ">
@@ -31,12 +31,13 @@
         <button class="btn btn-danger profile-button">Scraps</button>
     </div>
 </div>
-<div class="row p-1">
-    <div class="col-12 p-1">
-        <button class="btn btn-danger profile-button" id="profileButton" value="Edit Profile" onclick="change(); myFunction()">Edit Profile</button>
+<% if (myprofile) { %>
+    <div class="row p-1">
+        <div class="col-12 p-1">
+            <button class="btn btn-danger profile-button" id="profileButton" value="Edit Profile" onclick="change(); myFunction()">Edit Profile</button>
+        </div>
     </div>
-</div>
-
+<% } %>
 <div class="row p-2" id="myDIV2">
     <div class="col-12 p-0">
         <div class="posts-holder" id="<%= profile.userID %>">
@@ -50,11 +51,11 @@
 <div class="row p-2" id="myDIV3">
     <div class="col-12 p-2 profileColours">
         <p class="text-left ">Profile Colour</p>
-        <button class="btn btn-danger buttonStyles"></button>
-        <button style="background-color: orangered" class="btn btn-danger buttonStyles"></button>
-        <button style="background-color: green" class="btn btn-danger buttonStyles"></button>
-        <button style="background-color: blue" class="btn btn-danger buttonStyles"></button>
-        <button style="background-color: purple" class="btn btn-danger buttonStyles"></button>
+        <button class="btn btn-danger buttonStyles" id="#dc3545"></button>
+        <button style="background-color: orangered" id="#ff4500" class="btn btn-danger buttonStyles"></button>
+        <button style="background-color: green" id="#00ff00" class="btn btn-danger buttonStyles"></button>
+        <button style="background-color: blue" id="#0000ff" class="btn btn-danger buttonStyles"></button>
+        <button style="background-color: purple" id="#800080" class="btn btn-danger buttonStyles"></button>
     </div>
     <div class="col-12 p-2 profileColours">
         <p class="text-left ">Show Real name on Profile</p>
