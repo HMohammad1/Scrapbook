@@ -1,16 +1,16 @@
 <script type ="text/javascript" src="/js/friends.js"></script>
 <div class="row prog-bar"></div>
-<div class="row menu-item" id="hide-friends">
+<div class="row menu-item d-inline-block" id="hide-friends">
     <i class="menu-icon bi bi-caret-up-fill"></i>
     <span class="menu-text">Friends</span>
 </div>
 <% friends.forEach(profile => { %>
-    <div class="row menu-item" id="profile/<%= profile.username %>">
+    <div class="row menu-item d-inline-block" id="profile/<%= profile.username %>">
         <img src="<%= profile.pfp %>" class="profile-icon">
         <span class="menu-text"><%= profile.username %></span>
     </div>
 <% }) %>
-<div class="row menu-item" id="add-friend">
+<div class="row menu-item d-inline-block" id="add-friend">
     <i class="menu-icon bi bi-plus-circle-dotted"></i>
     <span class="menu-text">
         <% if (empty) { %>
@@ -20,7 +20,7 @@
         <% } %>
     </span>
 </div>
-<div class="row menu-item" id="friend-requests">
+<div class="row menu-item d-inline-block" id="friend-requests">
     <i class="menu-icon bi bi-person-fill-add"></i>
     <span class="menu-text">Friend Requests</span>
 </div>
