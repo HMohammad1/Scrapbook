@@ -1,10 +1,16 @@
 // 15s between updates
 var updateWindow = 15000;
-var updateTimer;
+var updateTimer, onLoadLocationTimer;
 
 // global variable to store coords position
 var pos = [0, 0];
-var map, markClust, markersArr, marker;
+var map, markClust, markersArr;
+
+var notLoadMap = 0;
+
+
+
+currentLocation();
 
 // Function to find current location
 function currentLocation() {
@@ -35,7 +41,9 @@ function currentLocation() {
         pos.push(position.coords.longitude);
 
         
-
+        removeMarkers();
+        
+        //console.log("HELLO");
         //initMap(location);
         
     };
@@ -56,6 +64,8 @@ function getPosition() {
     return pos;
 }
 
+
+
 // function to pan to current location
 function panToCurLoc(){
     var location = {lat: getPosition()[0], lng: getPosition()[1]};
@@ -66,131 +76,35 @@ function panToCurLoc(){
 // function to remove markers
 function removeMarkers() {
 
-    
-    markClust.removeMarkers(markersArr);
 
-    for (var i = 0; i<markersArr.length; i++) {
-        markersArr[i].setMap(null);
+    if (markersArr != undefined) {
+        markClust.removeMarkers(markersArr);
+
+        for (var i = 0; i<markersArr.length; i++) {
+            markersArr[i].setMap(null);
+        }
     }
 
     markersArr = [];
     
 }
 
-// function to add a marker
-function addMarker(property) {
 
-    var location = {lat: 55.911328751879964, lng: -3.321574542053874};
-
-    // initialize marker
-    marker = null;
-
-    // if distance of location is over 50m of the current location then the marker is grey
-    if (over50(property, location)) {
-        marker = new google.maps.Marker({
-            position: property.location,
-            map: map,
-            icon: '../images/svg_markers/marker-dgrey.svg'
-        });
-
-        // else marker is blue if within 50m
-    } else {
-        marker = new google.maps.Marker({
-            position: property.location,
-            map: map,
-            icon: '../images/svg_markers/marker-blue.svg'
-        });
-    }
-
-
-    // if property does have content, i.e. marker text
-    if (property.content) {
-
-        // create new detail window with content
-        const detailWindow = new google.maps.InfoWindow({
-            content: property.content
-        });
-
-        // on mouse over display detail window 
-        marker.addListener("mouseover", () => {
-            detailWindow.open(map, marker);
-        });
-    
-        // on mouse off un display it
-        marker.addListener("mouseout", () => {
-            detailWindow.close(map, marker);
-        });
-    }
-    
-    // return the created marker for marker cluster
-    return marker;
-    
-}
-
-
-
-// Function to check if the location is over 50 metres from current location
-function over50(property, currentLocation) {
-
-    //console.log(currentLocation.lat);
-    // get distance between point 1 and point 2
-    var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
-    
-    // if distance is over 50 metres return true else return false
-    if (distance > 50) {
-        return true;
-    }
-
-    return false;
-}
-
-function initializeMarkers() {
-
-    var location = {lat: 55.911328751879964, lng: -3.321574542053874};
-
-    
-    // marker array to store marker data
-    MarkerArray = [
-        {location:location, content: '<h2>You are here!</h2>'}, 
-        {location: {lat: 55.91329, lng: -3.32156}}, 
-        {location: {lat: 55.9118, lng: -3.3215}}, 
-        {location: {lat: 55.9109, lng: -3.3215}, content: '<h2>Heriot watt campus</h2>'}, 
-        {location: {lat: 55.9113, lng: -3.32}},
-        // town
-        {location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
-        {location: {lat: 55.95045275244971, lng: -3.1883441852294623}},
-        {location: {lat: 55.95131777646914, lng: -3.1954681317944087}},
-        {location: {lat: 55.952615276150276, lng: -3.193193619156272}},
-        // meadows
-        {location: {lat: 55.941777434166006, lng: -3.191200531846362}},
-        {location: {lat: 55.94029930899516, lng: -3.187595643223136}},
-        {location: {lat: 55.940767988893164, lng: -3.1867158784710568}}
-    ];
-
-
-    // markers array to store created markers for the marker cluster
-    markersArr = [];
-
-    // loop through each item in marker array, create the marker and append it to the markers array
-    for (let i = 0; i < MarkerArray.length; i++) {
-        markersArr.push(addMarker(MarkerArray[i]));
-    };
-
-    
-
-
-    // create the marker cluster
-    markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
-}
 
 
 // function to initialize the map
-function initMap(location) {
+function initMap() {
+
+    if (notLoadMap <= 2) {
+        onLoadLocationTimer = setTimeout(initMap, 1);
+        notLoadMap++;
+    }
+
+    
+    
 
     // if no location parameter is passed in then use default location
-    if (!location) {
-        var location = {lat: 55.911328751879964, lng: -3.321574542053874};
-    }
+    var location = {lat: getPosition()[0], lng: getPosition()[1]};
 
 
     // create map with location and map style
@@ -210,6 +124,117 @@ function initMap(location) {
     // Append the control to the DIV.
     centerControlDiv.appendChild(centerControl);
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+
+
+
+    // function to add a marker
+    function addMarker(property) {
+
+
+        
+
+        // initialize marker
+        var marker = null;
+
+        // if distance of location is over 50m of the current location then the marker is grey
+        if (over50(property, location)) {
+            marker = new google.maps.Marker({
+                position: property.location,
+                map: map,
+                icon: '../images/svg_markers/marker-dgrey.svg'
+            });
+
+            // else marker is blue if within 50m
+        } else {
+            marker = new google.maps.Marker({
+                position: property.location,
+                map: map,
+                icon: '../images/svg_markers/marker-blue.svg'
+            });
+        }
+
+
+        // if property does have content, i.e. marker text
+        if (property.content) {
+
+            // create new detail window with content
+            const detailWindow = new google.maps.InfoWindow({
+                content: property.content
+            });
+
+            //detailWindow.open(map, marker);
+            // on mouse over display detail window 
+            marker.addListener("click", () => {
+                detailWindow.open(map, marker);
+            });
+        
+            // on mouse off un display it
+            marker.addListener("mouseout", () => {
+                detailWindow.close(map, marker);
+            });
+        }
+        
+        // return the created marker for marker cluster
+        return marker;
+        
+    }
+
+
+
+    // Function to check if the location is over 50 metres from current location
+    function over50(property, currentLocation) {
+
+        //console.log(currentLocation.lat);
+        // get distance between point 1 and point 2
+        var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
+        
+        // if distance is over 50 metres return true else return false
+        if (distance > 50) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function initializeMarkers() {
+
+       
+
+        
+        // marker array to store marker data
+        MarkerArray = [
+            {location:location, content: '<h2>You are here!</h2>'}, 
+            {location: {lat: 55.91329, lng: -3.32156}}, 
+            {location: {lat: 55.9118, lng: -3.3215}}, 
+            {location: {lat: 55.9109, lng: -3.3215}, content: '<h2>Heriot watt campus</h2>'}, 
+            {location: {lat: 55.9113, lng: -3.32}},
+            // town
+            {location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
+            {location: {lat: 55.95045275244971, lng: -3.1883441852294623}},
+            {location: {lat: 55.95131777646914, lng: -3.1954681317944087}},
+            {location: {lat: 55.952615276150276, lng: -3.193193619156272}},
+            // meadows
+            {location: {lat: 55.941777434166006, lng: -3.191200531846362}},
+            {location: {lat: 55.94029930899516, lng: -3.187595643223136}},
+            {location: {lat: 55.940767988893164, lng: -3.1867158784710568}}
+        ];
+
+
+        // markers array to store created markers for the marker cluster
+        markersArr = [];
+
+        // loop through each item in marker array, create the marker and append it to the markers array
+        for (let i = 0; i < MarkerArray.length; i++) {
+            markersArr.push(addMarker(MarkerArray[i]));
+        };
+
+        
+
+
+        // create the marker cluster
+        markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
+    }
+
 }
 
 function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
@@ -264,10 +289,7 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
     newLat = getPosition()[0];
     newLong = getPosition()[1];
 
-    //console.log(getPosition());
 
-    /* console.log(newLat);
-    console.log(newLong); */
 
     $.post("/API/updateLocation", {lat: newLat, long: newLong}, function(data, textStatus, xhr){
 
