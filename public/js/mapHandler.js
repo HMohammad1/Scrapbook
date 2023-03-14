@@ -1,5 +1,5 @@
 // 15s between updates
-var updateWindow = 1000;
+var updateWindow = 15000;
 var updateTimer;
 
 // global variable to store coords position
