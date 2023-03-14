@@ -297,7 +297,6 @@ const getPostByID = (req, res) => {
                     return res.send();
                 }
                 rowToPost(postData, function(post){
-                    console.log("hello2?");
                     // if public or friends only or own post
                     var areFriends = userServices.areFriends(req.session.user.userID, post.profile.userID);
                         if(post.priv == 1 || areFriends || req.session.user.userID == post.profile.userID){

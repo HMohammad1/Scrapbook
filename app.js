@@ -5,6 +5,10 @@ const readline = require("readline").createInterface({
 const express = require("express");
 var formidable = require("express-formidable");
 var session = require("express-session");
+
+// import user object
+var User = require("./objects/user.js");
+
 //creating app
 const app = express();
 
@@ -20,7 +24,8 @@ app.use(formidable());
 app.use(
   session({
     secret: "f00bar",
-    user: false,
+    user: null,
+    loggedIn: false,
     maxAge: 60 * 1000 * 60 * 24, //24HRS
     saveUninitialized: true,
     resave: true
@@ -31,7 +36,19 @@ app.use(
 //app.use(express.static("public"));
 app.set("view engine", "ejs");
 
+// assign a guest user if one is not set before every call
+app.use((req,res,next) =>{
+
+  if(!req.session.user){
+    req.session.user = new User(0, null, null);
+  }
+  next();
+});
+
 app.get("/", (req, res) => {
+  if(req.session.user === undefined){
+    req.session.user = new User(0, null, null);
+  }
   res.render("index", {user: req.session.user}); //no need for ejs extension
 });
 

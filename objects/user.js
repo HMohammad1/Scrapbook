@@ -7,7 +7,7 @@ class User{
         this.email = email;
         this.profile = profile;
         // TESTING VARS ONLY
-        this.coords = [55.909095, -3.319584];;
+        this.coords = [55.909095, -3.319584];
         
     }
 

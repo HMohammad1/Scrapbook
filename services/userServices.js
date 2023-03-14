@@ -115,6 +115,7 @@ const createAccount = (req, res) => {
                                                                 getUserByID(userID, function(user){
                                                                     // bind user to session
                                                                     req.session.user = user;
+                                                                    req.session.loggedIn = true;
                                                                     req.session.save();
 
                                                                     // returns output as string
@@ -231,13 +232,13 @@ function getProfileByID(userID, callback){
 }
 
 // return a user profile from their username
-function getProfileByUsername(userID, callback){
+function getProfileByUsername(username, callback){
 
     try{
         // fetch row from DB
-        userDAO.getProfileByUsername(userID, function(err, data){
+        userDAO.getProfileByUsername(username, function(err, data){
             // create profile
-            var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.bio, data.colour);
+            var profile = new Profile(data.userID, data.username, data.display, data.fname, data.lname, data.pfp, data.bio, data.colour);
             return callback(profile);
         });
     }
@@ -298,6 +299,7 @@ const login = (req, res) => {
                     console.log("Login success");
                     // bind user to current session
                     req.session.user = user;
+                    req.session.loggedIn = true;
                     req.session.save();
                     //res.send(JSON.stringify(user));
                     res.redirect("/", 302);

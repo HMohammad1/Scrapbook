@@ -307,6 +307,7 @@ function getProfileByUsername(username, callback){
 
     let query = `
         SELECT  user_logins.username AS username,
+                user_logins.userID AS userID,
                 user_profiles.display_name AS display,
                 user_profiles.fname AS fname,
                 user_profiles.lname AS lname,

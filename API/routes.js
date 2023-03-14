@@ -47,7 +47,7 @@ router.get("/API/removeReact/:postID", postServices.removePostReact);
 // permanent menu item links
 router.get("/profile/:username", (req, res) =>{
 
-    if(typeof(req.session.user.profile !== 'undefined') && req.session.user.profile.username == req.params.username){
+    if(req.session.loggedIn && (req.session.user.profile.username == req.params.username)){
         res.render("index", {profile: req.session.user.profile, sidebar: "profile", myprofile: true, openPost: false});
     }
     else{
@@ -63,7 +63,7 @@ router.get("/profile/:username", (req, res) =>{
 
 router.get("/profile/:username/:postID", (req, res) =>{
 
-    if(typeof(req.session.user.profile !== 'undefined') && req.session.user.profile.username == req.params.username){
+    if(req.session.loggedIn && (req.session.user.profile.username == req.params.username)){
         res.render("index", {profile: req.session.user.profile, sidebar: "profile", myprofile: true, openPost: req.params.postID});
     }
     else{
@@ -80,7 +80,7 @@ router.get("/profile/:username/:postID", (req, res) =>{
 router.get("/friends", (req, res) =>{
 
     // check user is logged in
-    if(req.session.user === undefined){
+    if(!req.session.loggedIn){
         return res.redirect(302, '/');
     }
 
@@ -107,8 +107,8 @@ router.get("/friends", (req, res) =>{
 router.get("/add-friend", (req, res) =>{
 
     // check user is logged in
-    if(req.session.user === undefined){
-        return res.redirect(302, '/');
+    if(!req.session.loggedIn){
+        return res.redirect(302, '/login');
     }
 
     return res.render("index", {sidebar: "add-friend", user: req.session.user});
@@ -118,8 +118,8 @@ router.get("/add-friend", (req, res) =>{
 router.get("/settings", (req, res) =>{
 
     // check user is logged in
-    if(req.session.user === undefined){
-        return res.redirect(302, '/');
+    if(!req.session.loggedIn){
+        return res.redirect(302, '/login');
     }
 
     return res.render("index", {sidebar: "settings", user: req.session.user});
@@ -128,7 +128,7 @@ router.get("/settings", (req, res) =>{
   
 //dynamic menu items
 router.get("/API/profile/:username", (req, res) =>{
-    if(typeof(req.session.user) !== 'undefined' && req.session.user.profile.username == req.params.username){
+    if(req.session.loggedIn && req.session.user.profile.username == req.params.username){
         return res.render("partials/profile", {profile: req.session.user.profile, myprofile: true, openPost: false});
     }
     else{
@@ -147,7 +147,7 @@ router.get("/API/profile/:username", (req, res) =>{
 router.get("/API/friends", (req, res) =>{
 
     // check user is logged in
-    if(req.session.user === undefined){
+    if(!req.session.loggedIn){
         return res.status(403);
     }
 
@@ -174,7 +174,7 @@ router.get("/API/friends", (req, res) =>{
 router.get("/API/add-friend", (req, res) =>{
 
     // check user is logged in
-    if(req.session.user === undefined){
+    if(!req.session.loggedIn){
         return res.status(403);
     }
 
@@ -185,7 +185,7 @@ router.get("/API/add-friend", (req, res) =>{
 router.get("/API/settings", (req, res) =>{
 
     // check user is logged in
-    if(req.session.user === undefined){
+    if(!req.session.loggedIn){
         return res.status(403);
     }
 
@@ -198,7 +198,7 @@ router.get("/API/friend-requests", (req, res) =>{
 
 
     // check user is logged in
-    if(req.session.user === undefined){
+    if(!req.session.loggedIn){
         return res.status(403);
     }
 
