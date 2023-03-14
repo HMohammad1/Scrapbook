@@ -121,94 +121,156 @@ const createPost = (req, res) => {
 
 }
 
-
-// fetch all media associated with a post and return them as a link of arrays
-function getPostMedia(postID, callback){
-
-    // init array
-    var links = [];
-
-    postDAO.getPostMediaByID(postID, function(err, rows){
-
-        if(!err){
-
-            rows.forEach(row => {
-            
-                links.push(row.link);
-
-            });
-
-            // return populated array
-            return callback(links);
-
-        }
-        else{
-            throw err;
-        }
-        
-    });
-
-
-}
-
-
 // returns an array with all of a users posts
 const getUserPosts = (req, res) =>{
 
     // userID from GET request
     var userID = req.params.userID;
 
-    postDAO.getAllUserPostIDs(userID, function(err, rows){
-
-        if(!rows){
-            res.status(404);
+    // get profile from ID
+    userServices.getProfileByID(userID, function(profile){
+        if(!profile){
+            res.sendStatus(404);
             return;
         }
-        else if(err){
-            console.log(err);
-            res.status(500);
-            return;
-        }
-        else{
+        // get all posts
+        postDAO.getAllUserPosts(userID, function(err, rows){
 
-            // init post array
-            posts = [];
-
-            // counter for posts to fetch
-            var postsToFetch = rows.length;
-
-            rows.forEach(row =>{
-
-                // get post object and add to array
-                fetchPostByID(row.postID, function(post){
-
-                    // error check
-                    if(post){
-
-                        posts.push(post);
-                        if(posts.length === postsToFetch){
-                            // once all IDs processed return the array
-                            console.log(posts);
-                            res.status(200);
-                            return res.render("partials/userPosts", {posts: posts, user: req.session.user});
-                        }
-
-                    }
-                    else{
-                        // allows to fail gracefully if a post cannot be retrieved for some reason
-                        postsToFetch--;
-                    }
-
+            if(!rows){
+                res.status(404);
+                return;
+            }
+            else if(err){
+                console.log(err);
+                res.status(500);
+                return;
+            }
+            else{
+                // init array to hold posts
+                posts = [];
+                // create object for each row with existing profile
+                rows.forEach(row => {
+                    posts.push(rowToPost(row, profile));
                 });
-            });
+                res.status(200);
+                return res.render("partials/userPosts", {posts: posts, user: req.session.user});
+            }
 
-
-        }
+        });
 
     });
 
 }
 
+// gets reacts from CSVs of reactions and userIDs
+function formatReacts(reactions, userIDs){
+
+    // check for empty set
+    if(reactions === null || userIDs === null){
+        return null;
+    }
+
+    // split strings into arrays
+    reactions = reactions.split(',');
+    userIDs = userIDs.split(',');
+
+    // something went wrong somewhere
+    if(reactions.length != userIDs.length){
+        return null;
+    }
+
+    // init react objects
+    var happy = new React('<i class="bi bi-emoji-smile-fill" id="happy"></i>');
+    var laugh = new React('<i class="bi bi-emoji-laughing-fill" id="laugh"></i>');
+    var love = new React('<i class="bi bi-emoji-heart-eyes-fill" id="love"></i>');
+    var sad = new React('<i class="bi bi-emoji-frown-fill" id="sad"></i>');
+    var angry = new React('<i class="bi bi-emoji-angry-fill" id="angry"></i>');
+
+    for(i=0; i<reactions.length; i++){
+
+        switch(reactions[i]){
+            case "love":
+                love.addUser(userIDs[i]);
+                break;
+            case "happy":
+                happy.addUser(userIDs[i]);
+                break;
+            case "laugh":
+                laugh.addUser(userIDs[i]);
+                break;
+            case "sad":
+                sad.addUser(userIDs[i]);
+                break;
+            case "angry":
+                angry.addUser(userIDs[i]);
+                break;
+            default:
+                // if not recognised do nothing
+                break;
+        }
+    }
+
+    //init array for holding reacts
+    var reacts = [happy, laugh, love, sad, angry];
+
+    // sort + filter
+    reacts = sortReacts(reacts);
+
+    // return populated object
+    return reacts;
+
+}
+
+
+
+// takes a row from the a getPost query and converts it to a post object w/ user profile attatched
+function rowToPost(postData, callback){
+
+    // assign userID
+    userID = postData.userID;
+    // get profile
+    userServices.getProfileByID(userID, function(profile){
+
+        post = new Post(
+            postData.postID,
+            [postData.lat, postData.long],
+            postData.media.split(','), 
+            postData.title, 
+            postData.descr, 
+            postData.posted, 
+            postData.priv, 
+            profile, 
+            formatReacts(postData.reacts, postData.left_by)
+        );
+
+        return callback(post);
+    });
+
+}
+
+// takes a row from the a getPost query and a profile object then converts it to a post object w/ user profile attatched
+function rowToPost(postData, profile){
+
+    // only split set with values in it
+    if(postData.media){
+        postData.media = postData.media.split(',');
+    }
+
+    post = new Post(
+        postData.postID,
+        [postData.lat, postData.long],
+        postData.media, 
+        postData.title, 
+        postData.descr, 
+        postData.posted, 
+        postData.priv, 
+        profile, 
+        formatReacts(postData.reacts, postData.left_by)
+    );
+
+    return post;
+
+}
 
 // returns a post object complete with poster profile
 const getPostByID = (req, res) => {
@@ -227,44 +289,24 @@ const getPostByID = (req, res) => {
                     res.status(404)
                     return res.send();
                 }
-
-                console.log(postData);
-
-                // assign userID
-                userID = postData.userID;
-
-                // get profile
-                userServices.getProfileByID(userID, function(profile){
-
-                    // fetch media links
-                    getPostMedia(postID, function(links){
-
-                        getAllPostReacts(postID, function(reacts){
-
-                            console.log(reacts);
-                            // create post w/ profile & media links
-                            var post = new Post(postID, [postData.lat, postData.long], links, postData.title, postData.descr, postData.posted, postData.priv, profile, reacts);
-                            
-                            // if public or friends only or own post
-                            if(postData.priv == 1 || userServices.areFriends(req.session.user.userID, postData.profile.userID) || req.session.user.userID == postData.profile.userID){
-                                return res.render("partials/overlays/post", {post: post, user:req.session.user});
-                            }
-                            else{
-                                return res.sendStatus(403);
-                            }
-                        });
-                    });
+                rowToPost(postData, function(post){
+                    // if public or friends only or own post
+                    if(post.priv == 1 || userServices.areFriends(req.session.user.userID, post.profile.userID) || req.session.user.userID == post.profile.userID){
+                        return res.render("partials/overlays/post", {post: post, user:req.session.user});
+                    }
+                    else{
+                        return res.sendStatus(403);
+                    }
                 });
-
             }
             else{
                 console.log(err);
-                throw err;
+                return res.sendStatus(500);
             }
         });
     }
     catch(err){
-        return res.send(err);
+        return res.sendStatus(500);
     }
 
 }

@@ -7,27 +7,27 @@ $(document).ready(function(){
 
     $(".prog-bar").addClass("loading");
 
-    // $.get(`/API/posts/${userID}`, function(data, textStatus, xhr){
+    $.get(`/API/posts/${userID}`, function(data, textStatus, xhr){
 
-    //     $(".prog-bar").removeClass("loading");
+        $(".prog-bar").removeClass("loading");
 
-    //     if(xhr.status === 200){
-    //         $(".posts-holder").html(data);
-    //         // update visibility after posts loaded
-    //         updateLocation();
+        if(xhr.status === 200){
+            $(".posts-holder").html(data);
+            // update visibility after posts loaded
+            updateLocation();
 
-    //         // open a post if one was open
-    //         openPost = $(".posts-holder").attr("data-openpost");
-    //         if(openPost !== undefined){
-    //             overlayed = true;
-    //             $(`.post-icon#${openPost}`).trigger("click");
-    //         }
+            // open a post if one was open
+            openPost = $(".posts-holder").attr("data-openpost");
+            if(openPost !== undefined){
+                overlayed = true;
+                $(`.post-icon#${openPost}`).trigger("click");
+            }
 
-    //     }
-    //     else{
-    //         console.log(xhr);
-    //     }
-    // });
+        }
+        else{
+            console.log(xhr);
+        }
+    });
 
     $.get(`/API/getCounts/${userID}`, function(data, textStatus, xhr){
 
