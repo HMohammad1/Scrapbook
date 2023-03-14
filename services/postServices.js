@@ -374,6 +374,11 @@ const addComment = (req, res) =>{
     var postID = req.fields.postID;
     var comment = req.fields.comment;
 
+    // check loggedin
+    if(userID = 0){
+        res.redirect(302, "/login");
+    }
+
     postDAO.addPostComment(postID, userID, comment, function(err, result){
 
         if(!err){
@@ -435,10 +440,10 @@ const addPostReact = (req, res) =>{
     var postID = req.params.postID;
     var userID = req.session.user.userID;
 
-    // not a valid react -- respond with error
-    // if(typeof(react) != String){
-    //    return res.sendStatus(400);
-    // }
+    // check loggedin
+    if(userID = 0){
+        res.redirect(302, "/login");
+    }
 
     // check post exists
     postDAO.postIDexists(postID, function(err, result){
@@ -612,6 +617,11 @@ const removePostReact = (req, res) =>{
 
     var postID = req.params.postID;
     var userID = req.session.user.userID;
+
+    // check loggedin
+    if(userID = 0){
+        res.redirect(302, "/login");
+    }
 
     // check post exists
     postDAO.postIDexists(postID, function(err, result){

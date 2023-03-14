@@ -325,11 +325,10 @@ const logout = (req, res) =>{
 // sends a friend request from the current session user using userIDs
 const sendFriendRequest = (req, res) => {
 
-    // check user is logged in
-    if(typeof(req.session.user) === 'undefined'){
-        res.status(403);
+    // check loggedin
+    if(userID = 0){
+        res.redirect(302, "/login");
     }
-
     var userID = req.session.user.userID;
     var sendTo = req.params.sendTo;
     
@@ -357,8 +356,9 @@ const sendFriendRequest = (req, res) => {
 const updateFriendRequest = (req, res) =>{
 
         // check user is logged in
-        if(req.session.user === undefined){
-            return res.redirect(302, "/");
+        // check loggedin
+        if(userID = 0){
+            res.redirect(302, "/login");
         }
     
         var reqID = req.fields.reqID;
@@ -382,6 +382,11 @@ const updateFriendRequest = (req, res) =>{
 
 
 function fetchAllPendingRequests(userID, callback){
+
+        // check loggedin
+        if(userID = 0){
+            res.sendStatus(403);
+        }
 
     userDAO.fetchPending(userID, function(err, rows){
 
@@ -427,8 +432,9 @@ function fetchAllPendingRequests(userID, callback){
 // removes another user from the current session users friends list
 const removeFriend = (req, res) =>{
         // check user is logged in
-        if(req.session.user === undefined){
-            return res.send("You must be logged in to remove a friend");
+        // check loggedin
+        if(userID = 0){
+            res.redirect(302, "/login");
         }
     
         var userID = req.session.user.userID;
@@ -449,6 +455,11 @@ const removeFriend = (req, res) =>{
 
 // returns an array of profiles that correspond to all the current user's friends
 function getFriendProfiles(userID, callback){
+
+    // check loggedin
+    if(userID = 0){
+        res.redirect(302, "/login");
+    }
     
     userDAO.fetchAllFriendIDs(userID, function(err, rows){
 
