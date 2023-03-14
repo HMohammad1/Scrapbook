@@ -132,6 +132,11 @@
     margin-left: 15px;
 }
 
+.formRadioButtons {
+    font-size: 20px;
+    font-weight: normal;
+}
+
 
 @media (max-width: 500px) {
 

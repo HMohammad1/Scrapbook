@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/profile.css">
     <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/post.css">
 
 
 </head>
@@ -48,6 +49,8 @@
                     <%- include("partials/sidebar/addFriends"); %>
                 <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "settings"){ %>
                     <%- include("partials/sidebar/settings"); %>
+                <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "addPostsPage"){ %>
+                    <%- include("partials/sidebar/addPostsPage"); %>
                 <%} else if (user.userID == 0) { %>
                     <%- include("partials/sidebar/login"); %>
                 <% } else { %>
@@ -57,7 +60,6 @@
             <div class="col-md-8 col-lg-9 col-xl-10 p-0">
 
                 <div id="map" class="image"></div>
-                <button style="position: absolute; overflow: visible" class="btn btn-danger fas fa-location" onclick="panToCurLoc()">BUTTON</button>
 
             </div>
         </div>

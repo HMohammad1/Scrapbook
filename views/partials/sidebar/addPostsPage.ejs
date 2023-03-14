@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row p-0">
+        <div class="col-12 justify-content-center">
+            <h1 style="text-align: center">Create a Post</h1>
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-12">
+            <form name="createPost" action="/API/upload" enctype="multipart/form-data" method="post">
+                <input class="form-control" id="title" name="title" placeholder="Title"/>
+                <label class="form-label"></label>
+                <input class="form-control" type="file" id="myfile" name="myfile" style="height: 300px">
+                <label class="form-label"></label>
+                <textarea class="form-control" id="textArea" rows="4" placeholder="Add a description to your post"></textarea>
+                <br>
+                <div class="formRadioButtons">
+                    <div class="form-check form-switch ">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Allow Comments</label>
+                    </div>
+                    <div class="form-check form-switch ">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Allow Reactions</label>
+                    </div>
+                    <div class="form-check form-switch ">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Post Visibility: Public</label>
+                    </div>
+                </div>
+
+                <div class="add-post">
+                    <button type="submit" class="post-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

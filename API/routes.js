@@ -125,6 +125,17 @@ router.get("/settings", (req, res) =>{
     return res.render("index", {sidebar: "settings", user: req.session.user});
 
 });
+
+router.get("/addPostsPage", (req, res) =>{
+
+    // check user is logged in
+    if(!req.session.loggedIn){
+        return res.redirect(302, '/login');
+    }
+
+    return res.render("index", {sidebar: "addPostsPage", user: req.session.user});
+
+});
   
 //dynamic menu items
 router.get("/API/profile/:username", (req, res) =>{
@@ -190,6 +201,17 @@ router.get("/API/settings", (req, res) =>{
     }
 
     return res.render("partials/sidebar/settings");
+
+});
+
+router.get("/API/addPostsPage", (req, res) =>{
+
+    // check user is logged in
+    if(!req.session.loggedIn){
+        return res.status(403);
+    }
+
+    return res.render("partials/sidebar/addPostsPage");
 
 });
 
