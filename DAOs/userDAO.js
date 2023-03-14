@@ -85,6 +85,36 @@ function updateProfile(userID, bio, disp, colour, callback){
 }
 
 
+function friendCount(userID, callback){
+
+    let query = "SELECT count(requestID) as friendCount FROM friend_requests WHERE (req_to=? OR req_from=?) AND accepted=1";
+    let params=[userID, userID];
+
+    DB.executeQuery(query, params, function(err, rows){
+        if(err){
+            return callback(err, null);
+        }
+        else{
+            return callback(null, rows[0].friendCount);
+        }
+    });
+
+}
+
+function postCount(userID, callback){
+    let query = "SELECT count(postID) as postCount FROM posts WHERE posted_by =?";
+    let params = [userID];
+
+    DB.executeQuery(query, params, function(err, rows){
+        if(err){
+            return callback(err, null);
+        }
+        else{
+            return callback(null, rows[0].postCount);
+        }
+    });
+}
+
 // links the current IP of a user to their account
 function logIP(userID){
 
@@ -472,6 +502,8 @@ module.exports = {
     updateProfile,
     emailExists,
     usernameExists,
+    friendCount,
+    postCount,
     userIDexists,
     insertLogin,
     insertProfile,
