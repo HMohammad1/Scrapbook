@@ -309,16 +309,17 @@ function createCenterControl(map) {
     controlButton.style.cursor = "pointer";
     controlButton.style.fontFamily = "Roboto,Arial,sans-serif";
     controlButton.style.fontSize = "16px";
-    // controlButton.style.lineHeight = "38px";
+    controlButton.style.lineHeight = "38px";
     controlButton.style.margin = "8px 0 22px";
     controlButton.style.padding = "0 5px";
     controlButton.style.textAlign = "center";
     controlButton.textContent = "Current Location";
-    controlButton.title = "Click to recenter the map";
+    controlButton.title = "Click to go to current location the map";
     controlButton.type = "button";
     // Setup the click event listeners: simply set the map to Chicago.
     controlButton.addEventListener("click", () => {
-        map.setCenter(panToCurLoc());
+        //map.setCenter(panToCurLoc());
+        panToCurLoc();
     });
     return controlButton;
 }
