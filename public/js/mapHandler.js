@@ -205,7 +205,7 @@ function initMap(location) {
     // Create the DIV to hold the control.
     const centerControlDiv = document.createElement("div");
     // Create the control.
-    const centerControl = createCenterControl(map);
+    const centerControl = currentLocation(map);
 
     // Append the control to the DIV.
     centerControlDiv.appendChild(centerControl);
@@ -297,7 +297,7 @@ $(document).ready(function(){
 
 });
 
-function createCenterControl(map) {
+function currentLocation(map) {
     const controlButton = document.createElement("button");
 
     // Set CSS for the control.
