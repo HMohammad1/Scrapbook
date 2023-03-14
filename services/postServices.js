@@ -150,7 +150,7 @@ const getUserPosts = (req, res) =>{
                 posts = [];
                 // create object for each row with existing profile
                 rows.forEach(row => {
-                    posts.push(rowToPost(row, profile));
+                    posts.push(ProfileRowToPost(row, profile));
                 });
                 res.status(200);
                 return res.render("partials/userPosts", {posts: posts, user: req.session.user});
@@ -228,13 +228,20 @@ function rowToPost(postData, callback){
 
     // assign userID
     userID = postData.userID;
+
+    // only split set with values in it
+    if(postData.media){
+        postData.media = postData.media.split(',');
+    }
+
+
     // get profile
     userServices.getProfileByID(userID, function(profile){
 
         post = new Post(
             postData.postID,
             [postData.lat, postData.long],
-            postData.media.split(','), 
+            postData.media, 
             postData.title, 
             postData.descr, 
             postData.posted, 
@@ -249,7 +256,7 @@ function rowToPost(postData, callback){
 }
 
 // takes a row from the a getPost query and a profile object then converts it to a post object w/ user profile attatched
-function rowToPost(postData, profile){
+function ProfileRowToPost(postData, profile){
 
     // only split set with values in it
     if(postData.media){
@@ -268,6 +275,7 @@ function rowToPost(postData, profile){
         formatReacts(postData.reacts, postData.left_by)
     );
 
+    console.log("RETURNING FROM ROWTOPOST");
     return post;
 
 }
@@ -292,6 +300,7 @@ const getPostByID = (req, res) => {
                 rowToPost(postData, function(post){
                     // if public or friends only or own post
                     if(post.priv == 1 || userServices.areFriends(req.session.user.userID, post.profile.userID) || req.session.user.userID == post.profile.userID){
+                        res.status(200);
                         return res.render("partials/overlays/post", {post: post, user:req.session.user});
                     }
                     else{
@@ -306,6 +315,7 @@ const getPostByID = (req, res) => {
         });
     }
     catch(err){
+        console.log(err);
         return res.sendStatus(500);
     }
 
