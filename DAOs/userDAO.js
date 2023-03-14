@@ -405,7 +405,7 @@ function areFriends(user1, user2, callback){
     DB.executeQuery(query, params, function(err, rows, fields){
         
         if(!err){
-            if(rows[0].accepted == 1){
+            if(rows[0].accepted){
                 return callback(null, true);
             }
             else{

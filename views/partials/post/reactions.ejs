@@ -1,6 +1,6 @@
 <div class="col reaction-icons">
     <div class="row" id="reacts-row">
-        <% if (reacts.length > 0) { %>
+        <% if (reacts && reacts.length > 0) { %>
             <% reacts.forEach(react => { %>
                 <div class="col reaction<% if (react.left_by.includes(user.userID)) { %>
                     added
