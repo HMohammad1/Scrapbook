@@ -98,15 +98,15 @@ $(document).ready(function(){
             }
             // out of range
             else if(xhr.status == 403){
-
+                console.log(xhr);
             }
             // doesn't exist
             else if(xhr.status == 404){
-
+                console.log(xhr);
             }
             // other error
             else{
-
+                console.log(xhr);
             }
 
         });

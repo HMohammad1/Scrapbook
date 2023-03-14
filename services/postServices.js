@@ -227,7 +227,7 @@ function formatReacts(reactions, userIDs){
 function rowToPost(postData, callback){
 
     // assign userID
-    userID = postData.userID;
+    var userID = postData.userID;
 
     // only split set with values in it
     if(postData.media){
@@ -238,7 +238,7 @@ function rowToPost(postData, callback){
     // get profile
     userServices.getProfileByID(userID, function(profile){
 
-        post = new Post(
+        var post = new Post(
             postData.postID,
             [postData.lat, postData.long],
             postData.media, 
@@ -249,7 +249,7 @@ function rowToPost(postData, callback){
             profile, 
             formatReacts(postData.reacts, postData.left_by)
         );
-
+        
         return callback(post);
     });
 
@@ -275,7 +275,6 @@ function ProfileRowToPost(postData, profile){
         formatReacts(postData.reacts, postData.left_by)
     );
 
-    console.log("RETURNING FROM ROWTOPOST");
     return post;
 
 }
@@ -298,14 +297,16 @@ const getPostByID = (req, res) => {
                     return res.send();
                 }
                 rowToPost(postData, function(post){
+                    console.log("hello2?");
                     // if public or friends only or own post
-                    if(post.priv == 1 || userServices.areFriends(req.session.user.userID, post.profile.userID) || req.session.user.userID == post.profile.userID){
-                        res.status(200);
-                        return res.render("partials/overlays/post", {post: post, user:req.session.user});
-                    }
-                    else{
-                        return res.sendStatus(403);
-                    }
+                    var areFriends = userServices.areFriends(req.session.user.userID, post.profile.userID);
+                        if(post.priv == 1 || areFriends || req.session.user.userID == post.profile.userID){
+                            res.status(200);
+                            return res.render("partials/overlays/post", {post: post, user:req.session.user});
+                        }
+                        else{
+                            return res.sendStatus(403);
+                        }
                 });
             }
             else{

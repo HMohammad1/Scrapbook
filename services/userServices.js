@@ -215,10 +215,11 @@ function getProfileByID(userID, callback){
         // fetch row from DB
         userDAO.getProfileByID(userID, function(err, data){
             if(data === undefined){
-                return callback(false);
+                return callback(null);
             }
             // create profile
             var profile = new Profile(userID, data.username, data.display, data.fname, data.lname, data.pfp, data.bio, data.colour);
+            console.log(`returning ${JSON.stringify(profile)} FROM getProfile`);
             return callback(profile);
         });
     }
