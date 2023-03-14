@@ -58,7 +58,7 @@ function getPosition() {
 
 // function to pan to current location
 function panToCurLoc(){
-    var location = {lat: pos.getPosition()[0], lng: pos.getPosition()[1]};
+    var location = {lat: getPosition()[0], lng: getPosition()[1]};
 
     map.panTo(location);
 }
@@ -201,6 +201,15 @@ function initMap(location) {
     });
     
     initializeMarkers();
+
+    // Create the DIV to hold the control.
+    const centerControlDiv = document.createElement("div");
+    // Create the control.
+    const centerControl = createCenterControl(map);
+
+    // Append the control to the DIV.
+    centerControlDiv.appendChild(centerControl);
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 }
 
 function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
@@ -287,3 +296,29 @@ $(document).ready(function(){
     updateLocation();
 
 });
+
+function createCenterControl(map) {
+    const controlButton = document.createElement("button");
+
+    // Set CSS for the control.
+    controlButton.style.backgroundColor = "#fff";
+    controlButton.style.border = "2px solid #fff";
+    controlButton.style.borderRadius = "3px";
+    controlButton.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+    controlButton.style.color = "rgb(25,25,25)";
+    controlButton.style.cursor = "pointer";
+    controlButton.style.fontFamily = "Roboto,Arial,sans-serif";
+    controlButton.style.fontSize = "16px";
+    // controlButton.style.lineHeight = "38px";
+    controlButton.style.margin = "8px 0 22px";
+    controlButton.style.padding = "0 5px";
+    controlButton.style.textAlign = "center";
+    controlButton.textContent = "Current Location";
+    controlButton.title = "Click to recenter the map";
+    controlButton.type = "button";
+    // Setup the click event listeners: simply set the map to Chicago.
+    controlButton.addEventListener("click", () => {
+        map.setCenter(panToCurLoc());
+    });
+    return controlButton;
+}
