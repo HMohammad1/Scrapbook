@@ -579,6 +579,32 @@ const searchUsername = (req, res) =>{
 
 }
 
+// get friend / post counts for profile page
+const getProfileCounts = (req,res) =>{
+
+    let userID = req.params.userID;
+    count = [];
+
+    userDAO.friendCount(userID, function(err, result){
+        if(err){
+            count[0] = null;
+        }
+        else{
+            count[0] = result;
+            userDAO.postCount(userID, function(err, result){
+                if(err){
+                    count[1] = null;
+                }
+                else{
+                    count[1] = result;
+                    res.status(200);
+                    return res.send(count);
+                }
+            });
+        }
+    });
+
+}
 
 // update the user's location
 const updateLocation = (req,res) =>{
@@ -634,6 +660,7 @@ module.exports = {
     areFriends,
     searchUsername,
     updateLocation,
-    getUserLocation
+    getUserLocation,
+    getProfileCounts
     
 }

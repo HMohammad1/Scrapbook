@@ -164,6 +164,14 @@ p {
     animation-duration: 1.5s;
 }
 
+button > .spinner-border{
+
+    height: 15px;
+    width: 15px;
+    margin: 0px 0px;
+    font-size: 1rem;
+}
+
 .profile-button {
     width: 100%;
 }

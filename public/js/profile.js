@@ -29,6 +29,18 @@ $(document).ready(function(){
     //     }
     // });
 
+    $.get(`/API/getCounts/${userID}`, function(data, textStatus, xhr){
+
+        if(xhr.status == 200){
+            $("#friends-counter").prepend(data[0] + " ");
+            $("#posts-counter").prepend(data[1] + " ");
+        }
+        else{
+            console.log(textStatus);
+        }
+
+    });
+
     $("body").on("click", ".map-overlay", function(e){
         // check if bg clicked directly
         if(e.target !== this){

@@ -17,6 +17,7 @@ router.get("/API/logout", userServices.logout);
 
 // route to update profile
 router.post("/API/updateProfile", userServices.updateProfile);
+router.get("/API/getCounts/:userID", userServices.getProfileCounts);
 
 // route to update / get a users location
 router.post("/API/updateLocation", userServices.updateLocation);
