@@ -1,5 +1,5 @@
 // 15s between updates
-var updateWindow = 15000;
+var updateWindow = 1000;
 var updateTimer;
 
 // global variable to store coords position
@@ -54,6 +54,13 @@ function currentLocation() {
 // function to return position
 function getPosition() {
     return pos;
+}
+
+// function to pan to current location
+function panToCurLoc(){
+    var location = {lat: pos.getPosition()[0], lng: pos.getPosition()[1]};
+
+    map.panTo(location);
 }
 
 // function to remove markers
@@ -247,6 +254,8 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
     currentLocation();
     newLat = getPosition()[0];
     newLong = getPosition()[1];
+
+    //console.log(getPosition());
 
     /* console.log(newLat);
     console.log(newLong); */
