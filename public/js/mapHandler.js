@@ -4,6 +4,7 @@ var updateTimer;
 
 // global variable to store coords position
 var pos = [0, 0];
+var map, markClust, markersArr, marker;
 
 // Function to find current location
 function currentLocation() {
@@ -33,6 +34,7 @@ function currentLocation() {
         pos.push(position.coords.latitude);
         pos.push(position.coords.longitude);
 
+        
 
         //initMap(location);
         
@@ -54,87 +56,92 @@ function getPosition() {
     return pos;
 }
 
-// function to initialize the map
-function initMap(location) {
-
-    // if no location parameter is passed in then use default location
-    if (!location) {
-        var location = {lat: 55.911328751879964, lng: -3.321574542053874};
-    }
-
-
-    // create map with location and map style
-    var map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
-        center: location,
-        mapId: '4a11e687fb2c35f2'
-    });
+// function to remove markers
+function removeMarkers() {
 
     
-    // function to add a marker
-    function addMarker(property) {
+    markClust.removeMarkers(markersArr);
 
-        // initialize marker
-        var marker = null;
-
-        // if distance of location is over 50m of the current location then the marker is grey
-        if (over50(property, location)) {
-            marker = new google.maps.Marker({
-                position: property.location,
-                map: map,
-                icon: '../images/map_markers/marker-dgrey.png'
-            });
-
-            // else marker is blue if within 50m
-        } else {
-            marker = new google.maps.Marker({
-                position: property.location,
-                map: map,
-                icon: '../images/map_markers/marker-blue.png'
-            });
-        }
-
-
-        // if property does have content, i.e. marker text
-        if (property.content) {
-
-            // create new detail window with content
-            const detailWindow = new google.maps.InfoWindow({
-                content: property.content
-            });
-
-            // on mouse over display detail window 
-            marker.addListener("mouseover", () => {
-                detailWindow.open(map, marker);
-            });
-        
-            // on mouse off un display it
-            marker.addListener("mouseout", () => {
-                detailWindow.close(map, marker);
-            });
-        }
-        
-        // return the created marker for marker cluster
-        return marker;
-        
+    for (var i = 0; i<markersArr.length; i++) {
+        markersArr[i].setMap(null);
     }
+
+    markersArr = [];
+    
+}
+
+// function to add a marker
+function addMarker(property) {
+
+    var location = {lat: 55.911328751879964, lng: -3.321574542053874};
+
+    // initialize marker
+    marker = null;
+
+    // if distance of location is over 50m of the current location then the marker is grey
+    if (over50(property, location)) {
+        marker = new google.maps.Marker({
+            position: property.location,
+            map: map,
+            icon: '../images/svg_markers/marker-dgrey.svg'
+        });
+
+        // else marker is blue if within 50m
+    } else {
+        marker = new google.maps.Marker({
+            position: property.location,
+            map: map,
+            icon: '../images/svg_markers/marker-blue.svg'
+        });
+    }
+
+
+    // if property does have content, i.e. marker text
+    if (property.content) {
+
+        // create new detail window with content
+        const detailWindow = new google.maps.InfoWindow({
+            content: property.content
+        });
+
+        // on mouse over display detail window 
+        marker.addListener("mouseover", () => {
+            detailWindow.open(map, marker);
+        });
+    
+        // on mouse off un display it
+        marker.addListener("mouseout", () => {
+            detailWindow.close(map, marker);
+        });
+    }
+    
+    // return the created marker for marker cluster
+    return marker;
+    
+}
+
+
+
+// Function to check if the location is over 50 metres from current location
+function over50(property, currentLocation) {
+
+    //console.log(currentLocation.lat);
+    // get distance between point 1 and point 2
+    var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
+    
+    // if distance is over 50 metres return true else return false
+    if (distance > 50) {
+        return true;
+    }
+
+    return false;
+}
+
+function initializeMarkers() {
+
+    var location = {lat: 55.911328751879964, lng: -3.321574542053874};
 
     
-
-    // Function to check if the location is over 50 metres from current location
-    function over50(property, currentLocation) {
-
-        // get distance between point 1 and point 2
-        var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
-        
-        // if distance is over 50 metres return true else return false
-        if (distance > 50) {
-            return true;
-        }
-
-        return false;
-    }
-
     // marker array to store marker data
     MarkerArray = [
         {location:location, content: '<h2>You are here!</h2>'}, 
@@ -155,18 +162,38 @@ function initMap(location) {
 
 
     // markers array to store created markers for the marker cluster
-    markers = [];
+    markersArr = [];
 
     // loop through each item in marker array, create the marker and append it to the markers array
     for (let i = 0; i < MarkerArray.length; i++) {
-        markers.push(addMarker(MarkerArray[i]));
+        markersArr.push(addMarker(MarkerArray[i]));
     };
+
+    
 
 
     // create the marker cluster
-    new markerClusterer.MarkerClusterer({ markers, map });
+    markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
+}
+
+
+// function to initialize the map
+function initMap(location) {
+
+    // if no location parameter is passed in then use default location
+    if (!location) {
+        var location = {lat: 55.911328751879964, lng: -3.321574542053874};
+    }
+
+
+    // create map with location and map style
+    map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: location,
+        mapId: '4a11e687fb2c35f2'
+    });
     
-    
+    initializeMarkers();
 }
 
 function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
