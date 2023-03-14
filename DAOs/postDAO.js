@@ -73,7 +73,7 @@ function postIDexists(postID, callback){
 
 function getPostMediaByID(postID, callback){
 
-    let query = "SELECT link FROM post_media WHERE postID = ? ORDER BY pos ASC";
+    let query = "SELECT GROUP_CONCAT(link) AS LINKS FROM post_media WHERE postID = ? ORDER BY pos ASC";
     let params = [postID];
 
     DB.executeQuery(query, params, function(err, rows, fields){
@@ -93,16 +93,23 @@ function getPostMediaByID(postID, callback){
 function getPostByID(postID, callback){
 
     let query = `
-        SELECT  postID AS postID,
-                posted_by as userID,
-                title as title,
-                descr as descr,
-                posted as posted,
-                latitude as 'lat',
-                longitude as 'long',
-                public as 'priv'
-        FROM posts
-        WHERE postID = ?`
+        SELECT  p.postID AS postID,
+                p.posted_by as userID,
+                p.title as title,
+                p.descr as descr,
+                p.posted as posted,
+                p.latitude as 'lat',
+                p.longitude as 'long',
+                p.public as 'priv',
+                GROUP_CONCAT(m.link) AS 'media',
+                GROUP_CONCAT(r.reaction) AS 'reacts',
+                GROUP_CONCAT(r.react_from) AS 'left_by'
+        FROM posts AS p
+        LEFT JOIN post_media AS m
+        ON p.postID = m.postID
+        LEFT JOIN post_reactions AS r
+        ON p.postID = r.postID
+        WHERE p.postID = ?;`;
 
     let params = [postID];
 
@@ -164,10 +171,30 @@ function getPostComments(postID, callback){
 
 
 // gets all posts a user has made
-function getAllUserPostIDs(userID, callback){
-
-    let query = "SELECT postID FROM posts WHERE posted_by = ? ORDER BY posted DESC";
-    let params = [userID];
+function getAllUserPosts(userID, callback){
+    
+    let query = `
+        SELECT  p.postID AS postID,
+            p.posted_by as userID,
+            p.title as title,
+            p.descr as descr,
+            p.posted as posted,
+            p.latitude as 'lat',
+            p.longitude as 'long',
+            p.public as 'priv',
+            GROUP_CONCAT(m.link) AS 'media',
+            GROUP_CONCAT(r.reaction) AS 'reacts',
+            GROUP_CONCAT(r.react_from) AS 'left_by'
+        FROM posts AS p
+        LEFT JOIN post_media AS m
+        ON p.postID = m.postID
+        LEFT JOIN post_reactions AS r
+        ON p.postID = r.postID
+        WHERE p.posted_by = ?
+        GROUP BY p.postID
+        ORDER BY p.posted DESC;`
+    
+    let params=[userID];
 
     DB.executeQuery(query, params, function(err, rows, fields){
 
@@ -289,7 +316,7 @@ module.exports = {
 
     postIDexists,
     getPostByID,
-    getAllUserPostIDs,
+    getAllUserPosts,
     insertPost,
     insertPostMedia,
     getPostMediaByID,
