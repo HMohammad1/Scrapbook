@@ -69,10 +69,10 @@ function insertPFP(userID, callback){
 }
 
 
-function updateProfile(userID, bio, disp, colour, callback){
+function updateProfile(userID, bio, disp, colour, link, callback){
 
-    let query = "UPDATE user_profiles SET bio=?, display_name=?, colour=? WHERE userID = ?";
-    let params = [bio, disp, colour, userID];
+    let query = "UPDATE user_profiles AS u, user_pfp AS p SET u.bio=?, u.display_name=?, u.colour=?, p.link=? WHERE p.userID = ? AND u.userID = p.userID";
+    let params = [bio, disp, colour, link, userID];
 
     DB.executeQuery(query, params, function(err, rows){
         if(err){

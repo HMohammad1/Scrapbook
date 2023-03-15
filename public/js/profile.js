@@ -33,6 +33,9 @@ $(document).ready(function(){
 
         if(xhr.status == 200){
             $("#friends-counter").prepend(data[0] + " ");
+            if(data[0] > 1){
+                $("#friends-counter").append('s');
+            }
             $("#posts-counter").prepend(data[1] + " ");
         }
         else{
@@ -120,6 +123,7 @@ $(document).ready(function(){
     
     disp="";
     bio="";
+    src="";
     $("body").on("click", "#profileButton", function(){
     
         $(this).attr("id", "save-btn");
@@ -130,31 +134,74 @@ $(document).ready(function(){
     
         bio = $("#bio").text();
         $("#bio").html(`<textarea class="form-control" id="new-bio" placeholder="${bio}"></textarea>`);
+
+        // add file input for pfp
+        // get src for existing img
+        src = $(".profile-icon2").attr("src");
+        // change to input
+        $("#pfp-holder").html(`<input type="file" accept"image/*" class="centre" id="newPFP" name="newPFP" />`);
+        // set background img
+        $("#newPFP").css("background-image", `url('${src}')`);
     
     
     });
     
+    // change file bg on change
+    $("body").on("change", "#newPFP", function(){
+        file = this.files[0];
+        fr = new FileReader();
+        // once file read change bg img
+        fr.onloadend = function(){
+            $("#newPFP").css("background-image", `url('${fr.result}')`);
+        }
+        if(file){
+            fr.readAsDataURL(file);
+        }
+        else{
+            alert("something went wrong");
+        }
+    });
+
     
     $("body").on("click", "#save-btn", function(){
-    
-        newBio = $("#new-bio").val();
-        newDisp = $("#new-disp").val();
-        newColour = $(".buttonStyles.selected").attr("id");
+
+        profileForm = new FormData();
+
+        profileForm.append("newBio", $("#new-bio").val());
+        profileForm.append("newDisp", $("#new-disp").val());
+        profileForm.append("newColour", $(".buttonStyles.selected").attr("id"));
+
+        newPFP = $("#newPFP").prop("files")[0];
+        profileForm.append("newPFP", newPFP);
 
         btn = $(this);
         btn.html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...`);
     
-        $.post("/API/updateProfile", {newBio: newBio, newDisp: newDisp, newColour: newColour}, function(data, textStatus, xhr){
+         $.ajax({
+            url: '/API/updateProfile',
+            dataType: 'JSON',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: profileForm,
+            type: 'post',
+            success: function (data, status, xhr) {
 
-            if(xhr.status == 200){
                 btn.html("Edit Profile");
                 btn.attr("id", "profileButton");
 
+                $("#pfp-holder").html(`<img src="${data[2]}" class="profile-icon2 centre">`)
                 $("#bio").html(`<p> ${data[0]}</p>`);
                 $("#disp-name").html(`<h2>${data[1]}</h2>`);
-            }
-            else{
+
+            },
+            error: function (data, status, xhr) {
+                
+                $("#bio").html(`<p> ${bio}</p>`);
+                $("#disp-name").html(`<h2>${disp}</h2>`);
+
                 btn.html("Something went wrong. Please try again later");
+
             }
         });
     });

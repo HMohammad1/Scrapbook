@@ -20,14 +20,14 @@ const { array } = require('yargs');
 const { areFriends } = require('../DAOs/userDAO.js');
 
 // moves an image/video into a public folder that corresponds to its postID
-function uploadMedia(postID, data, callback){
+function uploadPostMedia(postID, data, callback){
 
     // init array for holding uploaded paths
     links = [];
 
     var rawIMG = fs.readFileSync(data.path);
     var filename = encodeURIComponent(data.name.replace(/\s/g, "-"));
-    var newPath = path.join(__dirname, `/img/${postID}/${filename}`);
+    var newPath = path.join(__dirname, `public/img/p/${postID}/${filename}`);
 
     fs.writeFile(newPath, rawIMG, function(err){
         if(err){
@@ -35,7 +35,7 @@ function uploadMedia(postID, data, callback){
         }
         else{
             // insert new image link to link array
-            links.push(`/img/${postID}/${filename}`);
+            links.push(`/img/p/${postID}/${filename}`);
             return callback(null, links);
         }
 
@@ -91,7 +91,7 @@ const createPost = (req, res) => {
 
         if(!req.files.myfile.length){
 
-            uploadMedia(postID, req.files.myfile, function(err, links){
+            uploadPostMedia(postID, req.files.myfile, function(err, links){
 
                 if(err){
                     throw err;

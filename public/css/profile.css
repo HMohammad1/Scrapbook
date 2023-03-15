@@ -29,6 +29,7 @@
 
 
 
+
 .centre {
     display: block;
     margin-left: auto;
@@ -38,6 +39,21 @@
     object-fit: cover;
     overflow: hidden;
     border-radius: 50%;
+}
+
+#newPFP{
+
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px dashed darkred;
+    background-size: cover;
+    background-position: center;
+
+}
+
+#newPFP:hover{
+    cursor: pointer;
 }
 
 h2 {

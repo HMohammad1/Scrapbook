@@ -14,6 +14,10 @@ var User = require ('../objects/user.js');
 var Profile = require ('../objects/profile.js');
 var Request = require("../objects/request.js");
 
+const fs = require('fs');
+const path = require('path');
+
+
 const userDAO = require ('../DAOs/userDAO.js');
 const { res } = require('express');
 const session = require("express-session");
@@ -143,6 +147,31 @@ const createAccount = (req, res) => {
     }
 }
 
+// moves an image/video into a public folder for that users PFP
+function uploadPFP(userID, data, callback){
+
+    var rawIMG = fs.readFileSync(data.path);
+    var filename = encodeURIComponent(data.name.replace(/\s/g, "-"));
+
+    // make dir if not exists
+    var uploadDir =  path.join(__dirname, `../public/img/u/${userID}`);
+    if(!fs.existsSync(uploadDir)){
+        fs.mkdirSync(uploadDir, 0744);
+    }
+    var newPath = path.join(uploadDir, `/${filename}`);
+    fs.writeFile(newPath, rawIMG, function(err){
+        if(err){
+            console.log(err);
+            return callback(err, null);
+        }
+        else{
+            // return new filepath of uploaded img
+            return callback(null, `/img/u/${userID}/${filename}`);
+        }
+
+    });
+}
+
 
 const updateProfile = (req, res) =>{
 
@@ -151,35 +180,47 @@ const updateProfile = (req, res) =>{
     newBio = req.fields.newBio;
     newDisp = req.fields.newDisp;
     newColour = req.fields.newColour;
+    newPFP = req.files.newPFP;
+
+    console.log(JSON.stringify(req.files));
 
     // check if any have changed
-    if(newBio == "" || typeof(newBio) === 'undefined'){
+    if(newBio == "" || !newBio){
         newBio = req.session.user.profile.bio;
     }
-    if(newDisp == "" || typeof(newDisp) === 'undefined'){
-        newDisp = req.session.user.profile.disp_name;
+    if(newDisp == "" || !newDisp){
+        newDisp = req.session.user.profile.display;
     }
-    if(newColour == "" || typeof(newColour) === 'undefined'){
+    if(newColour == "" || !newColour || newColour === undefined){
         newColour = req.session.user.profile.colour;
     }
-
-    userDAO.updateProfile(userID, newBio, newDisp, newColour, function(err, result){
-        if(err){
-            return res.sendStatus(500);
-        }
-        else{
-            req.session.user.profile.bio = newBio;
-            req.session.user.profile.disp_name = newDisp;
-            req.session.user.profile.colour = newColour;
-
-            res.status(200);
-            return res.send([newBio, newDisp, newColour]);
-        }
-
-
-    });
-
-
+    if(!newPFP){
+        newPFP = req.session.user.profile.pfp;
+    }
+    else{
+        // upload the new IMG
+        uploadPFP(userID, newPFP, function(err, result){
+            if(err){
+                return res.sendStatus(500);
+            }
+            else{
+                newPFP = result;
+                userDAO.updateProfile(userID, newBio, newDisp, newColour, newPFP, function(err, result){
+                    if(err){
+                        return res.sendStatus(500);
+                    }
+                    else{
+                        req.session.user.profile.bio = newBio;
+                        req.session.user.profile.disp_name = newDisp;
+                        req.session.user.profile.colour = newColour;
+            
+                        res.status(200);
+                        return res.send(JSON.stringify([newBio, newDisp, newPFP, newColour]));
+                    }
+                });
+            }
+        })
+    }
 }
 
 
