@@ -190,6 +190,9 @@ $(document).ready(function(){
                 btn.html("Edit Profile");
                 btn.attr("id", "profileButton");
 
+                document.getElementById('myDIV2').style.display = 'block';
+                document.getElementById('myDIV3').style.display = 'none';
+
                 $("#pfp-holder").html(`<img src="${data[2]}" class="profile-icon2 centre">`)
                 $("#bio").html(`<p> ${data[0]}</p>`);
                 $("#disp-name").html(`<h2>${data[1]}</h2>`);
@@ -201,6 +204,9 @@ $(document).ready(function(){
                 $("#disp-name").html(`<h2>${disp}</h2>`);
 
                 btn.html("Something went wrong. Please try again later");
+
+                document.getElementById('myDIV2').style.display = 'block';
+                document.getElementById('myDIV3').style.display = 'none';
 
             }
         });
