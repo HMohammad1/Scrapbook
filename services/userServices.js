@@ -213,7 +213,7 @@ const updateProfile = (req, res) =>{
                         req.session.user.profile.bio = newBio;
                         req.session.user.profile.disp_name = newDisp;
                         req.session.user.profile.colour = newColour;
-            
+                        req.session.save();
                         res.status(200);
                         return res.send(JSON.stringify([newBio, newDisp, newPFP, newColour]));
                     }

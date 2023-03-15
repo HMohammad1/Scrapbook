@@ -69,16 +69,26 @@ $(document).ready(function(){
             $(".nav-btn").trigger("click");
         }
         
-        // close any open overlays
-        $(".map-overlay").fadeOut(400, function(){
-            $(this).remove();
-        });
+        // close any open posts
+        if($(".map-overlay").length){
+            // remove open post
+            $(".map-overlay .post-holder").fadeOut(400, function(){
+                $(this).remove();
+            });
+        }
+        else{
+            $(`<div class="map-overlay">`).insertBefore("#map");
+        }
+
+        $(".map-overlay").html(` <div class="spinner-border text-light" role="status">
+        <span class="sr-only">Loading Post...</span>
+      </div>`);
 
         $.get(`/API/post/${postID}`, function(data, textStatus, xhr){
 
             // OK
             if(xhr.status == 200){
-                $(data).insertBefore("#map");
+                $(".map-overlay").html($(data));
 
                 // update history
                 stateObj = {id : navcounter++};

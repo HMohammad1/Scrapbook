@@ -177,7 +177,7 @@ $(document).ready(function(){
     $("body").on("click", ".comment-btn.add", function(){
 
         // set spinner
-        $(this).text('<div class="spinner-border text-light" role="status"><span class="sr-only">Adding comment...</span></div>');
+        $(this).text('<span class="spinner-border spinner-border-sm text-light" role="status"><span class="sr-only">Adding comment...</span></span>');
 
         comment = $("#comment").val();
         //add new comment

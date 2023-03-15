@@ -1,6 +1,5 @@
 <script type ="text/javascript" src="/js/post.js"></script>
 <link rel="stylesheet" href="/css/post.css">
-<div class="map-overlay">
     <div class="col post-holder" id="<%= post.postID %>">
         <div class="row post-heading">
             <h1><%= post.title %></h1>
@@ -30,21 +29,22 @@
         <div class="row post-desc">
             <%= post.desc %>
         </div>
-        <div class="row add-comment">
-            <div class="col">
-                <div class="row add-comment">
-                    <textarea rows="4" cols="70" type="text" name="comment" id="comment" placeholder="Add a comment" class="form-control comment-input"></textarea>
-                </div>
-                <div class="row comment-btn-holder">
-                    <button class="btn comment-btn cancel" disabled="disabled">Cancel</button>
-                    <button class="btn comment-btn add" disabled="disabled">Post</button>
+        <% if (user.userID != 0) { %>
+            <div class="row add-comment">
+                <div class="col">
+                    <div class="row add-comment">
+                        <textarea rows="4" cols="70" type="text" name="comment" id="comment" placeholder="Add a comment" class="form-control comment-input"></textarea>
+                    </div>
+                    <div class="row comment-btn-holder">
+                        <button class="btn comment-btn cancel" disabled="disabled">Cancel</button>
+                        <button class="btn comment-btn add" disabled="disabled">Post</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        <% } %>
         <div class="post-comments">
             <div class="spinner-border text-danger" role="status">
                 <span class="sr-only">Loading comments</span>
               </div>
         </div>
     </div>
-</div>
