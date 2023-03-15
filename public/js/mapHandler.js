@@ -6,9 +6,11 @@ var updateTimer, onLoadLocationTimer;
 
 // global variable to store coords position
 var pos = [0, 0];
-var map, markClust, markersArr;
+var map, markClust, markersArr, marker;
 
 var notLoadMap = 0;
+
+var userMarker, userCircle;
 
 
 
@@ -42,9 +44,18 @@ function currentLocation() {
         pos.push(position.coords.latitude);
         pos.push(position.coords.longitude);
 
+        if (userMarker != undefined && userCircle != undefined) {
+            userMarker.setMap(null);
+            userCircle.setMap(null);
+        }
         
-        updateCurrentLocationMarker(location);
-        createLocationCircle(location);
+        userMarker = updateCurrentLocationMarker(location);
+        userCircle = createLocationCircle(location);
+
+        updateMarkers(location);
+
+        
+        
         //removeMarkers();
         
         
@@ -64,29 +75,20 @@ function currentLocation() {
 
 }
 
-/* function getPosts() {
 
-    postDAO.getAllPosts(function(err, result) {
-        if (err){
-            console.log("Doesn't work");
-        } else {
-            console.log(result);
-        }
-    });
-
-
-
-    return postsArr;
-} */
 
 
 function getPosts() {
+    var posts = [{location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
+        {location: {lat: 55.95045275244971, lng: -3.1883441852294623}},
+        {location: {lat: 55.95131777646914, lng: -3.1954681317944087}},
+        {location: {lat: 55.952615276150276, lng: -3.193193619156272}}];
 
+    return posts;
 }
 
 function updateCurrentLocationMarker(location) {
 
-    console.log("HI");
     var marker = new google.maps.Marker({
         position: location,
         map: map,
@@ -97,6 +99,7 @@ function updateCurrentLocationMarker(location) {
 }
 
 function createLocationCircle(location) {
+
     var locCircle = new google.maps.Circle({
         strokeColor: "#FF0000",
         strokeOpacity: 0.5,
@@ -107,7 +110,60 @@ function createLocationCircle(location) {
         center: location,
         radius: 50
     });
+
+    return locCircle;
 }
+
+
+function updateMarkers(location) {
+    var posts = getPosts();
+
+    removeMarkers();
+    
+    markersArr = [];
+
+    // loop through each item in marker array, create the marker and append it to the markers array
+    for (let i = 0; i < posts.length; i++) {
+        markersArr.push(addMarker(posts[i], location));
+    };
+
+    // create the marker cluster
+    markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
+
+}
+
+function addMarker(posts, location){
+
+    
+
+    marker = null;
+
+    // if distance of location is over 50m of the current location then the marker is grey
+    if (over50(posts, location)) {
+        marker = new google.maps.Marker({
+            position: posts.location,
+            map: map,
+            icon: '../images/svg_markers/marker-dgrey.svg'
+        });
+
+        // else marker is blue if within 50m
+    } else {
+        marker = new google.maps.Marker({
+            position: posts.location,
+            map: map,
+            icon: '../images/svg_markers/marker-blue.svg'
+        });
+    }
+
+    return marker
+}
+
+
+
+
+
+
+
 
 
 
@@ -141,6 +197,21 @@ function removeMarkers() {
 
     markersArr = [];
     
+}
+
+// Function to check if the location is over 50 metres from current location
+function over50(property, currentLocation) {
+
+    //console.log(currentLocation.lat);
+    // get distance between point 1 and point 2
+    var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
+    
+    // if distance is over 50 metres return true else return false
+    if (distance > 50) {
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -235,20 +306,7 @@ function initMap() {
 
 
 
-    // Function to check if the location is over 50 metres from current location
-    function over50(property, currentLocation) {
-
-        //console.log(currentLocation.lat);
-        // get distance between point 1 and point 2
-        var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
-        
-        // if distance is over 50 metres return true else return false
-        if (distance > 50) {
-            return true;
-        }
-
-        return false;
-    }
+    
 
     function initializeMarkers() {
 
@@ -368,6 +426,8 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
 };
 
 $(document).ready(function(){
+
+    
 
     // set location after page load
     updateLocation();
