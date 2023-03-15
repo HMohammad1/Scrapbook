@@ -2,6 +2,8 @@
 var updateWindow = 15000;
 var updateTimer, onLoadLocationTimer;
 
+//const postDAO = require ('../../DAOs/postDAO.js');
+
 // global variable to store coords position
 var pos = [0, 0];
 var map, markClust, markersArr;
@@ -41,7 +43,10 @@ function currentLocation() {
         pos.push(position.coords.longitude);
 
         
-        removeMarkers();
+        updateCurrentLocationMarker(location);
+        createLocationCircle(location);
+        //removeMarkers();
+        
         
         //console.log("HELLO");
         //initMap(location);
@@ -58,6 +63,55 @@ function currentLocation() {
     navigator.geolocation.getCurrentPosition(success, error, options);
 
 }
+
+/* function getPosts() {
+
+    postDAO.getAllPosts(function(err, result) {
+        if (err){
+            console.log("Doesn't work");
+        } else {
+            console.log(result);
+        }
+    });
+
+
+
+    return postsArr;
+} */
+
+
+function getPosts() {
+
+}
+
+function updateCurrentLocationMarker(location) {
+
+    console.log("HI");
+    var marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon: '../images/svg_markers/marker-user.svg'
+    });
+
+    return marker;
+}
+
+function createLocationCircle(location) {
+    var locCircle = new google.maps.Circle({
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.5,
+        strokeWeight: 1,
+        fillColor: "#F7A6A6",
+        fillOpacity: 0.35,
+        map,
+        center: location,
+        radius: 50
+    });
+}
+
+
+
+
 
 // function to return position
 function getPosition() {
@@ -203,7 +257,7 @@ function initMap() {
         
         // marker array to store marker data
         MarkerArray = [
-            {location:location, content: '<h2>You are here!</h2>'}, 
+            /* {location:location, content: '<h2>You are here!</h2>'},  */
             {location: {lat: 55.91329, lng: -3.32156}}, 
             {location: {lat: 55.9118, lng: -3.3215}}, 
             {location: {lat: 55.9109, lng: -3.3215}, content: '<h2>Heriot watt campus</h2>'}, 
@@ -228,8 +282,9 @@ function initMap() {
             markersArr.push(addMarker(MarkerArray[i]));
         };
 
-        
-
+       
+        updateCurrentLocationMarker(location);
+        createLocationCircle(location);
 
         // create the marker cluster
         markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
