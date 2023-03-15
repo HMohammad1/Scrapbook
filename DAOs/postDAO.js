@@ -128,6 +128,8 @@ function getPostByID(postID, callback){
 
 }
 
+
+
 function addPostComment(postID, userID, comment, callback){
 
     let query = `INSERT INTO post_comments (postID, comment_from, text) VALUES (?,?,?)`;
@@ -169,6 +171,24 @@ function getPostComments(postID, callback){
 
 }
 
+// gets all posts
+function getAllPosts(callback) {
+    let query = 'SELECT * FROM posts';
+
+    let params = [];
+
+    DB.executeQuery(query, params, function(err, rows, fields){
+
+        if(!err){
+            return callback(null, rows);
+        }
+        else{
+            console.log(err);
+            return callback(err, null);
+        }
+
+    });
+}
 
 // gets all posts a user has made
 function getAllUserPosts(userID, callback){

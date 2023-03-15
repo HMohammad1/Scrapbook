@@ -52,7 +52,7 @@ function currentLocation() {
         userMarker = updateCurrentLocationMarker(location);
         userCircle = createLocationCircle(location);
 
-        updateMarkers(location);
+        //updateMarkers(location);
 
         
         
