@@ -4,6 +4,7 @@ console.log("OPENING ROUTER");
 const express = require("express");
 const userServices = require("../services/userServices");
 const postServices = require("../services/postServices");
+const mapServices = require("../services/mapServices");
 const { searchUsername } = require("../DAOs/userDAO");
 
 //define a router and create routes
@@ -20,8 +21,9 @@ router.post("/API/updateProfile", userServices.updateProfile);
 router.get("/API/getCounts/:userID", userServices.getProfileCounts);
 
 // route to update / get a users location
-router.post("/API/updateLocation", userServices.updateLocation);
-router.get("/API/getLocation", userServices.getUserLocation);
+router.post("/API/updateLocation", mapServices.updateLocation);
+router.get("/API/getLocation", mapServices.getUserLocation);
+router.get("/API/updateMap", mapServices.updateMap);
 
 
 // route to get & create a post

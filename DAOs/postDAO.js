@@ -129,6 +129,53 @@ function getPostByID(postID, callback){
 }
 
 
+function getPostsByID(postIDs, callback){
+    let query = `
+    SELECT  p.postID AS postID,
+            p.posted_by as userID,
+            p.title as title,
+            p.descr as descr,
+            p.posted as posted,
+            p.latitude as 'lat',
+            p.longitude as 'long',
+            p.public as 'priv',
+            GROUP_CONCAT(m.link) AS 'media',
+            GROUP_CONCAT(r.reaction) AS 'reacts',
+            GROUP_CONCAT(r.react_from) AS 'left_by'
+    FROM posts AS p
+    LEFT JOIN post_media AS m
+    ON p.postID = m.postID
+    LEFT JOIN post_reactions AS r
+    ON p.postID = r.postID
+    WHERE p.postID IN (`;
+
+    let params = [];
+
+    // add each ID to params and query
+    postIDs.forEach(postID => {
+
+        query += "?,";
+        params.push(postID);
+    });
+
+    // remove trailing comma and close bracket
+    query = query.replace(new RegExp(',$'), ") GROUP BY p.postID;");
+
+    DB.executeQuery(query, params, function(err, rows, fields){
+
+        if(!err){
+            return callback(null, rows);
+        }
+        else{
+            console.log(err);
+            return callback(err, null);
+        }
+
+    });
+
+}
+
+
 
 function addPostComment(postID, userID, comment, callback){
 
@@ -336,6 +383,7 @@ module.exports = {
 
     postIDexists,
     getPostByID,
+    getPostsByID,
     getAllUserPosts,
     insertPost,
     insertPostMedia,

@@ -256,7 +256,10 @@ function getProfileByID(userID, callback){
     try{
         // fetch row from DB
         userDAO.getProfileByID(userID, function(err, data){
-            if(data === undefined){
+            if(err){
+                return callback(null);
+            }
+            else if(data === undefined){
                 return callback(null);
             }
             // create profile
@@ -553,9 +556,6 @@ function areFriends(user1, user2){
     });
 }
 
-
-
-
 // returns an array of profiles that correspond to the provided array of userIDs
 function getProfiles(userIDs, callback){
     
@@ -664,42 +664,6 @@ const getProfileCounts = (req,res) =>{
 
 }
 
-// update the user's location
-const updateLocation = (req,res) =>{
-
-    // check user is logged in
-    if(typeof(req.session.user) !== 'undefined'){
-
-        // this is janky as fuck
-        var user = Object.assign(new User(), req.session.user);
-        user.updateCoords(req.fields.lat, req.fields.long);
-        req.session.user = user;
-
-        res.status(200);
-        return res.send();
-    }
-    else{
-        res.status(403);
-        return res.send();
-    }
-
-}
-
-const getUserLocation = (req, res) =>{
-
-    // check user is logged in
-    if(typeof(req.session.user) !== 'undefined'){
-        res.status(200);
-        return res.send(req.session.user.getCoords());
-    }
-    else{
-        res.status(403);
-        return res.send();
-    }
-}
-
-
-
 // export member functions for use elsewhere
 module.exports = {
 
@@ -717,8 +681,6 @@ module.exports = {
     getFriendProfiles,
     areFriends,
     searchUsername,
-    updateLocation,
-    getUserLocation,
     getProfileCounts
     
 }

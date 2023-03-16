@@ -362,21 +362,21 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
     var d = R * c; // Distance in km
     return d*1000; // convert to m and return
-  }
+}
   
   function deg2rad(deg) {
     return deg * (Math.PI/180)
-  }
+}
 
 
-  function updatePost(post, userLat, userLong){
+  function updatePost(postID, perm){
 
-    // get post coords
-    postLat = post.attr("data-lat");
-    postLong = post.attr("data-long");
 
-    // calc distance and enable / disable
-    if(getDistanceFromLatLonInM(userLat, userLong, postLat, postLong) <= 50){
+    // get post object
+    post = $(`#${postID}`);
+
+    // if allowed to view
+    if(perm){
 
         // if not already enabled
         if(post.hasClass("disabled")){
@@ -390,10 +390,11 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
             post.addClass("disabled");
         }
     }
-  }
+}
 
 
-  function updateLocation(){
+// 
+function updateLocation(){
 
     // TESTING COORDS -- MAPS API OUTPUT GOES HERE
     /* newLat = 55.9091;
@@ -412,13 +413,32 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
         // error check -- only update visibility when success
         if(xhr.status == 200){
 
-            // for each post one check the distance and set accordingly
+            // init array for holding postIDs
+            var postIDs = [];
+            // this will only get icons on screen at the time
+            // NEEDS EXPANDED FOR MAP MARKERS
             $(".post-icon").each(function(){
 
-                updatePost($(this), newLat, newLong);
+                postID = $(this).attr("id");
+                // ID could already be in as 
+                if(!postIDs.includes(postID)){
+                    postIDs.push(postID);
+                }
 
             });
+            // send new call for post perms
+            $.get("/API/updateMap", {postIDs: postIDs}, function(data, textStatus, xhr){
 
+                if(xhr.status == 200){
+
+                    for(i=0; i<data.length; i++){
+                        updatePost(data[i][0], data[i][1]);
+                    }
+                }
+                else{
+                    console.log(xhr);
+                }
+            });
         }
 
     });

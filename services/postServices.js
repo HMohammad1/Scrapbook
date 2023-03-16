@@ -298,8 +298,7 @@ const getPostByID = (req, res) => {
                 }
                 rowToPost(postData, function(post){
                     // if public or friends only or own post
-                    var areFriends = userServices.areFriends(req.session.user.userID, post.profile.userID);
-                        if(post.priv == 1 || areFriends || req.session.user.userID == post.profile.userID){
+                        if(mapServices.canViewPost(req.session.user, post)){
                             res.status(200);
                             return res.render("partials/overlays/post", {post: post, user:req.session.user});
                         }
@@ -320,6 +319,36 @@ const getPostByID = (req, res) => {
     }
 
 }
+
+
+// returns post objects
+function fetchPostsFromArray(postIDs, callback){
+
+    postDAO.getPostsByID(postIDs, function(err, rows){
+
+        if(err){
+            return null;
+        }
+        else{
+
+            // init array for holding posts
+            var postArr = [];
+
+            // add posts to array
+            rows.forEach(row =>{
+
+                rowToPost(row, function(post){
+
+                    postArr.push(post);
+                    if(postArr.length == rows.length){
+                        return callback(postArr);
+                    }
+                });
+            });
+        }
+    });
+}
+
 
 // returns a post object complete with poster profile
 function fetchPostByID(postID, callback){
@@ -657,6 +686,7 @@ const removePostReact = (req, res) =>{
 module.exports = {
 
     getPostByID,
+    fetchPostsFromArray,
     getUserPosts,
     createPost,
     addComment,

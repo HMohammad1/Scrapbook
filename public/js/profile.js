@@ -33,10 +33,13 @@ $(document).ready(function(){
 
         if(xhr.status == 200){
             $("#friends-counter").prepend(data[0] + " ");
-            if(data[0] > 1){
+            if(data[0] != 1){
                 $("#friends-counter").append('s');
             }
             $("#posts-counter").prepend(data[1] + " ");
+            if(data[1] != 1){
+                $("#posts-counter").append('s');
+            }
         }
         else{
             console.log(textStatus);
@@ -149,7 +152,7 @@ $(document).ready(function(){
         // get src for existing img
         src = $(".profile-icon2").attr("src");
         // change to input
-        $("#pfp-holder").html(`<input type="file" accept"image/*" class="centre" id="newPFP" name="newPFP" />`);
+        $("#pfp-holder").html(`<input type="file" accept".png,.jpg,.jpeg" class="centre" id="newPFP" name="newPFP" />`);
         // set background img
         $("#newPFP").css("background-image", `url('${src}')`);
     
