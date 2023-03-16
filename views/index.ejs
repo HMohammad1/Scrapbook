@@ -51,7 +51,7 @@
                     <%- include("partials/sidebar/settings"); %>
                 <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "addPostsPage"){ %>
                     <%- include("partials/sidebar/addPostsPage"); %>
-                <%} else if (user.userID == 0) { %>
+                <%} else if (typeof(sidebar) !== 'undefined' && sidebar == 'login'){ %>
                     <%- include("partials/sidebar/login"); %>
                 <% } else { %>
                     <%- include("partials/sidebar/menu"); %>

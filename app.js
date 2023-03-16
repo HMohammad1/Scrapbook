@@ -52,16 +52,6 @@ app.get("/", (req, res) => {
   res.render("index", {user: req.session.user}); //no need for ejs extension
 });
 
-//route for login
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-
-//route for signup
-app.get("/signup", (req, res) => {
-    res.render("signup");
-});
-
 app.get("/application", (req, res) => {
     res.render("application");
 });

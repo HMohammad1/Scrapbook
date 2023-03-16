@@ -74,35 +74,7 @@ function withinRange(userCoords, postCoords){
     }
 }
 
-// returns true if can - false if not
-function canViewPost(user, post){
 
-    // can always view own posts
-    if(user.userID == post.profile.userID){
-        return true;
-    }
-    // priv is only true for public posts
-    else if(!post.priv){
-
-        // check if users are friends
-        if(userServices.areFriends(user.userID, post.profile.userID)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    else{
-        // check range
-        if(withinRange(user.coords, post.coords)){
-            return true;
-        }
-        else{
-            return false;
-        }
-
-    }
-}
 
 
 // get all on screen postIDs
@@ -123,7 +95,7 @@ const updateMap = (req, res) =>{
             // check perms for each post
             postArr.forEach(post => {
                 
-                var perm = canViewPost(req.session.user, post);
+                var perm = postServices.canViewPost(req.session.user, post);
                 postPerms.push([post.postID, perm]);
                 if(postPerms.length == postArr.length){
                     res.status(200);
@@ -145,6 +117,4 @@ module.exports = {
     updateMap,
     updateLocation,
     getUserLocation,
-    canViewPost
-
 }

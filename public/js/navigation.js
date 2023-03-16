@@ -58,6 +58,29 @@ $(document).ready(function(){
     });
 
 
+    // open add post overlay
+    $("body").on("click", ".post-btn", function(){
+
+
+        $.get("/API/getUpload", function(data, textStatus, xhr){
+
+            $(".prog-bar").css("width", "0px");
+
+            // error check
+            if(xhr.status == 200){
+                $(".sidebar").html(data);
+            }
+            else{
+                console.log(xhr)
+            }
+
+            // update history
+            stateObj = {id : navcounter++};
+            window.history.pushState(stateObj, "Upload", `/upload`);
+
+
+        });
+    });
 
 
 

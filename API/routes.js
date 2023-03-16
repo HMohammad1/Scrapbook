@@ -16,6 +16,7 @@ router.post("/API/signup", userServices.createAccount);
 router.post("/API/login", userServices.login);
 router.get("/API/logout", userServices.logout);
 
+
 // route to update profile
 router.post("/API/updateProfile", userServices.updateProfile);
 router.get("/API/getCounts/:userID", userServices.getProfileCounts);
@@ -106,6 +107,18 @@ router.get("/friends", (req, res) =>{
 
 });
 
+router.get("/login", (req,res) =>{
+    // redir if logged in
+    if(req.session.user.userID != 0){
+        return res.redirect(302, `/profile/${req.session.user.username}`);
+    }
+    else{
+
+        return res.render("index", {sidebar: "login"});
+    }
+    
+});
+
 router.get("/add-friend", (req, res) =>{
 
     // check user is logged in
@@ -128,7 +141,7 @@ router.get("/settings", (req, res) =>{
 
 });
 
-router.get("/addPostsPage", (req, res) =>{
+router.get("/upload", (req, res) =>{
 
     // check user is logged in
     if(!req.session.loggedIn){
@@ -206,7 +219,7 @@ router.get("/API/settings", (req, res) =>{
 
 });
 
-router.get("/API/addPostsPage", (req, res) =>{
+router.get("/API/getUpload", (req, res) =>{
 
     // check user is logged in
     if(!req.session.loggedIn){

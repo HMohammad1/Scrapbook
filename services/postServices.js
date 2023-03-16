@@ -26,8 +26,15 @@ function uploadPostMedia(postID, data, callback){
     links = [];
 
     var rawIMG = fs.readFileSync(data.path);
+
+    // make dir if not exists
+    var uploadDir =  path.join(__dirname, `../public/img/p/${postID}`);
+    if(!fs.existsSync(uploadDir)){
+        fs.mkdirSync(uploadDir, 0744);
+    }
+
     var filename = encodeURIComponent(data.name.replace(/\s/g, "-"));
-    var newPath = path.join(__dirname, `public/img/p/${postID}/${filename}`);
+    var newPath = path.join(uploadDir, `/${filename}`);
 
     fs.writeFile(newPath, rawIMG, function(err){
         if(err){
@@ -60,14 +67,14 @@ const createPost = (req, res) => {
     } while(!taken);
 
     // get current location of user
-    if(req.session != null && req.session.user){
+    if(req.session.user.userID != 0){
         var user = req.session.user;
-        coords = [55.909095, -3.319584];
+        coords = user.coords;
         //coords = user.getCoords();
         userID = user.userID;
     }
     else{
-        res.send("You must be logged in to create a post");
+        res.redirect(302, "/login");
     }
 
     // make directory for new post
@@ -89,9 +96,9 @@ const createPost = (req, res) => {
             throw err;
         }
 
-        if(!req.files.myfile.length){
+        if(!req.files.postImg.length){
 
-            uploadPostMedia(postID, req.files.myfile, function(err, links){
+            uploadPostMedia(postID, req.files.postImg, function(err, links){
 
                 if(err){
                     throw err;
@@ -106,7 +113,7 @@ const createPost = (req, res) => {
                     else{
 
                         // get request to fetch post
-                        res.redirect(`/API/post/${postID}`);
+                        res.redirect(302, `/profile/${req.session.user.profile.username}/${postID}`);
                     }
 
                 });
@@ -298,7 +305,7 @@ const getPostByID = (req, res) => {
                 }
                 rowToPost(postData, function(post){
                     // if public or friends only or own post
-                        if(mapServices.canViewPost(req.session.user, post)){
+                        if(canViewPost(req.session.user, post)){
                             res.status(200);
                             return res.render("partials/overlays/post", {post: post, user:req.session.user});
                         }
@@ -683,6 +690,69 @@ const removePostReact = (req, res) =>{
     });
 }
 
+const POST_RANGE = 50;
+
+function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1); 
+    var a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2)
+        ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d*1000; // convert to m and return
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI/180)
+}
+
+
+// tests if a user is within viewing range or not
+function withinRange(userCoords, postCoords){
+
+    delta = getDistanceFromLatLonInM(userCoords[0], userCoords[1], postCoords[0], postCoords[1]);
+    if(delta <= POST_RANGE){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+// returns true if can - false if not
+function canViewPost(user, post){
+
+    // can always view own posts
+    if(user.userID == post.profile.userID){
+        return true;
+    }
+    // priv is only true for public posts
+    else if(!post.priv){
+
+        // check if users are friends
+        if(userServices.areFriends(user.userID, post.profile.userID)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        // check range
+        if(withinRange(user.coords, post.coords)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+}
+
 module.exports = {
 
     getPostByID,
@@ -692,6 +762,7 @@ module.exports = {
     addComment,
     getPostComments,
     addPostReact,
-    removePostReact
+    removePostReact,
+    canViewPost
 
 }
