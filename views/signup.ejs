@@ -5,40 +5,44 @@
     <body>
         <h1>Sign Up!</h1>
         <div class="containter-fluid">
-            <form name="contact-details" action="API/signup" method="post">
+            
+            <!-- <form name="contact-details" action="API/signup" method="post"></form> -->
+            <form name="contact-details" action="API/signup" method="GET"></form>    
                 <div class="personal-info">
                     <div class="username">
-                        <input id="username" name="username" placeholder="Username"/>
-                        <label id="usercheck" style="color: red;">
+                        <input id="username" name="username" placeholder="Username" required/>
+                        <!-- <label id="usercheck" style="color: red;">
                             **Username is missing!
-                        </label>
+                        </label> -->
                         <input id="disp_name" name="disp_name" placeholder="Display Name"/>
                     </div>
                     <div class="contact-name">
-                        <input id="fname" name="fname" placeholder="First Name">
-                        <input id="lname" name="lname" placeholder="Last Name">
+                        <input id="fname" name="fname" placeholder="First Name" required>
+                        <input id="lname" name="lname" placeholder="Last Name" required>
                     </div>
                     <div class="contact-details">
-                        <input id="email" name="email" placeholder="Email Address">
-                         <label id="emailcheck" class="form-text
+                        <input id="email" name="email" placeholder="Email Address" required>
+                         <!-- <label id="emailcheck" class="form-text
                         text-muted invalid-feedback">
                                 Your email must be a valid email!
-                         </label>
+                         </label> -->
                     </div>
                 </div>
                 <div class="password">
-                    <input id="pw1" name="pw1" placeholder="Password"/>
-                    <label id="passcheck" style="color: red;">
+                    <input id="pw1" name="pw1" placeholder="Password" required/>
+                    <!-- <label id="passcheck" style="color: red;">
                         **Password is missing!
-                    </label>
-                    <input id="pw2" name="pw2" placeholder="Confirm Password"/>
-                    <label id="passcheck2" style="color: red;">
+                    </label> -->
+                    <input id="pw2" name="pw2" placeholder="Confirm Password" required/>
+                    <!-- <label id="passcheck2" style="color: red;">
                         ** Password confirmation!
-                    </label>
+                    </label> -->
                 </div>
                 <div class="row">
-                    <input type="submit" name="submit"/>
+                    <button type="submit" name="submit"/>
                 </div>
+                <div id="err"> </div>
+                
             </form>
         </div>
     </body>
