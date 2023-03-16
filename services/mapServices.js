@@ -112,22 +112,29 @@ function canViewPost(user, post){
 // client sorts classes depending on perms in array
 const updateMap = (req, res) =>{
 
-    postServices.fetchPostsFromArray(req.query.postIDs, function(postArr){
+    // only run if there are posts on screen
+    if(req.query.postIDs && req.query.postIDs.length > 0){
 
-        // init array for holding perms
-        var postPerms = [];
+        postServices.fetchPostsFromArray(req.query.postIDs, function(postArr){
 
-        // check perms for each post
-        postArr.forEach(post => {
-            
-            var perm = canViewPost(req.session.user, post);
-            postPerms.push([post.postID, perm]);
-            if(postPerms.length == postArr.length){
-                res.status(200);
-                return res.send(postPerms);
-            }
+            // init array for holding perms
+            var postPerms = [];
+
+            // check perms for each post
+            postArr.forEach(post => {
+                
+                var perm = canViewPost(req.session.user, post);
+                postPerms.push([post.postID, perm]);
+                if(postPerms.length == postArr.length){
+                    res.status(200);
+                    return res.send(postPerms);
+                }
+            });
         });
-    });
+    }
+    else{
+        return res.sendStatus(200);
+    }
 }
 
 
