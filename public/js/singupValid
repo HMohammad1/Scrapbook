@@ -84,7 +84,7 @@ err.innerText = mess.join(',')
 }
 
 // Submit button
-$("#submitbtn").click(function () {
+$("#submit").click(function () {
     if (
       usernameError == true &&
       passwordError == true &&
