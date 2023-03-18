@@ -1,17 +1,19 @@
+<link rel="stylesheet" href="/css/postComments.css">
+
 <% comments.forEach(comment => { %>
 
     <div class="row comment">
         <div class="col comment-text">
             <%= comment.text %>
         </div>
-        <div class="col commenter-profile">
-            <div class="row comment-pfp-holder">
-                <img class="comment-pfp" src="<%= comment.profile.pfp %>"/>
-            </div>
-            <div class="row commenter-dn">
-                <%= comment.profile.display %>
-            </div>
+    </div>
+    <div class="row commenter-profile">
+        <div class="col comment-pfp-holder">
+            <img class="comment-pfp" src="<%= comment.profile.pfp %>"/>
         </div>
+    </div>
+    <div id="commenter-dn">
+        <%= comment.profile.display %>
     </div>
 
 <% }) %>
