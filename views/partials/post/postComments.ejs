@@ -2,18 +2,19 @@
 
 <% comments.forEach(comment => { %>
 
-    <div class="row comment">
+    <div class="row comment mt-2">
         <div class="col comment-text">
             <%= comment.text %>
         </div>
     </div>
-    <div class="row commenter-profile">
-        <div class="col comment-pfp-holder">
+    <div class="row commenter-profile pb-2">
+        <div class="col d-inline-block comment-pfp-holder">
             <img class="comment-pfp" src="<%= comment.profile.pfp %>"/>
+            <%= comment.profile.display %>
         </div>
-    </div>
-    <div id="commenter-dn">
-        <%= comment.profile.display %>
+<!--        <div class="col-2 comment-name-holder">-->
+<!--            -->
+<!--        </div>-->
     </div>
 
 <% }) %>

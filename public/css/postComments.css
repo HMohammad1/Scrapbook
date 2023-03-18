@@ -28,7 +28,7 @@
     height: 40px;
     border-radius: 50%;
     border: 1px solid red;
-    margin-left: 95%;
+    margin-left: 80%;
 }
 
 #commenter-dn {
@@ -40,6 +40,18 @@
     border-radius: 10px;
 }
 
-.commenter-profile:hover + #commenter-dn{
-    display: block;
+.commenter-profile {
+    background: white;
+}
+
+.comment-name-holder {
+    font-size: 15px;
+    text-align: right;
+    margin-bottom: 0;
+}
+
+@media (max-width: 500px) {
+    .comment-pfp{
+        margin-left: 70%;
+    }
 }

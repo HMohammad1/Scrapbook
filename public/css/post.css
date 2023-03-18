@@ -22,13 +22,24 @@
 
     height: 700px;
     width: 100%;
-
+    -webkit-box-shadow: 0 10px 5px #888888;
+    -moz-box-shadow: 0 10px 5px #888888;
+    box-shadow: 0 10px 5px #888888;
 }
 
 .post-reactions{
-
-    height: 70px;
+    height: 80px;
     width: 100%;
+    -webkit-box-shadow: 0 10px 5px #888888;
+    -moz-box-shadow: 0 10px 5px #888888;
+    box-shadow: 0 10px 5px #888888;
+}
+
+.post-desc {
+    width: 100%;
+    -webkit-box-shadow: 0 10px 5px #888888;
+    -moz-box-shadow: 0 10px 5px #888888;
+    box-shadow: 0 10px 5px #888888;
 }
 
 .reaction > .bi{
@@ -38,6 +49,13 @@
     height: 1em;
     font-size: 45px;
 
+}
+
+.all-comments {
+    width: 100%;
+    -webkit-box-shadow: 0 10px 5px #888888;
+    -moz-box-shadow: 0 10px 5px #888888;
+    box-shadow: 0 10px 5px #888888;
 }
 
 .react-counter{

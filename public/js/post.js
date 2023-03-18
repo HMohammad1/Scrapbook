@@ -109,7 +109,7 @@ $(document).ready(function(){
 
         if(reactsExpanded){
             $("#reacts-row").html(oldReacts);
-            $(this).text("More Reactions");
+            $(this).text("Add Reactions");
             reactsExpanded = false;
         }
         else{
