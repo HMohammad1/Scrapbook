@@ -727,7 +727,7 @@ function withinRange(userCoords, postCoords){
 function canViewPost(user, post){
 
     // can always view own posts
-    if(user.userID == post.profile.userID){
+    if(user.userID && post.profile && user.userID == post.profile.userID){
         return true;
     }
     // priv is only true for public posts
