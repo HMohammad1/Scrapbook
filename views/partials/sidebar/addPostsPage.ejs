@@ -11,17 +11,17 @@
             <form name="createPost" action="/API/upload" enctype="multipart/form-data" method="post">
                 <input class="form-control" id="title" name="title" placeholder="Title"/>
                 <label class="form-label"></label>
-                <div class="row carousel slide">
+                <div class="row carousel slide" id="uploadPreviews" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item input-holder active">
                             <input class="multi-input form-control" type="file" accept=".png,.jpg,.jpeg" id="postImg" name="postImg" multiple style="height: 300px">
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#uploadPreviews" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#uploadPreviews" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="add-post">
-                    <button type="submit" class="post-btn">Submit</button>
+                    <button type="submit" class="btn post-btn">Submit</button>
                 </div>
             </form>
         </div>

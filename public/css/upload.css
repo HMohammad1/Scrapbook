@@ -11,4 +11,41 @@
     width: 100%;
     background-size: cover;
     background-position: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+}
+
+.img-btn{
+
+    height: 40px;
+    width: 125px;
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 21px;
+    border: 2px solid red;
+
+    display: block;
+    margin: 0 auto;
+
+    margin-top: 20px;
+
+}
+
+.img-btn.cancel{
+
+    color: red;
+    background-color: #fff;
+
+}
+
+.img-alert{
+    text-align: center;
+
+}
+
+.add-post{
+
+    margin-top: 150px !important;
+
 }
