@@ -7,11 +7,12 @@
     height: 100%;
     background-color: #f8f8f8;
     overflow-y: scroll;
-
+    margin-left: 25%;
 }
 
 .no-scroll-bar::-webkit-scrollbar {
     display: none;
+    -webkit-appearance: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
@@ -58,7 +59,6 @@
 
 .all-comments {
     width: 100%;
-    border-bottom: 1px solid black;
 }
 
 .react-counter{
@@ -165,6 +165,7 @@
 
     .post-holder{
         width: 100vw !important;
+        margin: 0;
     }
 }
 
