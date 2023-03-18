@@ -1,0 +1,26 @@
+.comment {
+    background: white;
+    border-radius: 10px;
+
+}
+
+.comment-pfp{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid red;
+    margin-left: 95%;
+}
+
+#commenter-dn {
+    display: none;
+    text-align: center;
+    border: 1px solid black;
+    width: 100px;
+    margin-left: 80%;
+    border-radius: 10px;
+}
+
+.commenter-profile:hover + #commenter-dn{
+    display: block;
+}
