@@ -153,6 +153,7 @@ $(document).ready(function () {
       ) {
         return true;
       } else {
+        e.preventDefault()
         return false;
       }
     });
