@@ -40,7 +40,6 @@
         <div class="row h-100">
             <div class="col-md-4 col-lg-3 col-xl-2 border border-dark p-1 sidebar">
                 <div class="row prog-bar"></div>
-                <%# if not logged in show login / signup fields %>
                 <% if(typeof(sidebar) !== 'undefined'){ %>
                     <% switch(sidebar) {
                         case 'profile': %>
@@ -58,10 +57,14 @@
                         case 'login': %>
                             <%- include("partials/sidebar/login"); %>
                             <% break;
+                        case 'addPostsPage': %>
+                            <%- include("partials/sidebar/addPostsPage"); %>
+                            <% break;
                         default: %>
                             <%- include("partials/sidebar/menu"); %>
                             <% break;
                     } %>
+                <%# if not logged in show login / signup fields %>
                 <% } else if(user.userID == 0){ %>
                     <%- include("partials/sidebar/login"); %>
                 <% } else { %>
