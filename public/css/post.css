@@ -10,8 +10,19 @@
 
 }
 
-.post-heading{
+.no-scroll-bar::-webkit-scrollbar {
+    display: none;
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scroll-bar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.post-heading{
+    font-size: 40px;
+    font-weight: bold;
     height: 60px;
     width: 100%;
     text-align: center;
@@ -22,24 +33,18 @@
 
     height: 700px;
     width: 100%;
-    -webkit-box-shadow: 0 10px 5px #888888;
-    -moz-box-shadow: 0 10px 5px #888888;
-    box-shadow: 0 10px 5px #888888;
+    border-bottom: 1px solid black;
 }
 
 .post-reactions{
     height: 80px;
     width: 100%;
-    -webkit-box-shadow: 0 10px 5px #888888;
-    -moz-box-shadow: 0 10px 5px #888888;
-    box-shadow: 0 10px 5px #888888;
+    border-bottom: 1px solid black;
 }
 
 .post-desc {
     width: 100%;
-    -webkit-box-shadow: 0 10px 5px #888888;
-    -moz-box-shadow: 0 10px 5px #888888;
-    box-shadow: 0 10px 5px #888888;
+    border-bottom: 1px solid black;
 }
 
 .reaction > .bi{
@@ -53,9 +58,7 @@
 
 .all-comments {
     width: 100%;
-    -webkit-box-shadow: 0 10px 5px #888888;
-    -moz-box-shadow: 0 10px 5px #888888;
-    box-shadow: 0 10px 5px #888888;
+    border-bottom: 1px solid black;
 }
 
 .react-counter{
@@ -164,3 +167,6 @@
         width: 100vw !important;
     }
 }
+
+
+

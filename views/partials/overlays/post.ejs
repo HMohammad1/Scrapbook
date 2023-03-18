@@ -2,11 +2,11 @@
 <link rel="stylesheet" href="/css/post.css">
 
 <div class="map-overlay">
-    <div class="post-holder" id="<%= post.postID %>">
-        <div class="container">
+    <div class="post-holder no-scroll-bar" id="<%= post.postID %>">
+        <div class="container p-0">
             <div class="row">
                 <div class="col post-heading">
-                    <h1><%= post.title %></h1>
+                    <%= post.title %>
                 </div>
             </div>
             <div class="row img-holder-main carousel slide p-1">
@@ -32,14 +32,14 @@
                     </button>
                 </div>
             </div>
-            <div class="row post-reactions pt-4">
+            <div class="row post-reactions p-4">
                 <%- include('../post/reactions', {reacts: post.reacts, user: user}); %>
             </div>
             <div class="row post-desc pt-5">
 
                 <div class="col">
                     <div class="row">
-                        <div class="col">
+                        <div class="col px-3">
                             <%= post.desc %>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row all-comments pt-3">
+            <div class="row all-comments p-3">
                 <div class="col">
                     <div class="post-comments">
                         <div class="spinner-border text-danger" role="status">

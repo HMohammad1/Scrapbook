@@ -2,7 +2,7 @@
 
 <% comments.forEach(comment => { %>
 
-    <div class="row comment mt-2">
+    <div class="row comment mt-5">
         <div class="col comment-text">
             <%= comment.text %>
         </div>
@@ -10,7 +10,7 @@
     <div class="row commenter-profile pb-2">
         <div class="col d-inline-block comment-pfp-holder">
             <img class="comment-pfp" src="<%= comment.profile.pfp %>"/>
-            <%= comment.profile.display %>
+            <a href="/profile/<%= comment.profile.username %>"> <%= comment.profile.display %> </a>
         </div>
 <!--        <div class="col-2 comment-name-holder">-->
 <!--            -->
