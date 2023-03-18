@@ -1,3 +1,5 @@
+<script type="text/javascript" src="/js/upload.js"></script>
+<link rel="stylesheet" href="/css/upload.css">
 <div class="container">
     <div class="row p-0">
         <div class="col-12 justify-content-center">
@@ -9,7 +11,21 @@
             <form name="createPost" action="/API/upload" enctype="multipart/form-data" method="post">
                 <input class="form-control" id="title" name="title" placeholder="Title"/>
                 <label class="form-label"></label>
-                <input class="form-control" type="file" id="postImg" name="postImg" style="height: 300px">
+                <div class="row carousel slide">
+                    <div class="carousel-inner">
+                        <div class="carousel-item input-holder active">
+                            <input class="multi-input form-control" type="file" accept=".png,.jpg,.jpeg" id="postImg" name="postImg" multiple style="height: 300px">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
                 <label class="form-label"></label>
                 <textarea class="form-control" id="textArea" name="description" rows="4" placeholder="Add a description to your post"></textarea>
                 <br>

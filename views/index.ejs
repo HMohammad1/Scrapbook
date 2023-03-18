@@ -41,21 +41,32 @@
             <div class="col-md-4 col-lg-3 col-xl-2 border border-dark p-1 sidebar">
                 <div class="row prog-bar"></div>
                 <%# if not logged in show login / signup fields %>
-                <% if(typeof(sidebar) !== 'undefined' && sidebar == "profile"){ %>
-                    <%- include("partials/profile", {profile: profile, myprofile: myprofile, openPost: openPost}); %>
-                <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "friends"){ %>
-                    <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
-                <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "add-friend"){ %>
-                    <%- include("partials/sidebar/addFriends"); %>
-                <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "settings"){ %>
-                    <%- include("partials/sidebar/settings"); %>
-                <% } else if(typeof(sidebar) !== 'undefined' && sidebar == "addPostsPage"){ %>
-                    <%- include("partials/sidebar/addPostsPage"); %>
-                <%} else if (typeof(sidebar) !== 'undefined' && sidebar == 'login'){ %>
+                <% if(typeof(sidebar) !== 'undefined'){ %>
+                    <% switch(sidebar) {
+                        case 'profile': %>
+                            <%- include("partials/profile", {profile: profile, myprofile: myprofile, openPost: openPost}); %>
+                            <% break;
+                        case 'friends': %>
+                            <%- include("partials/sidebar/friends", {friends: friends, empty: empty}); %>
+                            <% break;
+                        case 'add-friend': %>
+                            <%- include("partials/sidebar/addFriends"); %>
+                            <% break;
+                        case 'settings': %>
+                            <%- include("partials/sidebar/settings"); %>
+                            <% break;
+                        case 'login': %>
+                            <%- include("partials/sidebar/login"); %>
+                            <% break;
+                        default: %>
+                            <%- include("partials/sidebar/menu"); %>
+                            <% break;
+                    } %>
+                <% } else if(user.userID == 0){ %>
                     <%- include("partials/sidebar/login"); %>
                 <% } else { %>
                     <%- include("partials/sidebar/menu"); %>
-                <% } %>
+                <% } %>  
             </div>
             <div class="col-md-8 col-lg-9 col-xl-10 p-0">
 
