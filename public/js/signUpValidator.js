@@ -1,6 +1,8 @@
 // function that takes one input and validate if password contain all vaild lettersa
 $(document).ready(function () {
-  form.addEventListener('submit',(e) => {
+// disable button in form 
+  submit.setAttribute('disabled','disabled');
+  signupForm.addEventListener('submit',(e) => {
 
     // Validate Username
     $("#usercheck").hide();
@@ -135,25 +137,48 @@ $(document).ready(function () {
       emailErr = true;
     } else {
       email.classList.add("is-invalid");
+      
       emailErr = false;
     }
   });
+  // DOB validation
+  function validateConfirmPassword() {
+  let dateError = true;
+  var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+  if (!(date_regex.test(DOB))) {
+    dateError == false;
+    $("#dobcheck").show();
+    $("#dobcheck").html("**You have to be over 16 years old");
+    $("#dobcheck").css("color", "red");
+    return false;
+  } else {
+    dateError == true;
+    $("#dobcheck").hide();
+    return true;
+  }
+}
    
     // Submit button
-    $("#submitbtn").click(function () {
+    $("#submit").click(function () {
       validateUsername();
       validatePassword();
       validateConfirmPassword();
       validateEmail();
+      validateConfirmPassword();
       if (
         usernameError == true &&
         passwordError == true &&
         confirmPasswordError == true &&
-        emailError == true
+        emailError == true &&
+        dateError == true
       ) {
+        // enable button
+        submit.removeAttribute('disabled');
         return true;
       } else {
+        // disable
         e.preventDefault();
+        submit.setAttribute('disabled','disabled');
         return false;
       }
     });
