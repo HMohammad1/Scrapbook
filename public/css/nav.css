@@ -64,6 +64,10 @@ a, a:link, a:visited {
     justify-content: center;
 }
 
+.nav-logo {
+    font-size: 40px;
+}
+
 .menu-togg{
 
     width: 10vw;
@@ -162,11 +166,16 @@ a, a:link, a:visited {
     text-align: center;
 }
 
+.content {
+    text-align: center;
+}
+
 
 @media (max-width: 500px) {
 
     .nav-btn{
         display: block;
+        alignment: left;
     }
 
     .page-content{
@@ -195,6 +204,10 @@ a, a:link, a:visited {
 
         margin-top: 400px;
 
+    }
+
+    .nav-logo {
+        font-size: 30px;
     }
 
 }
