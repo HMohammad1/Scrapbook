@@ -8,7 +8,7 @@
                     <%= post.title %>
                 </div>
             </div>
-            <div class="row img-holder-main carousel slide p-1">
+            <div class="row img-holder-main carousel slide p-0">
                 <div class="col">
                     <div class="carousel-inner">
                         <% if (post.media) { %>
@@ -34,7 +34,7 @@
             <div class="row post-reactions p-4">
                 <%- include('../post/reactions', {reacts: post.reacts, user: user}); %>
             </div>
-            <div class="row post-desc pt-5">
+            <div class="row post-desc pt-2">
 
                 <div class="col">
                     <div class="row">
@@ -43,13 +43,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col px-3">
                             <div class="row add-comment">
                                 <div class="col">
                                     <div class="row add-comment">
                                         <textarea rows="4" cols="70" type="text" name="comment" id="comment" placeholder="Add a comment" class="form-control comment-input"></textarea>
                                     </div>
-                                    <div class="row comment-btn-holder">
+                                    <div class="row comment-btn-holder px-3">
                                         <button class="btn comment-btn cancel" disabled="disabled">Cancel</button>
                                         <button class="btn comment-btn add" disabled="disabled">Post</button>
                                     </div>

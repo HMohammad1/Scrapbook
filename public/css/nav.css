@@ -21,6 +21,11 @@ body{
 
 }
 
+a, a:link, a:visited {
+    color: black;
+    text-decoration: none;
+}
+
 .sidebar{
     z-index: 5;
     background-color: #f8f8f8;
@@ -57,6 +62,10 @@ body{
 
     background-color: #333d;
     justify-content: center;
+}
+
+.nav-logo {
+    font-size: 40px;
 }
 
 .menu-togg{
@@ -103,6 +112,8 @@ body{
     margin-right: 0px !important;
 
 }
+
+
 
 .profile-icon{
     width: 50px;
@@ -157,11 +168,16 @@ body{
     text-align: center;
 }
 
+.content {
+    text-align: center;
+}
+
 
 @media (max-width: 500px) {
 
     .nav-btn{
         display: block;
+        alignment: left;
     }
 
     .page-content{
@@ -190,6 +206,10 @@ body{
 
         margin-top: 400px;
 
+    }
+
+    .nav-logo {
+        font-size: 30px;
     }
 
 }

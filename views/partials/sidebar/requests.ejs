@@ -1,10 +1,12 @@
 <script type ="text/javascript" src="/js/requests.js"></script>
 <link rel="stylesheet" href="/css/addFriend.css">
 <div class="row prog-bar"></div>
+<a href="/">
 <div class="row menu-item d-inline-block" id="friend-requests">
     <i class="menu-icon bi bi-person-fill-add"></i>
     <span class="menu-text">Friend Requests</span>
 </div>
+</a>
 <% requests.forEach(request => { %>
     <div class="row friend-result d-inline-block pt-2" id="profile/<%= request.profile.username %>">
         <img src="<%= request.profile.pfp %>" class="profile-icon">
