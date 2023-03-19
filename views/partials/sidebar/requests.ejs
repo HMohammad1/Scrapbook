@@ -3,7 +3,7 @@
 <div class="row prog-bar"></div>
 <div class="row menu-item d-inline-block" id="friend-requests">
     <i class="menu-icon bi bi-person-fill-add"></i>
-    <span class="menu-text">Friend Requests</span>
+    <a href="/"><span class="menu-text">Friend Requests</span></a>
 </div>
 <% requests.forEach(request => { %>
     <div class="row friend-result d-inline-block pt-2" id="profile/<%= request.profile.username %>">

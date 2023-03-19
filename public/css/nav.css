@@ -21,6 +21,11 @@ body{
 
 }
 
+a, a:link, a:visited {
+    color: black;
+    text-decoration: none;
+}
+
 .sidebar{
     z-index: 5;
     background-color: #f8f8f8;

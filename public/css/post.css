@@ -12,7 +12,8 @@
 
 .no-scroll-bar::-webkit-scrollbar {
     display: none;
-    -webkit-appearance: none;
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
@@ -34,18 +35,18 @@
 
     height: 700px;
     width: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #ccc;
 }
 
 .post-reactions{
     height: 80px;
     width: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #ccc;
 }
 
 .post-desc {
     width: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #ccc;
 }
 
 .reaction > .bi{
