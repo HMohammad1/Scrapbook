@@ -20,6 +20,11 @@ config({path: `.env.${process.env.NODE_ENV}`});
 // for parsing form data
 app.use(formidable());
 
+
+// support for multipart forms
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.urlencoded({extended: true}));
+
 // setup session to track user details
 app.use(
   session({
@@ -56,13 +61,12 @@ app.get("/application", (req, res) => {
     res.render("application");
 });
 
-app.get("/addPost", (req, res) => {
-    res.render("addPost");
-});
-
+// for parsing multipart forms
+var multer = require('multer');
 
 //dynamic routing for public files
 app.use(express.static(__dirname + "/public"));
+
 
 
 const router = require("./API/routes.js");
