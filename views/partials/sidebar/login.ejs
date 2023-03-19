@@ -14,7 +14,7 @@
                         <input id="lname" class="col form-control" name="lname" placeholder="Last Name">
                     </div>
 <!-- -------------------------- Validated data -->
-                        <label for="email"><span STYLE="font-size:0.5em;">(required, invaild email)</span> <% if (typeof(emailError) !== 'undefined' && emailError === true) { %>
+                        <label for="email"><span STYLE="font-size:0.5em;color: red;">(required, invaild email)</span> <% if (typeof(emailError) !== 'undefined' && emailError === true) { %>
                             <%= message %>
                         <% } %> </label>
                         <input id="email" name="email" class="form-control" placeholder="Email Address" required>
@@ -23,15 +23,15 @@
                                 Your email must be a valid email!
                          </label> -->
 
-                        <label for="DOB"><span STYLE="font-size:0.5em;">(required, You need to be older then 16 years old)</span></label>
+                        <label for="dobcheck"><span STYLE="font-size:0.5em;color: red;">(required, You need to be older then 16 years old)</span></label>
                         <input type="date" id="DOB" class="form-control"name="DOB" required/>
                          <!-- <label id="dobcheck" style="color: red;">
                             **Username is missing!
                         </label> -->
                 </div>
 
-                <div class="username">
-                    <label for="username"><span STYLE="font-size:0.5em;">(required, need at least 3 charcaters)</span> <% if (typeof(usernameError) !== 'undefined' && usernameError === true) { %>
+                <div class="user">
+                    <label for="usercheck"><span STYLE="font-size:0.5em;color: red;">(required, need at least 3 charcaters)</span> <% if (typeof(usernameError) !== 'undefined' && usernameError === true) { %>
                             <%= message %>
                         <% } %> </label>
                     <input id="username" name="username" class="form-control" placeholder="Username" required/>
@@ -43,12 +43,12 @@
                 <div class="contact-details">
                 </div>
                 <div class="password">
-                    <label for="pw1"><span STYLE="font-size:0.5em">(required, invalid password)</span></label>
+                    <label for="passcheck"><span STYLE="font-size:0.5em; color: red;">(required, invalid password)</span></label>
                     <input type="password" id="pw1" name="pw1" class="form-control" placeholder="Password" required/>
                     <!-- <label id="passcheck" style="color: red;">
                         **Password is missing!
                     </label> -->
-                    <label for="pw2"><span STYLE="font-size:0.5em">(required, password do not match)</span> <% if (typeof(passwordError) !== 'undefined' && passwordError === true) { %>
+                    <label for="passcheck2"><span STYLE="font-size:0.5em; color: red;">(required, password do not match)</span> <% if (typeof(passwordError) !== 'undefined' && passwordError === true) { %>
                             <%= message %>
                         <% } %> </label>
                     <input  type="password" id="pw2" name="pw2" class="form-control" placeholder="Confirm Password" required/>
