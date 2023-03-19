@@ -31,6 +31,7 @@ router.get("/API/updateMap", mapServices.updateMap);
 router.get("/API/post/:ID", postServices.getPostByID);
 router.post("/API/upload", postServices.createPost);
 
+
 // get all posts by a user
 router.get("/API/posts/:userID", postServices.getUserPosts);
 
@@ -119,6 +120,19 @@ router.get("/login", (req,res) =>{
     
 });
 
+router.get("/login?next=:next", (req,res) =>{
+    // redir if logged in
+    if(req.session.user.userID != 0){
+        return res.redirect(302, `/profile/${req.session.user.username}`);
+    }
+    else{
+
+        return res.render("index", {sidebar: "login"});
+    }
+    
+});
+
+
 router.get("/add-friend", (req, res) =>{
 
     // check user is logged in
@@ -144,7 +158,7 @@ router.get("/settings", (req, res) =>{
 router.get("/upload", (req, res) =>{
 
     // check user is logged in
-    if(!req.session.loggedIn){
+    if(req.session.user.userID == 0){
         return res.redirect(302, '/login');
     }
 

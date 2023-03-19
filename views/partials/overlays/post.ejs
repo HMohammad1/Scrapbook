@@ -12,8 +12,8 @@
                 <div class="col">
                     <div class="carousel-inner">
                         <% if (post.media) { %>
-                            <% post.media.forEach(src => { %>
-                                <div class="carousel-item active">
+                            <% post.media.forEach((src, index) => { %>
+                                <div class="carousel-item <% if (index == 0) { %>active<% } %>">
                                     <img src="<%= src %>" style="height: 695px" class="d-block w-100" alt="...">
                                 </div>
                             <% }) %>

@@ -12,6 +12,7 @@
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
     "icons": "^1.0.0",
+    "multer": "1.4.3",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.20",
     "path": "^0.12.7"

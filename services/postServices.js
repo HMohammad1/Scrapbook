@@ -20,33 +20,42 @@ const { array } = require('yargs');
 const { areFriends } = require('../DAOs/userDAO.js');
 
 // moves an image/video into a public folder that corresponds to its postID
-function uploadPostMedia(postID, data, callback){
+function uploadPostMedia(postID, fileData, callback){
 
     // init array for holding uploaded paths
     links = [];
-
-    var rawIMG = fs.readFileSync(data.path);
-
     // make dir if not exists
     var uploadDir =  path.join(__dirname, `../public/img/p/${postID}`);
     if(!fs.existsSync(uploadDir)){
         fs.mkdirSync(uploadDir, 0744);
     }
+    filesToUpload = Object.keys(fileData).length;
+    for(const fileKey in fileData){
 
-    var filename = encodeURIComponent(data.name.replace(/\s/g, "-"));
-    var newPath = path.join(uploadDir, `/${filename}`);
+        const data = fileData[fileKey];
 
-    fs.writeFile(newPath, rawIMG, function(err){
-        if(err){
-            return callback(err, null);
-        }
-        else{
-            // insert new image link to link array
-            links.push(`/img/p/${postID}/${filename}`);
-            return callback(null, links);
-        }
+        var rawIMG = fs.readFileSync(data.path);
 
-    });
+        var filename = encodeURIComponent(data.name.replace(/\s/g, "-"));
+        var newPath = path.join(uploadDir, `/${filename}`);
+
+        fs.writeFile(newPath, rawIMG, function(err){
+            if(err){
+                // allows to fail gracefully
+                console.log(err);
+                filesToUpload--;
+            }
+            else{
+
+                var uploadedPath = `/img/p/${postID}/${data.name}`;
+                // insert new image link to link array
+                links.push(uploadedPath);
+                if(links.length == filesToUpload){
+                    return callback(null, links);
+                }
+            }
+        });
+    };
 }
 
 
@@ -90,37 +99,44 @@ const createPost = (req, res) => {
     // userID = 2005151994;
     // coords = [55.909095, -3.319584];
 
+
     postDAO.insertPost(postID, userID, req.fields.title, req.fields.description, coords[0], coords[1], function(err, result){
 
         if(err){
-            throw err;
+            console.log(err);
+            return res.sendStatus(500);
         }
 
-        if(!req.files.postImg.length){
+        if(req.files){
 
-            uploadPostMedia(postID, req.files.postImg, function(err, links){
+            uploadPostMedia(postID, req.files, function(err, links){
 
                 if(err){
-                    throw err;
+                    console.log(err);
+                    return res.sendStatus(500);
                 }
 
                 // if all files uploaded okay then insert links to DB
                 postDAO.insertPostMedia(postID, links, function(err, result){
 
                     if(err){
-                        throw err;
+                        console.log(err);
+                        return res.sendStatus(500);
                     }
                     else{
 
-                        // get request to fetch post
-                        res.redirect(302, `/profile/${req.session.user.profile.username}/${postID}`);
+                        // link to new post
+                        res.status(200);
+                        redir = `/profile/${req.session.user.profile.username}/${postID}`;
+                        console.log(redir);
+                        return res.send(redir);
                     }
 
                 });
             });
-        }
-        else{
-            res.send("Multiple file uploads are not currently supported");
+        }else{
+            // get request to fetch post
+            return res.redirect(302, `/profile/${req.session.user.profile.username}/${postID}`);
         }
 
     });
@@ -160,6 +176,7 @@ const getUserPosts = (req, res) =>{
                     posts.push(ProfileRowToPost(row, profile));
                 });
                 res.status(200);
+                // generate link for redirect
                 return res.render("partials/userPosts", {posts: posts, user: req.session.user});
             }
 

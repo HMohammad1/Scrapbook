@@ -21,30 +21,32 @@ function insertPost(postID, userID, title, desc, lat, long, callback){
 // add media to an existing post -- media is an array containing links to the media that has been uploaded to the server
 function insertPostMedia(postID, links, callback){
 
-    let query = "INSERT INTO post_media (postID, link, pos) VALUES (?,?,?)";
+    let query = "INSERT INTO post_media (postID, link, pos) VALUES ";
+    var params = [];
 
-    // init counter
-    var pos = 1;
-    links.forEach(link => {
-        
-        // populate params array with new variables
-        params = [postID, link, pos];
-        // exectute query
-        DB.executeQuery(query, params, function(err, rows){
-            if(err){
-                // if error return here
-                return callback(err, false)
-            }
-            else{
-                // if not move to next item in array
-                pos++;
-            }
-        });
+    // build the query
+    links.forEach((link, index) => {
+
+        // append new vaulue set to query
+        query += "(?,?,?),";
+
+        // add to params array
+        params.push(postID, link, index+1);
+
     });
 
-    // if all media inserted then return true
-    return callback(null, true);
+    // trim trailing comma
+    query = query.replace(new RegExp(',$'), ";");
 
+    DB.executeQuery(query, params, function(err, rows){
+        if(err){
+            // if error return here
+            return callback(err, false)
+        }
+        else{
+            return callback(null, true);
+        }
+    });
 }
 
 function postIDexists(postID, callback){

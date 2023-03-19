@@ -63,7 +63,6 @@ $(document).ready(function(){
                 Object.keys(files).forEach(i => {
 
                     var file = files[i];
-                    console.log(file);
 
                     // once file read add own input to carousel
                     var fr = new FileReader;
@@ -132,4 +131,46 @@ $(document).ready(function(){
         first = true;
 
     });
+
+    // try submitting with ajax
+    $("#uploadBtn").click(function(){
+
+        var formData = new FormData();
+
+        // add each file to form
+        files = $("#postImg").prop('files');
+        for(i=0; i<files.length; i++){
+            formData.append(`img${i}`, files[i], files[i].name);
+        }
+
+        // add title and description
+        formData.append('title', $("#title").val());
+        formData.append('description', $("#descr").val());
+        
+        $.ajax({
+            url: `/API/upload`, 
+            type: "POST",
+            dataType: "text",
+            contentType: false,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            processData: false,
+            contentType: false,
+            data: formData,
+        }).done(function(data, textStatus, xhr){
+
+            if(xhr.status == 200){
+                window.location.replace(data);
+            }
+            else{
+                window.alert("Something went wrong!");
+            }
+        });
+
+
+
+    });
+
 });
