@@ -61,8 +61,7 @@ app.get("/application", (req, res) => {
     res.render("application");
 });
 
-// for parsing multipart forms
-var multer = require('multer');
+
 
 //dynamic routing for public files
 app.use(express.static(__dirname + "/public"));

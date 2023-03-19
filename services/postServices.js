@@ -494,7 +494,7 @@ const addPostReact = (req, res) =>{
     var userID = req.session.user.userID;
 
     // check loggedin
-    if(userID = 0){
+    if(userID == 0){
         res.redirect(302, "/login");
     }
 

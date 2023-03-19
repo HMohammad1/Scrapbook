@@ -19,7 +19,9 @@
             <% } %>
         </div>
     </div>
-    <div class="col-2 add-reaction mt-3">
-        <button class="btn btn-lg btn-danger react-btn">Add Reaction</button>
-    </div>
+    <% if (user.userID != 0) { %>
+        <div class="col-2 add-reaction mt-3">
+            <button class="btn btn-lg btn-danger react-btn">Add Reaction</button>
+        </div>
+    <% } %>
 </div>

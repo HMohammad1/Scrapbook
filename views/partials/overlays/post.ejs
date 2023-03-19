@@ -42,21 +42,23 @@
                             <%= post.desc %>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col px-3">
-                            <div class="row add-comment">
-                                <div class="col">
-                                    <div class="row add-comment">
-                                        <textarea rows="4" cols="70" type="text" name="comment" id="comment" placeholder="Add a comment" class="form-control comment-input"></textarea>
-                                    </div>
-                                    <div class="row comment-btn-holder px-3">
-                                        <button class="btn comment-btn cancel" disabled="disabled">Cancel</button>
-                                        <button class="btn comment-btn add" disabled="disabled">Post</button>
+                    <% if (user.userID != 0) { %>
+                        <div class="row">
+                            <div class="col px-3">
+                                <div class="row add-comment">
+                                    <div class="col">
+                                        <div class="row add-comment">
+                                            <textarea rows="4" cols="70" type="text" name="comment" id="comment" placeholder="Add a comment" class="form-control comment-input"></textarea>
+                                        </div>
+                                        <div class="row comment-btn-holder px-3">
+                                            <button class="btn comment-btn cancel" disabled="disabled">Cancel</button>
+                                            <button class="btn comment-btn add" disabled="disabled">Post</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <% } %>
                 </div>
             </div>
             <div class="row all-comments p-3">
