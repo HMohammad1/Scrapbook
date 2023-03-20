@@ -1,4 +1,6 @@
     <link rel="stylesheet" href="/css/login.css">
+    <script type ="text/javascript" src="/public/js/signUpValidator.js"></script>
+    
     <div class="col userDetails">
         <div class="tab">
             <button class="tablinks login active">Login</button>
@@ -6,7 +8,7 @@
         </div>
         <div id="signup" class="tabcontent">
 <!-- -------------------------------Signup Form -->
-            <form id="singupForm" name="contact-details" action="/API/signup" method="post">
+            <form id="signupForm" name="contact-details" action="/API/signup" method="post">
                 <div class="personal-info">
                     <div class="row contact-name">
 
@@ -58,7 +60,7 @@
                 </div>
                 <div class="row">
                     <!-- <button class="btn btn-danger" disabled="disabled" type="submit" name="submitBtn" id="submitBtn"> Sign-up </button> -->
-                    <button class="btn btn-danger" type="submit" name="submitBtn" id="submit"> Sign-up </button>
+                    <button class="btn btn-danger" type="submit" name="submit" id="submit"> Sign-up </button>
                
                 </div>
             </form>
