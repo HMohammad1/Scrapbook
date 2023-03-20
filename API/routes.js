@@ -190,7 +190,7 @@ router.get("/API/profile/:username", (req, res) =>{
 router.get("/API/friends", (req, res) =>{
 
     // check user is logged in
-    if(!req.session.loggedIn){
+    if(req.session.user.userID == 0){
         return res.status(403);
     }
 

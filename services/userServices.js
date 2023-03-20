@@ -502,7 +502,7 @@ const removeFriend = (req, res) =>{
 function getFriendProfiles(userID, callback){
 
     // check loggedin
-    if(userID = 0){
+    if(userID == 0){
         res.redirect(302, "/login");
     }
     
