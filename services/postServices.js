@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { array } = require('yargs');
 const { areFriends } = require('../DAOs/userDAO.js');
+const mapPin = require('../objects/mapPin.js');
 
 // moves an image/video into a public folder that corresponds to its postID
 function uploadPostMedia(postID, fileData, callback){
@@ -770,18 +771,36 @@ function canViewPost(user, post){
     }
 }
 
-/* const getAllPosts = (req, res) => {
+const getAllPosts = (req, res) => {
 
     postDAO.getAllPosts(function(err, result) {
-        if (result) {
-            return result;
-        } else {
+        if(!rows){
+            res.status(404);
+            return;
+        }
+        else if(err){
             console.log(err);
-
-            return null;
+            res.status(500);
+            return;
+        }
+        else{
+            // init array to hold pins
+            pins = [];
+            // create object for each row with existing profile
+            rows.forEach(row => {
+                rowToPost(row, function(post){
+                    temp = new mapPin(post.postID, post);
+                    pins.push(temp);
+                    if(pins.length == rows.length){
+                        res.status(200);
+                        return res.send(pins);
+                    }
+                });
+            });
+          
         }
     })
-} */
+}
 
 module.exports = {
 
