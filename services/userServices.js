@@ -212,6 +212,7 @@ const updateProfile = (req, res) =>{
                     else{
                         req.session.user.profile.bio = newBio;
                         req.session.user.profile.disp_name = newDisp;
+                        req.session.user.profile.pfp = newPFP;
                         req.session.user.profile.colour = newColour;
                         req.session.save();
                         res.status(200);

@@ -221,7 +221,7 @@ function getPostComments(postID, callback){
 }
 
 // gets all posts
-/* function getAllPosts(callback) {
+function getAllPosts(callback) {
     let query = `
     SELECT  p.postID AS postID,
             p.posted_by as userID,
@@ -249,7 +249,7 @@ function getPostComments(postID, callback){
         }
 
     });
-} */
+}
 
 // gets all posts a user has made
 function getAllUserPosts(userID, callback){
