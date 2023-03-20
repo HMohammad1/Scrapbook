@@ -1,7 +1,7 @@
 // function that takes one input and validate if password contain all vaild lettersa
 $(document).ready(function () {
 // disable button in form 
-  let submitBtn = $("#submit").
+  let submitBtn = $("#submit");
   submitBtn.setAttribute('disabled','disabled');
   signupForm.addEventListener('submit',(e) => {
 
