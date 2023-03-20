@@ -82,6 +82,7 @@ function getPosts() {
     posts = []
     $.get(`/API/getAllPosts`, function(data, textStatus, xhr){
         if(xhr.status == 200){
+            console.log(data);
            posts = data;
         }
         else{

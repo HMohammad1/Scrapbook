@@ -234,7 +234,8 @@ function getAllPosts(callback) {
             GROUP_CONCAT(m.link) AS 'media'
     FROM posts AS p
     LEFT JOIN post_media AS m
-    ON p.postID = m.postID`;
+    ON p.postID = m.postID
+    GROUP BY p.postID`;
 
     let params = [];
 

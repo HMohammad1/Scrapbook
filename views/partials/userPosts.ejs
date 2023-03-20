@@ -4,26 +4,7 @@
         <div class="row posts-row d-flex justify-content-center">
     <% } %>
 
-    <div class="col post-icon" id="<%= post.postID %>" data-lat="<%= post.coords[0] %>" data-long="<%= post.coords[1] %>">
-        <div class="row post-title justify-content-center">
-            <h3><%= post.title %></h3>
-        </div>
-        <div class="row img-holder">
-            <img src="
-            <% if (post.media) { %>
-                <%= post.media[0] %>
-            <% } %>
-            " class="post-img">
-        </div>
-        <div class="row post-details post-font-size">
-            <div class="col post-coords">
-                <%= post.coords[0] %>, <%= post.coords[1] %>
-            </div>
-            <div class="col post-date post-font-size">
-                <%= post.date.toDateString() %>
-            </div>
-        </div>
-    </div>
+    <%- include('../post/postIcon', {post: post}); %>
 
     <% if (index % 2 === 1) { %>
         </div>
