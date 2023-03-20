@@ -473,10 +473,10 @@ function fetchAllFriendIDs(userID, callback){
 }
 
 
-function searchUsername(string, callback){
+function searchUsername(string, userID, callback){
 
-    let query = "SELECT userID FROM user_logins WHERE username LIKE ? ORDER BY username ASC";
-    let params = [string+'%'];
+    let query = "SELECT userID FROM user_logins WHERE username LIKE ? AND NOT userID = ? ORDER BY username ASC";
+    let params = [string+'%', userID];
 
     DB.executeQuery(query, params, function(err, rows, fields){
         

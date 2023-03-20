@@ -597,7 +597,7 @@ const searchUsername = (req, res) =>{
         return res.status(200);
     }
 
-    userDAO.searchUsername(string, function(err, rows){
+    userDAO.searchUsername(string, req.session.user.userID, function(err, rows){
 
         if(!err){
 
