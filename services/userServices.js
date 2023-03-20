@@ -371,7 +371,7 @@ const logout = (req, res) =>{
 const sendFriendRequest = (req, res) => {
 
     // check loggedin
-    if(userID = 0){
+    if(userID == 0){
         res.redirect(302, "/login");
     }
     var userID = req.session.user.userID;
@@ -402,7 +402,7 @@ const updateFriendRequest = (req, res) =>{
 
         // check user is logged in
         // check loggedin
-        if(userID = 0){
+        if(userID == 0){
             res.redirect(302, "/login");
         }
     
@@ -429,7 +429,7 @@ const updateFriendRequest = (req, res) =>{
 function fetchAllPendingRequests(userID, callback){
 
         // check loggedin
-        if(userID = 0){
+        if(userID == 0){
             res.sendStatus(403);
         }
 
@@ -478,7 +478,7 @@ function fetchAllPendingRequests(userID, callback){
 const removeFriend = (req, res) =>{
         // check user is logged in
         // check loggedin
-        if(userID = 0){
+        if(userID == 0){
             res.redirect(302, "/login");
         }
     
