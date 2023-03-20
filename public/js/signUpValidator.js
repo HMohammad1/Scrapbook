@@ -3,6 +3,7 @@ $(document).ready(function () {
 // disable button in form 
   let submitBtn = $("#submit");
   submitBtn.setAttribute('disabled','disabled');
+  let signupForm = $("#signupForm")
   signupForm.addEventListener('submit',(e) => {
 
     // Validate Username
@@ -170,8 +171,7 @@ $(document).ready(function () {
         usernameError == true &&
         passwordError == true &&
         confirmPasswordError == true &&
-        emailError == true &&
-        dateError == true
+        emailError == true 
       ) {
         // enable button
         submitBtn.removeAttribute('disabled');
