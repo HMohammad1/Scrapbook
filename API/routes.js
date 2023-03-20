@@ -49,7 +49,7 @@ router.get("/API/addReact/:postID/:reaction", postServices.addPostReact);
 router.get("/API/removeReact/:postID", postServices.removePostReact);
 
 // get all posts
-//router.get("/API/posts/getAllPosts", postServices.getAllPosts);
+router.get("/API/getAllPosts", postServices.getAllPosts);
 
 // permanent menu item links
 router.get("/profile/:username", (req, res) =>{

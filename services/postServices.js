@@ -259,6 +259,12 @@ function rowToPost(postData, callback){
         postData.media = postData.media.split(',');
     }
 
+    if(postData.reacts){
+        reacts = formatReacts
+    }else{
+        reacts = null
+    } 
+
 
     // get profile
     userServices.getProfileByID(userID, function(profile){
@@ -272,7 +278,7 @@ function rowToPost(postData, callback){
             postData.posted, 
             postData.priv, 
             profile, 
-            formatReacts(postData.reacts, postData.left_by)
+            reacts
         );
         
         return callback(post);
@@ -773,7 +779,7 @@ function canViewPost(user, post){
 
 const getAllPosts = (req, res) => {
 
-    postDAO.getAllPosts(function(err, result) {
+    postDAO.getAllPosts(function(err, rows) {
         if(!rows){
             res.status(404);
             return;
@@ -812,7 +818,7 @@ module.exports = {
     getPostComments,
     addPostReact,
     removePostReact,
-    canViewPost
-    //getAllPosts
+    canViewPost,
+    getAllPosts
 
 }

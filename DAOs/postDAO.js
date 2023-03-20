@@ -231,7 +231,7 @@ function getAllPosts(callback) {
             p.latitude as 'lat',
             p.longitude as 'long',
             p.public as 'priv',
-            GROUP_CONCAT(m.link) AS 'media',,
+            GROUP_CONCAT(m.link) AS 'media'
     FROM posts AS p
     LEFT JOIN post_media AS m
     ON p.postID = m.postID`;
@@ -408,7 +408,7 @@ module.exports = {
     updateReact,
     removeReact,
     userReactedToPost,
-    getPostReacts
-    //getAllPosts
+    getPostReacts,
+    getAllPosts
 
 }
