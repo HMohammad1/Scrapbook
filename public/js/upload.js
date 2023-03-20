@@ -143,6 +143,10 @@ $(document).ready(function(){
             formData.append(`img${i}`, files[i], files[i].name);
         }
 
+        title = $("#title").text();
+        console.log(title);
+        return;
+
         // add title and description
         formData.append('title', $("#title").val());
         formData.append('description', $("#descr").val());

@@ -795,7 +795,7 @@ const getAllPosts = (req, res) => {
             // create object for each row with existing profile
             rows.forEach(row => {
                 rowToPost(row, function(post){
-                    temp = new mapPin(post.postID, post);
+                    temp = new mapPin(post.postID, post, post.coords);
                     pins.push(temp);
                     if(pins.length == rows.length){
                         res.status(200);
