@@ -69,9 +69,8 @@ a, a:link, a:visited {
 }
 
 .menu-togg{
-
-    width: 10vw;
-
+    /*width: 10vw;*/
+    margin: 0 auto;
 }
 
 .prog-bar{

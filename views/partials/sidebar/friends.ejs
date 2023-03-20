@@ -1,11 +1,13 @@
 <script type ="text/javascript" src="/js/friends.js"></script>
 <div class="row prog-bar"></div>
+<a href="/">
 <div class="row menu-item d-inline-block" id="hide-friends">
     <i class="menu-icon bi bi-caret-up-fill"></i>
     <span class="menu-text">Friends</span>
 </div>
+</a>
 <% friends.forEach(profile => { %>
-    <div class="row menu-item d-inline-block" id="profile/<%= profile.username %>">
+    <div class="row menu-item d-inline-block pt-2" id="profile/<%= profile.username %>">
         <img src="<%= profile.pfp %>" class="profile-icon">
         <span class="menu-text"><%= profile.username %></span>
     </div>

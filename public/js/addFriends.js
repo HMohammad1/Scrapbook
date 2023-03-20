@@ -37,11 +37,13 @@ $(document).ready(function(){
                     profiles.forEach(profile => {
                         $(".sidebar").append(`
                         <div class="row friend-result">
-                        <div class="col p-2">
+                        <div class="col-7 pt-4">
                         <img src="${profile.pfp}" class="profile-icon">
                             <span class="menu-text">${profile.username}</span>
-                            <button class="btn send-btn" id="${profile.userID}"> Add Friend </button>
                         </div>
+                        <div class="col-5 pt-5">
+                        <button class="btn send-btn" id="${profile.userID}"> Add Friend </button>
+</div>
                             
                         </div>`)
                     });
