@@ -1,7 +1,8 @@
 // function that takes one input and validate if password contain all vaild lettersa
 $(document).ready(function () {
 // disable button in form 
-  submit.setAttribute('disabled','disabled');
+  let submitBtn = $("#submit").
+  submitBtn.setAttribute('disabled','disabled');
   signupForm.addEventListener('submit',(e) => {
 
     // Validate Username
@@ -173,12 +174,12 @@ $(document).ready(function () {
         dateError == true
       ) {
         // enable button
-        submit.removeAttribute('disabled');
+        submitBtn.removeAttribute('disabled');
         return true;
       } else {
         // disable
         e.preventDefault();
-        submit.setAttribute('disabled','disabled');
+        submitBtn.setAttribute('disabled','disabled');
         return false;
       }
     });

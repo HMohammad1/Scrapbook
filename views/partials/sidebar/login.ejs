@@ -6,58 +6,60 @@
         </div>
         <div id="signup" class="tabcontent">
 <!-- -------------------------------Signup Form -->
-            <form id="singupForm" name="contact-details" action="/views/signup" method="post">
+            <form id="singupForm" name="contact-details" action="/API/signup" method="post">
                 <div class="personal-info">
                     <div class="row contact-name">
 
-                        <input id="fname" class="col form-control" name="fname" placeholder="First Name">
-                        <input id="lname" class="col form-control" name="lname" placeholder="Last Name">
+                        <input id="fname" class="col form-control" name="fname" placeholder="First Name" required>
+                        <input id="lname" class="col form-control" name="lname" placeholder="Last Name" required>
                     </div>
 <!-- -------------------------- Validated data -->
-                        <label for="email"><span STYLE="font-size:0.5em;color: red;">(required, invaild email)</span> <% if (typeof(emailError) !== 'undefined' && emailError === true) { %>
+                        <label for="email"><% if (typeof(emailError) !== 'undefined' && emailError === true) { %>
                             <%= message %>
                         <% } %> </label>
                         <input id="email" name="email" class="form-control" placeholder="Email Address" required>
-                         <!-- <label id="emailcheck" class="form-text
-                        text-muted invalid-feedback">
+                         <label for="emailcheck" id="emailcheck" style="color: red;font-size:0.5em;">
                                 Your email must be a valid email!
-                         </label> -->
+                         </label>
 
-                        <label for="dobcheck"><span STYLE="font-size:0.5em;color: red;">(required, You need to be older then 16 years old)</span></label>
+                        <!-- <label for="dobcheck"><span STYLE="font-size:0.5em;color: red;">(required, You need to be older then 16 years old)</span></label> -->
                         <input type="date" id="DOB" class="form-control"name="DOB" required/>
-                         <!-- <label id="dobcheck" style="color: red;">
-                            **Username is missing!
-                        </label> -->
+                         <label for="dobcheck" id="dobcheck" style="color: red;font-size:0.5em;">
+                            **You need to be over 16 years old
+                        </label>
                 </div>
 
                 <div class="user">
-                    <label for="usercheck"><span STYLE="font-size:0.5em;color: red;">(required, need at least 3 charcaters)</span> <% if (typeof(usernameError) !== 'undefined' && usernameError === true) { %>
+                    <label for="usercheck"> <% if (typeof(usernameError) !== 'undefined' && usernameError === true) { %>
                             <%= message %>
                         <% } %> </label>
                     <input id="username" name="username" class="form-control" placeholder="Username" required/>
-                     <!-- <label id="usercheck" style="color: red;">
+                     <label for="usercheck" id="usercheck" style="color: red; font-size: 0.5em;">
                             **Username is missing!
-                        </label> -->
+                        </label>
                     <input id="disp_name" name="disp_name" class="form-control" placeholder="Display Name" required/>
                 </div>
                 <div class="contact-details">
                 </div>
                 <div class="password">
-                    <label for="passcheck"><span STYLE="font-size:0.5em; color: red;">(required, invalid password)</span></label>
+                    <!-- <label for="passcheck"><span STYLE="font-size:0.5em; color: red;">(required, invalid password)</span></label> -->
                     <input type="password" id="pw1" name="pw1" class="form-control" placeholder="Password" required/>
-                    <!-- <label id="passcheck" style="color: red;">
+                    <label for="passcheck" id="passcheck" style="color: red; font-size: 0.5em;">
                         **Password is missing!
-                    </label> -->
-                    <label for="passcheck2"><span STYLE="font-size:0.5em; color: red;">(required, password do not match)</span> <% if (typeof(passwordError) !== 'undefined' && passwordError === true) { %>
+                    </label>
+                    <!-- <span STYLE="font-size:0.5em; color: red;">(required, password do not match)</span> -->
+                    <label for="passcheck2"> <% if (typeof(passwordError) !== 'undefined' && passwordError === true) { %>
                             <%= message %>
                         <% } %> </label>
                     <input  type="password" id="pw2" name="pw2" class="form-control" placeholder="Confirm Password" required/>
-                     <!-- <label id="passcheck2" style="color: red;">
-                        ** Password confirmation!
-                    </label> -->
+                     <label for="passcheck2" id="passcheck2" style="color: red; font-size: 0.5em;">
+                        ** Password does not match!
+                    </label>
                 </div>
                 <div class="row">
-                    <button class="btn btn-danger" disabled="disabled" type="submit" name="submit" id="submit"> Sign-up </button>
+                    <!-- <button class="btn btn-danger" disabled="disabled" type="submit" name="submitBtn" id="submitBtn"> Sign-up </button> -->
+                    <button class="btn btn-danger" type="submit" name="submitBtn" id="submit"> Sign-up </button>
+               
                 </div>
             </form>
         </div>
