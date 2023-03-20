@@ -99,7 +99,6 @@ p {
 
     margin-top: 20px;
     height: 60vh !important;
-
     overflow-y: scroll;
 
 }
@@ -172,6 +171,7 @@ p {
 
 .post-title{
     border-radius: 20px 20px 0px 0px;
+    font-size: 300px;
 }
 
 .post-details{

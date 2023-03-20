@@ -8,12 +8,14 @@
 </div>
 </a>
 <% requests.forEach(request => { %>
-    <div class="row friend-result d-inline-block pt-2" id="profile/<%= request.profile.username %>">
-        <img src="<%= request.profile.pfp %>" class="profile-icon">
-        <span class="menu-text"><%= request.profile.username %></span>
-        <div class="req-btns">
-            <button class="btn btn-danger req-btn accept" id="<%=request.reqID %>"> Accept </button>
+    <div class="row friend-result  pt-2" id="profile/<%= request.profile.username %>">
+        <div class="col-7">
+            <img src="<%= request.profile.pfp %>" class="profile-icon">
+            <span class="menu-text"><%= request.profile.username %></span>
+        </div>
+        <div class="req-btns col-5">
             <button class="btn btn-danger req-btn decline" id="<%=request.reqID %>"> Decline </button>
+            <button class="btn btn-danger req-btn accept" id="<%=request.reqID %>"> Accept </button>
         </div>
     </div>
 <% }) %>
