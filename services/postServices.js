@@ -770,6 +770,19 @@ function canViewPost(user, post){
     }
 }
 
+/* const getAllPosts = (req, res) => {
+
+    postDAO.getAllPosts(function(err, result) {
+        if (result) {
+            return result;
+        } else {
+            console.log(err);
+
+            return null;
+        }
+    })
+} */
+
 module.exports = {
 
     getPostByID,
@@ -781,5 +794,6 @@ module.exports = {
     addPostReact,
     removePostReact,
     canViewPost
+    //getAllPosts
 
 }
