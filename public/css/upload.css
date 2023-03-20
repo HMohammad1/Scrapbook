@@ -45,7 +45,11 @@
 }
 
 .add-post{
+    margin-top: 300px !important;
+}
 
-    margin-top: 350px !important;
-
+@media (max-width: 500px) {
+    .add-post{
+        margin-top: 50px !important;
+    }
 }
