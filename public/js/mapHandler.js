@@ -12,6 +12,8 @@ var notLoadMap = 0;
 
 var userMarker, userCircle;
 
+var posts = [];
+
 
 
 currentLocation();
@@ -80,23 +82,41 @@ function currentLocation() {
 
 function getPosts() {
     posts = []
+
     $.get(`/API/getAllPosts`, function(data, textStatus, xhr){
         if(xhr.status == 200){
-            console.log(data);
-           posts = data;
+            //console.log(data);
+            
+            
+            //posts = data;
+            if (posts.length != data.length) {
+                //console.log(data);
+                data.forEach(element => posts.push(element));
+
+            }
+            
+            //console.log(posts[0]);
+            //return data;
         }
         else{
             console.log(textStatus);
+
         }
         
     })
 
-    /* var posts = [{location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
+    
+    
+}
+
+/* var posts = [{location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
         {location: {lat: 55.95045275244971, lng: -3.1883441852294623}},
         {location: {lat: 55.95131777646914, lng: -3.1954681317944087}},
         {location: {lat: 55.952615276150276, lng: -3.193193619156272}}]; */
-    
-    console.log(posts);
+
+function returnPosts() {
+
+    //console.log(posts);
     return posts;
 }
 
@@ -129,7 +149,7 @@ function createLocationCircle(location) {
 
 
 function updateMarkers(location) {
-    var posts = getPosts();
+    posts = getPosts();
 
     removeMarkers();
     
@@ -245,6 +265,8 @@ function initMap() {
     // if no location parameter is passed in then use default location
     var location = {lat: getPosition()[0], lng: getPosition()[1]};
 
+    //console.log(location);
+
 
     // create map with location and map style
     map = new google.maps.Map(document.getElementById("map"), {
@@ -253,8 +275,11 @@ function initMap() {
         mapId: '4a11e687fb2c35f2',
         disableDefaultUI: true
     });
+
+    getPosts();
+
     
-    initializeMarkers();
+    setTimeout(initializeMarkers, 7000);
 
     // Create the DIV to hold the control.
     const centerControlDiv = document.createElement("div");
@@ -268,51 +293,40 @@ function initMap() {
 
 
     // function to add a marker
-    function addMarker(property) {
-
-
+    function addMarker(postObject) {
         
 
         // initialize marker
         var marker = null;
 
-        // if distance of location is over 50m of the current location then the marker is grey
-        if (over50(property, location)) {
-            marker = new google.maps.Marker({
-                position: property.location,
-                map: map,
-                icon: '../images/svg_markers/marker-dgrey.svg'
-            });
+        var coords = {lat: postObject.coords[0], lng: postObject.coords[1]};
 
-            // else marker is blue if within 50m
-        } else {
-            marker = new google.maps.Marker({
-                position: property.location,
-                map: map,
-                icon: '../images/svg_markers/marker-blue.svg'
-            });
-        }
-
-
-        // if property does have content, i.e. marker text
-        if (property.content) {
-
-            // create new detail window with content
-            const detailWindow = new google.maps.InfoWindow({
-                content: property.content
-            });
-
-            //detailWindow.open(map, marker);
-            // on mouse over display detail window 
-            marker.addListener("click", () => {
-                detailWindow.open(map, marker);
-            });
         
-            // on mouse off un display it
-            marker.addListener("mouseout", () => {
-                detailWindow.close(map, marker);
-            });
-        }
+
+        marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+            icon: '../images/svg_markers/marker-dgrey.svg',
+            id: postObject.postID
+        });
+
+        //console.log(postObject);
+
+        const detailWindow = new google.maps.InfoWindow({
+            content: "testing123"
+            //content: postObject.HTML
+        })
+
+        // on mouse over display detail window 
+        marker.addListener("mouseover", () => {
+            detailWindow.open(map, marker);
+        });
+    
+        // on mouse off un display it
+        marker.addListener("mouseout", () => {
+            detailWindow.close(map, marker);
+        });
+
         
         // return the created marker for marker cluster
         return marker;
@@ -325,26 +339,8 @@ function initMap() {
 
     function initializeMarkers() {
 
-       
-
-        
-        // marker array to store marker data
-        MarkerArray = [
-            /* {location:location, content: '<h2>You are here!</h2>'},  */
-            {location: {lat: 55.91329, lng: -3.32156}}, 
-            {location: {lat: 55.9118, lng: -3.3215}}, 
-            {location: {lat: 55.9109, lng: -3.3215}, content: '<h2>Heriot watt campus</h2>'}, 
-            {location: {lat: 55.9113, lng: -3.32}},
-            // town
-            {location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
-            {location: {lat: 55.95045275244971, lng: -3.1883441852294623}},
-            {location: {lat: 55.95131777646914, lng: -3.1954681317944087}},
-            {location: {lat: 55.952615276150276, lng: -3.193193619156272}},
-            // meadows
-            {location: {lat: 55.941777434166006, lng: -3.191200531846362}},
-            {location: {lat: 55.94029930899516, lng: -3.187595643223136}},
-            {location: {lat: 55.940767988893164, lng: -3.1867158784710568}}
-        ];
+        MarkerArray = returnPosts();
+        console.log(MarkerArray.length);
 
 
         // markers array to store created markers for the marker cluster
@@ -354,6 +350,7 @@ function initMap() {
         for (let i = 0; i < MarkerArray.length; i++) {
             markersArr.push(addMarker(MarkerArray[i]));
         };
+        
 
        
         updateCurrentLocationMarker(location);
@@ -467,7 +464,7 @@ $(document).ready(function(){
     // set location after page load
     //updateLocation();
 
-    getPosts();
+    //console.log(getPosts());
 
 });
 
@@ -497,3 +494,79 @@ function createCenterControl(map) {
     });
     return controlButton;
 }
+
+
+
+// ----------------------- OLD CODE -----------------------------
+
+
+// if distance of location is over 50m of the current location then the marker is grey
+        /* marker = new google.maps.Marker({
+            position: postObject.
+        }) */
+        
+
+        /* // initialize marker
+        var marker = null;
+
+        // if distance of location is over 50m of the current location then the marker is grey
+        if (over50(property, location)) {
+            marker = new google.maps.Marker({
+                position: property.location,
+                map: map,
+                icon: '../images/svg_markers/marker-dgrey.svg'
+            });
+
+            // else marker is blue if within 50m
+        } else {
+            marker = new google.maps.Marker({
+                position: property.location,
+                map: map,
+                icon: '../images/svg_markers/marker-blue.svg'
+            });
+        } */
+
+
+        /* // if property does have content, i.e. marker text
+        if (property.content) {
+
+            // create new detail window with content
+            const detailWindow = new google.maps.InfoWindow({
+                content: property.content
+            });
+
+            //detailWindow.open(map, marker);
+            // on mouse over display detail window 
+            marker.addListener("click", () => {
+                detailWindow.open(map, marker);
+            });
+        
+            // on mouse off un display it
+            marker.addListener("mouseout", () => {
+                detailWindow.close(map, marker);
+            });
+        }
+         */
+
+
+
+
+
+
+        // marker array to store marker data
+        /* MarkerArray = [
+            //{location:location, content: '<h2>You are here!</h2>'}, 
+            {location: {lat: 55.91329, lng: -3.32156}}, 
+            {location: {lat: 55.9118, lng: -3.3215}}, 
+            {location: {lat: 55.9109, lng: -3.3215}, content: '<h2>Heriot watt campus</h2>'}, 
+            {location: {lat: 55.9113, lng: -3.32}},
+            // town
+            {location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
+            {location: {lat: 55.95045275244971, lng: -3.1883441852294623}},
+            {location: {lat: 55.95131777646914, lng: -3.1954681317944087}},
+            {location: {lat: 55.952615276150276, lng: -3.193193619156272}},
+            // meadows
+            {location: {lat: 55.941777434166006, lng: -3.191200531846362}},
+            {location: {lat: 55.94029930899516, lng: -3.187595643223136}},
+            {location: {lat: 55.940767988893164, lng: -3.1867158784710568}}
+        ]; */
