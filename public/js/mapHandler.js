@@ -319,8 +319,8 @@ function initMap() {
         //console.log(postObject);
 
         const detailWindow = new google.maps.InfoWindow({
-            content: "testing123"
-            //content: postObject.HTML
+            // content: "testing123"
+            content: postObject.HTML
         })
 
         // on mouse over display detail window 
@@ -471,6 +471,86 @@ $(document).ready(function(){
     //updateLocation();
 
     //console.log(getPosts());
+
+     // open a post in the full overlay
+     $("body").on("click", ".post-icon:not(.disabled)", function(){
+
+        // get id
+        postID = $(this).attr("ID");
+
+        // if on mobile close menu
+        if($(window).width() <= 500){
+            $(".nav-btn").trigger("click");
+        }
+        
+        // close any open posts
+        if($(".map-overlay").length){
+            // remove open post
+            $(".map-overlay .post-holder").fadeOut(400, function(){
+                $(this).remove();
+            });
+        }
+        else{
+            $(`<div class="map-overlay">`).insertBefore("#map");
+        }
+
+        $(".map-overlay").html(` <div class="spinner-border text-light" role="status">
+        <span class="sr-only">Loading Post...</span>
+      </div>`);
+
+        $.get(`/API/post/${postID}`, function(data, textStatus, xhr){
+
+            // OK
+            if(xhr.status == 200){
+                $(".map-overlay").html($(data));
+
+                // update history
+                stateObj = {id : navcounter++};
+                if(overlayed){
+                    // replace postID in URL with new one
+                    newURL = window.location.href.replace(/\/[^\/]*$/, `/${postID}`);
+                }
+                else{
+                    // append postID to URL
+                    newURL = `${window.location.href}/${postID}`;
+                }
+
+                window.history.pushState(stateObj, "Scrapmap", newURL);
+                // change open post
+                $(".posts-holder").attr("data-openpost", postID);
+
+                // set overlayed
+                overlayed = true;
+
+            }
+            // out of range
+            else if(xhr.status == 403){
+                console.log(xhr);
+            }
+            // doesn't exist
+            else if(xhr.status == 404){
+                console.log(xhr);
+            }
+            // other error
+            else{
+                console.log(xhr);
+            }
+
+        });
+    });
+
+    $("body").on("click", ".map-overlay", function(e){
+        // check if bg clicked directly
+        if(e.target !== this){
+            return;
+        }
+
+        $(this).fadeOut(400, function(){
+            $(this).remove();
+            overlayed = false;
+        });
+
+    })
 
 });
 
