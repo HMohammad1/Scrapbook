@@ -27,7 +27,10 @@
 
 }
 
-
+.logout-close:hover {
+    background: none;
+    border: none;
+}
 
 
 .centre {

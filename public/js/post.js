@@ -200,3 +200,9 @@ $(document).ready(function(){
 
 
 });
+
+function viewButton() {
+
+    document.getElementById("overlay").style.display = "block";
+
+}
