@@ -2,10 +2,14 @@
 
     width: 100px;
     height: 30px;
-
     color: #f8f8f8;
     background-color: red;
     font-size: 16px;
+    position: center;
+    border-radius: 5px;
+    line-height: 21px;
+    display: block;
+    margin: 5px;
 }
 
 .friend-result{

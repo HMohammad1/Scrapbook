@@ -178,3 +178,20 @@ $(document).ready(function(){
     });
 
 });
+
+ function onFileSelected(event) {
+     var inp = document.getElementById('fileElementId');
+     for (var i = 0; i < inp.files.length; ++i) {
+
+         const selectedFile = event.target.files[i];
+         const reader = new FileReader();
+         const imgtag = document.getElementById(i.toString());
+         imgtag.title = selectedFile.name;
+         reader.onload = function (event) {
+             imgtag.src = event.target.result;
+         };
+         reader.readAsDataURL(selectedFile);
+         // var name = inp.files.item(i).name;
+         // alert("here is a file name: " + name);
+     }
+ }
