@@ -412,56 +412,56 @@ function updatePost(postID, perm){
 
 
 // 
-function updateLocation(){
+// function updateLocation(){
 
-    // TESTING COORDS -- MAPS API OUTPUT GOES HERE
-    /* newLat = 55.9091;
-    newLong = -3.31959; */
-    currentLocation();
-    newLat = getPosition()[0];
-    newLong = getPosition()[1];
+//     // TESTING COORDS -- MAPS API OUTPUT GOES HERE
+//     /* newLat = 55.9091;
+//     newLong = -3.31959; */
+//     currentLocation();
+//     newLat = getPosition()[0];
+//     newLong = getPosition()[1];
 
 
 
-    $.post("/API/updateLocation", {lat: newLat, long: newLong}, function(data, textStatus, xhr){
+//     $.post("/API/updateLocation", {lat: newLat, long: newLong}, function(data, textStatus, xhr){
 
-        // reset the timer
-        updateTimer = setTimeout(updateLocation, updateWindow);
+//         // reset the timer
+//         updateTimer = setTimeout(updateLocation, updateWindow);
 
-        // error check -- only update visibility when success
-        if(xhr.status == 200){
+//         // error check -- only update visibility when success
+//         if(xhr.status == 200){
 
-            // init array for holding postIDs
-            var postIDs = [];
-            // this will only get icons on screen at the time
-            // NEEDS EXPANDED FOR MAP MARKERS
-            $(".post-icon").each(function(){
+//             // init array for holding postIDs
+//             var postIDs = [];
+//             // this will only get icons on screen at the time
+//             // NEEDS EXPANDED FOR MAP MARKERS
+//             $(".post-icon").each(function(){
 
-                postID = $(this).attr("id");
-                // ID could already be in as 
-                if(!postIDs.includes(postID)){
-                    postIDs.push(postID);
-                }
+//                 postID = $(this).attr("id");
+//                 // ID could already be in as 
+//                 if(!postIDs.includes(postID)){
+//                     postIDs.push(postID);
+//                 }
 
-            });
-            // send new call for post perms
-            $.get("/API/updateMap", {postIDs: postIDs}, function(data, textStatus, xhr){
+//             });
+//             // send new call for post perms
+//             $.get("/API/updateMap", {postIDs: postIDs}, function(data, textStatus, xhr){
 
-                if(xhr.status == 200){
+//                 if(xhr.status == 200){
 
-                    for(i=0; i<data.length; i++){
-                        updatePost(data[i][0], data[i][1]);
-                    }
-                }
-                else{
-                    console.log(xhr);
-                }
-            });
-        }
+//                     for(i=0; i<data.length; i++){
+//                         updatePost(data[i][0], data[i][1]);
+//                     }
+//                 }
+//                 else{
+//                     console.log(xhr);
+//                 }
+//             });
+//         }
 
-    });
+//     });
 
-};
+// };
 
 $(document).ready(function(){
 

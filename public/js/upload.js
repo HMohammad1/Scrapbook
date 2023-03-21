@@ -28,6 +28,38 @@ $(document).ready(function(){
     // hide carousel icons
     $(".carousel-control-next-icon, .carousel-control-prev-icon").hide();
 
+
+    // change radio text on click
+    $("input[name='allow-comments']").change(function(){
+        if($(this).is(":checked")){
+            $("#ac-text").text("Allow comments");
+        }
+        else{
+            $("#ac-text").text("Do not allow comments");
+        }
+    });
+
+    $("input[name='allow-reactions']").change(function(){
+        if($(this).is(":checked")){
+            $("#ar-text").text("Allow reactions");
+        }
+        else{
+            $("#ar-text").text("Do not allow reactions");
+        }
+    });
+
+    $("input[name='post-vis']").change(function(){
+        if($(this).is(":checked")){
+            $("#pv-text").text("Visibility: Public");
+        }
+        else{
+            $("#pv-text").text("Visibility: Friends Only");
+        }
+    });
+
+
+
+
     $(".multi-input").on("change", function(){
 
         // ignore when manually reset with btn
@@ -148,6 +180,11 @@ $(document).ready(function(){
         // add title and description
         formData.append('title', $("#postTitle").val());
         formData.append('description', $("#descr").val());
+
+
+        formData.append('allowComments',$("input[name='allow-comments']").is(":checked"));
+        formData.append('allowReacts', $("input[name='allow-reactions']").is(":checked"));
+        formData.append('public', $("input[name='post-vis']").is(":checked"));
         
         $.ajax({
             url: `/API/upload`, 

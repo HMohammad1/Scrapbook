@@ -3,10 +3,10 @@ const { use } = require("../API/routes");
 const DB = require("./queryHandler");
 
 // inserts a post with the given postID
-function insertPost(postID, userID, title, desc, lat, long, callback){
+function insertPost(postID, userID, title, desc, lat, long, public, aC, aR, callback){
 
-    let query = "INSERT INTO posts (postID, posted_by, title, descr, latitude, longitude) VALUES (?,?,?,?,?,?)";
-    let params = [postID, userID, title, desc, lat, long];
+    let query = "INSERT INTO posts (postID, posted_by, title, descr, latitude, longitude, public, allowComments, allowReacts) VALUES (?,?,?,?,?,?,?,?,?)";
+    let params = [postID, userID, title, desc, lat, long, public, aC, aR];
     DB.executeQuery(query, params, function(err, rows){
         if(err){
             return callback(err, false);
@@ -103,6 +103,8 @@ function getPostByID(postID, callback){
                 p.latitude as 'lat',
                 p.longitude as 'long',
                 p.public as 'priv',
+                p.allowComments as 'aC',
+                p.allowReacts as 'aR',
                 GROUP_CONCAT(m.link) AS 'media',
                 GROUP_CONCAT(r.reaction) AS 'reacts',
                 GROUP_CONCAT(r.react_from) AS 'left_by'
@@ -141,6 +143,8 @@ function getPostsByID(postIDs, callback){
             p.latitude as 'lat',
             p.longitude as 'long',
             p.public as 'priv',
+            p.allowComments as 'aC',
+            p.allowReacts as 'aR',
             GROUP_CONCAT(m.link) AS 'media',
             GROUP_CONCAT(r.reaction) AS 'reacts',
             GROUP_CONCAT(r.react_from) AS 'left_by'
@@ -231,6 +235,8 @@ function getAllPosts(callback) {
             p.latitude as 'lat',
             p.longitude as 'long',
             p.public as 'priv',
+            p.allowComments as 'aC',
+            p.allowReacts as 'aR',
             GROUP_CONCAT(m.link) AS 'media'
     FROM posts AS p
     LEFT JOIN post_media AS m
@@ -264,6 +270,8 @@ function getAllUserPosts(userID, callback){
             p.latitude as 'lat',
             p.longitude as 'long',
             p.public as 'priv',
+            p.allowComments as 'aC',
+            p.allowReacts as 'aR',
             GROUP_CONCAT(m.link) AS 'media',
             GROUP_CONCAT(r.reaction) AS 'reacts',
             GROUP_CONCAT(r.react_from) AS 'left_by'

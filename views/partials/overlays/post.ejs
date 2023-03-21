@@ -28,7 +28,11 @@
                 </a>
             </div>
             <div class="row post-reactions p-4">
-                <%- include('../post/reactions', {reacts: post.reacts, user: user}); %>
+                <% if (post.allowReacts == 1) { %>
+                    <%- include('../post/reactions', {reacts: post.reacts, user: user}); %>
+                <% } else {%>
+                    This post doesn't allow reactions.
+                <% } %>
             </div>
             <div class="row post-desc pt-2">
 
@@ -38,7 +42,7 @@
                             <%= post.desc %>
                         </div>
                     </div>
-                    <% if (user.userID != 0) { %>
+                    <% if (user.userID != 0 && post.allowComments == 1) { %>
                         <div class="row">
                             <div class="col px-3">
                                 <div class="row add-comment">
@@ -59,11 +63,15 @@
             </div>
             <div class="row all-comments p-3">
                 <div class="col">
-                    <div class="post-comments">
-                        <div class="spinner-border text-danger" role="status">
-                            <span class="sr-only">Loading comments</span>
+                    <% if (post.allowComments) { %>
+                        <div class="post-comments">
+                            <div class="spinner-border text-danger" role="status">
+                                <span class="sr-only">Loading comments</span>
+                            </div>
                         </div>
-                    </div>
+                    <% } else {%>
+                        This post does not allow comments.
+                    <% } %>
                 </div>
 
             </div>

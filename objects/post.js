@@ -1,6 +1,6 @@
 class Post{
 
-    constructor(postID, coords, media, title, desc, date, priv, profile, reacts){
+    constructor(postID, coords, media, title, desc, date, priv, aC, aR, profile, reacts){
 
         // set the ID of the post
         this.postID = postID;
@@ -16,6 +16,9 @@ class Post{
         this.date = date;
         // privacy setting
         this.priv = priv;
+        // allow comments and reacts
+        this.allowComments = aC;
+        this.allowReacts = aR;
         // profile of the user who created the post
         this.profile = profile;
         // assoc array of what reacts have been left by who

@@ -100,8 +100,11 @@ const createPost = (req, res) => {
     // userID = 2005151994;
     // coords = [55.909095, -3.319584];
 
+    public = (req.fields.public === 'true');
+    allowComments = (req.fields.allowComments === 'true');
+    allowReacts = (req.fields.allowReacts === 'true');
 
-    postDAO.insertPost(postID, userID, req.fields.title, req.fields.description, coords[0], coords[1], function(err, result){
+    postDAO.insertPost(postID, userID, req.fields.title, req.fields.description, coords[0], coords[1], public, allowComments, allowReacts, function(err, result){
 
         if(err){
             console.log(err);
@@ -276,7 +279,9 @@ function rowToPost(postData, callback){
             postData.title, 
             postData.descr, 
             postData.posted, 
-            postData.priv, 
+            postData.priv,
+            postData.aC,
+            postData.aR,
             profile, 
             reacts
         );
@@ -302,6 +307,8 @@ function ProfileRowToPost(postData, profile){
         postData.descr, 
         postData.posted, 
         postData.priv, 
+        postData.aC,
+        postData.aR,
         profile, 
         formatReacts(postData.reacts, postData.left_by)
     );
@@ -331,6 +338,7 @@ const getPostByID = (req, res) => {
                     // if public or friends only or own post
                         if(canViewPost(req.session.user, post)){
                             res.status(200);
+                            console.log(post);
                             return res.render("partials/overlays/post", {post: post, user:req.session.user});
                         }
                         else{

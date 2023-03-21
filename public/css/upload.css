@@ -44,14 +44,20 @@
 
 }
 
-
+.form-check-input:checked {
+    background-color: #dc4535;
+    border-color: #dc4535;
+}
 
 .add-post{
     margin-top: 300px !important;
 }
+
+
 
 @media (max-width: 500px) {
     .add-post{
         margin-top: 50px !important;
     }
 }
+

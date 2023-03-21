@@ -172,6 +172,9 @@ a, a:link, a:visited {
 
 }
 
+input[type=checkbox]:focus, input[type=file]:focus, input[type=radio]:focus {
+    outline: #ff0000 !important;
+}
 
 @media (max-width: 500px) {
 
