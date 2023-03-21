@@ -402,7 +402,7 @@ const updateFriendRequest = (req, res) =>{
 
         // check user is logged in
         // check loggedin
-        if(userID == 0){
+        if(req.session.user.userID == 0){
             res.redirect(302, "/login");
         }
     
@@ -543,15 +543,21 @@ function getFriendProfiles(userID, callback){
 }
 
 // check if two users are friends
-function areFriends(user1, user2){
+function areFriends(user1, user2, callback){
 
     userDAO.areFriends(user1, user2, function(err, result){
 
         if(err){
-            return null;
+            return callback(err, null);
         }
         else{
-            return result;
+            if(result){
+                console.log("USERS ARE FRIENDS");
+                return callback(null, true);
+            }
+            else{
+                return callback(null, false);
+            }
         }
 
     });

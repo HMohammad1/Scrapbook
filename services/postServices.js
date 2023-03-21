@@ -336,14 +336,15 @@ const getPostByID = (req, res) => {
                 }
                 rowToPost(postData, function(post){
                     // if public or friends only or own post
-                        if(canViewPost(req.session.user, post)){
+                        canViewPost(req.session.user, post, function(result){
+                        if(result){
                             res.status(200);
-                            console.log(post);
                             return res.render("partials/overlays/post", {post: post, user:req.session.user});
                         }
                         else{
                             return res.sendStatus(403);
                         }
+                    });
                 });
             }
             else{
@@ -756,30 +757,34 @@ function withinRange(userCoords, postCoords){
 }
 
 // returns true if can - false if not
-function canViewPost(user, post){
+function canViewPost(user, post, callback){
 
     // can always view own posts
     if(user.userID && post.profile && user.userID == post.profile.userID){
         return true;
     }
     // priv is only true for public posts
-    else if(!post.priv){
+    else if(!post.priv){   
 
         // check if users are friends
-        if(userServices.areFriends(user.userID, post.profile.userID)){
-            return true;
-        }
-        else{
-            return false;
-        }
+        userServices.areFriends(user.userID, post.profile.userID, function(err, result){
+
+            if(err){
+                return callback(false);
+            }
+            else{
+                return callback(result);
+            }
+        });
     }
     else{
+
         // check range
         if(withinRange(user.coords, post.coords)){
-            return true;
+            return callback(true);
         }
         else{
-            return false;
+            return callback(false);
         }
 
     }
