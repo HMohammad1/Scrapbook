@@ -81,7 +81,7 @@ function currentLocation() {
 
 
 function getPosts() {
-    posts = []
+    //posts = []
 
     $.get(`/API/getAllPosts`, function(data, textStatus, xhr){
         if(xhr.status == 200){
@@ -91,7 +91,13 @@ function getPosts() {
             //posts = data;
             if (posts.length != data.length) {
                 //console.log(data);
-                data.forEach(element => posts.push(element));
+                data.forEach(element => {
+
+                    if (!posts.includes(element)) {
+                        posts.push(element);
+                    }
+
+                });
 
             }
             
@@ -279,7 +285,7 @@ function initMap() {
     getPosts();
 
     
-    setTimeout(initializeMarkers, 7000);
+    setTimeout(initializeMarkers, 8000);
 
     // Create the DIV to hold the control.
     const centerControlDiv = document.createElement("div");
