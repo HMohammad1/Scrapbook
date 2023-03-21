@@ -47,8 +47,8 @@ function currentLocation() {
         pos.push(position.coords.longitude);
 
         if (userMarker != undefined && userCircle != undefined) {
-            userMarker.setMap(null);
-            userCircle.setMap(null);
+            userMarker = null;
+            userCircle = null;
         }
         
         userMarker = updateCurrentLocationMarker(location);

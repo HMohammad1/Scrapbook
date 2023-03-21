@@ -18,12 +18,12 @@
     <div class="row p-1">
         <div class="col-12">
             <form name="createPost" id="createPost" action="/API/upload" enctype="multipart/form-data" method="post">
-                <input class="form-control" type="text" id="title" name="title" placeholder="Title"/>
+                <input class="form-control" type="text" id="postTitle" name="title" placeholder="Title"/>
                 <label class="form-label"></label>
                 <div class="carousel slide" id="uploadPreviews" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active input-holder">
-                            <input onchange="onFileSelected(event)" id="fileElementId" class="multi-input form-control" type="file" form="createPost" accept=".png,.jpg,.jpeg" name="postImg" multiple style="height: 300px">
+                            <input onchange="onFileSelected(event)" id="postImg" class="multi-input form-control" type="file" form="createPost" accept=".png,.jpg,.jpeg" name="postImg" multiple style="height: 300px">
 <!--                            <input type="file" onchange="onFileSelected(event)" multiple id="fileElementId">-->
                             <img id="0">
                         </div>

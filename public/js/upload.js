@@ -143,12 +143,8 @@ $(document).ready(function(){
             formData.append(`img${i}`, files[i], files[i].name);
         }
 
-        title = $("#title").text();
-        console.log(title);
-        return;
-
         // add title and description
-        formData.append('title', $("#title").val());
+        formData.append('title', $("#postTitle").val());
         formData.append('description', $("#descr").val());
         
         $.ajax({
@@ -180,7 +176,7 @@ $(document).ready(function(){
 });
 
  function onFileSelected(event) {
-     var inp = document.getElementById('fileElementId');
+     var inp = document.getElementById('postImg');
      for (var i = 0; i < inp.files.length; ++i) {
 
          const selectedFile = event.target.files[i];
