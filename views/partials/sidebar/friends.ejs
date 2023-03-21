@@ -8,8 +8,11 @@
 </a>
 <% friends.forEach(profile => { %>
     <div class="row menu-item d-inline-block pt-2" id="profile/<%= profile.username %>">
-        <img src="<%= profile.pfp %>" class="profile-icon">
-        <span class="menu-text"><%= profile.username %></span>
+        <div>
+            <img src="<%= profile.pfp %>" class="profile-icon">
+            <span class="menu-text"><%= profile.username %></span>
+        </div>
+
     </div>
 <% }) %>
 <div class="row menu-item d-inline-block" id="add-friend">
