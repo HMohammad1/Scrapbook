@@ -22,7 +22,7 @@ $(document).ready(function(){
 
     });
 
-    $("body").on("click", "a, #submit, .menu-item", function(){
+    $("body").on("click", "a:not(.carousel-control-next, .carousel-control-prev), #submit, .menu-item", function(){
 
         $(".prog-bar").animate({width: "100%"}, 400, "linear");
 

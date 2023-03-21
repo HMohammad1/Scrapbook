@@ -53,9 +53,10 @@ $(document).ready(function(){
                 // remove existing children
                 $(".carousel-item:not(.input-holder)").remove();
 
-                // hide the multi input
-                $("input.multi-input").parent(".carousel-item").removeClass("active");
-                $("input.multi-input").parent(".carousel-item").hide();
+                // remove the input holder from the carousel
+                $(".input-holder").removeClass("carousel-item");
+                $(".input-holder").removeClass("active");
+                $(".input-holder").hide();
 
                 files = this.files;
 
@@ -71,7 +72,7 @@ $(document).ready(function(){
                         if(fr.result){
                             newPreview = $(`
                             <div class="carousel-item">
-                                <div class="upload-preview" style="height: 300px;"></div>
+                                <div class="upload-preview" id=${i+1} style="height: 300px;"></div>
                             </div>`
                             );
                             newPreview.children(".upload-preview").css("background-image", `url('${fr.result}')`);
@@ -121,8 +122,9 @@ $(document).ready(function(){
         $(".img-alert").remove();
 
         // show the multi input
-        $("input.multi-input").parent(".carousel-item").addClass("active");
-        $("input.multi-input").parent(".carousel-item").show();
+        $(".input-holder").addClass("carousel-item");
+        $(".input-holder").addClass("active");
+        $(".input-holder").show();
 
         // remove the button
         $(this).remove();
@@ -175,19 +177,19 @@ $(document).ready(function(){
 
 });
 
- function onFileSelected(event) {
-     var inp = document.getElementById('postImg');
-     for (var i = 0; i < inp.files.length; ++i) {
+//  function onFileSelected(event) {
+//      var inp = document.getElementById('postImg');
+//      for (var i = 0; i < inp.files.length; ++i) {
 
-         const selectedFile = event.target.files[i];
-         const reader = new FileReader();
-         const imgtag = document.getElementById(i.toString());
-         imgtag.title = selectedFile.name;
-         reader.onload = function (event) {
-             imgtag.src = event.target.result;
-         };
-         reader.readAsDataURL(selectedFile);
-         // var name = inp.files.item(i).name;
-         // alert("here is a file name: " + name);
-     }
- }
+//          const selectedFile = event.target.files[i];
+//          const reader = new FileReader();
+//          const imgtag = document.getElementById(i.toString());
+//          imgtag.title = selectedFile.name;
+//          reader.onload = function (event) {
+//              imgtag.src = event.target.result;
+//          };
+//          reader.readAsDataURL(selectedFile);
+//          // var name = inp.files.item(i).name;
+//          // alert("here is a file name: " + name);
+//      }
+//  }

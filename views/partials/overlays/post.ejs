@@ -8,28 +8,24 @@
                     <%= post.title %>
                 </div>
             </div>
-            <div class="row img-holder-main carousel slide p-0">
-                <div class="col">
-                    <div class="carousel-inner">
-                        <% if (post.media) { %>
-                            <% post.media.forEach((src, index) => { %>
-                                <div class="carousel-item <% if (index == 0) { %>active<% } %>">
-                                    <img src="<%= src %>" style="height: 695px" class="d-block w-100" alt="...">
-                                </div>
-                            <% }) %>
-                        <% } %>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                            data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                            data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+            <div class="row img-holder-main carousel slide p-0" id="postImgs">
+                <div class="carousel-inner">
+                    <% if (post.media) { %>
+                        <% post.media.forEach((src, index) => { %>
+                            <div class="carousel-item <% if (index == 0) { %>active<% } %>">
+                                <img src="<%= src %>" id="<%= index+1 %>" style="height: 695px" class="d-block w-100" alt="...">
+                            </div>
+                        <% }) %>
+                    <% } %>
                 </div>
+                <a class="carousel-control-prev" href="#postImgs" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#postImgs" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
             <div class="row post-reactions p-4">
                 <%- include('../post/reactions', {reacts: post.reacts, user: user}); %>
