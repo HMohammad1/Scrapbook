@@ -24,7 +24,7 @@
                         <label for="email"><% if (typeof(emailError) !== 'undefined' && emailError === true) { %>
                             <%= message %>
                         <% } %> </label>
-                        <input id="email" type="email" name="email" class="form-control" placeholder="Email Address"id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required >
+                        <input id="email" type="email"  name="email"  title="Email should be like: example@example.com" class="form-control" placeholder="Email Address"id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required >
                         <input type="date" id="DOB" class="form-control"name="DOB"  required/>
                 </div>
                 <div class="user">
