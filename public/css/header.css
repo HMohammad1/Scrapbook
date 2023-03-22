@@ -1,9 +1,5 @@
 #title {
-    background-image:
-            linear-gradient(to right, red,white, red);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: rainbow-animation 1000s linear infinite;
+    color: white;
 }
 
 @keyframes rainbow-animation {

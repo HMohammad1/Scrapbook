@@ -28,7 +28,7 @@ a, a:link, a:visited {
 
 .sidebar{
     z-index: 5;
-    background-color: #f8f8f8;
+    background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(225, 217, 209));
 }
 
 .map-overlay{
@@ -60,7 +60,7 @@ a, a:link, a:visited {
 
     height: 5vh;
 
-    background-color: #333d;
+    background: linear-gradient(292deg, rgb(39, 43, 44) 0.00%, rgb(241, 60, 43) 100.00%);
     justify-content: center;
 }
 
@@ -142,7 +142,7 @@ a, a:link, a:visited {
 }
 
 .add-post{
-    margin-top: 400px;
+    margin-top: 350px;
     margin-left: 0px !important;
     margin-right: 0px !important;
 
