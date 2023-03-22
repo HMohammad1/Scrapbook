@@ -263,7 +263,7 @@ function rowToPost(postData, callback){
     }
 
     if(postData.reacts){
-        reacts = formatReacts
+       reacts = formatReacts(postData.reacts, postData.left_by)
     }else{
         reacts = null
     } 
@@ -296,8 +296,15 @@ function ProfileRowToPost(postData, profile){
 
     // only split set with values in it
     if(postData.media){
-        postData.media = postData.media.split(',');
+        reacts = postData.media = postData.media.split(',');
     }
+
+    if(postData.reacts){
+        formatReacts(postData.reacts, postData.left_by)
+    }else{
+        reacts = null
+    } 
+
 
     post = new Post(
         postData.postID,
@@ -310,7 +317,7 @@ function ProfileRowToPost(postData, profile){
         postData.aC,
         postData.aR,
         profile, 
-        formatReacts(postData.reacts, postData.left_by)
+        reacts
     );
 
     return post;
@@ -760,8 +767,8 @@ function withinRange(userCoords, postCoords){
 function canViewPost(user, post, callback){
 
     // can always view own posts
-    if(user.userID && post.profile && user.userID == post.profile.userID){
-        return true;
+    if(user.userID && post.profile && (user.userID == post.profile.userID)){
+        return callback(true);
     }
     // priv is only true for public posts
     else if(!post.priv){   

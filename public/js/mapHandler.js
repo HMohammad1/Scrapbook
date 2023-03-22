@@ -18,6 +18,8 @@ var postsArray = [];
 
 var loadedOnce = 0;
 
+var postJSloaded = false;
+
 
 
 currentLocation();
@@ -621,6 +623,7 @@ $(document).ready(function(){
 
             // OK
             if(xhr.status == 200){
+                
                 $(".map-overlay").html($(data));
 
                 // update history
@@ -640,6 +643,15 @@ $(document).ready(function(){
 
                 // set overlayed
                 overlayed = true;
+
+                // START THE JS
+                if(!postJSloaded){
+                    postJS(postJSloaded);
+                    postJSloaded = true;
+                }
+                else{
+                    postJS(postJSloaded);
+                }
 
             }
             // out of range
