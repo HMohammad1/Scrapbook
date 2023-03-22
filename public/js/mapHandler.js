@@ -1,5 +1,5 @@
 // 15s between updates
-var updateWindow = 2000;
+var updateWindow = 15000;
 var updateTimer, onLoadLocationTimer;
 
 //const postDAO = require ('../../DAOs/postDAO.js');
@@ -62,7 +62,7 @@ function currentLocation() {
 
         
 
-        //updateMarkers(location);
+        updateMarkers(location);
 
         
         
@@ -117,10 +117,7 @@ function getPosts(callback) {
     }) 
 }
 
-/* var posts = [{location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
-        {location: {lat: 55.95045275244971, lng: -3.1883441852294623}},
-        {location: {lat: 55.95131777646914, lng: -3.1954681317944087}},
-        {location: {lat: 55.952615276150276, lng: -3.193193619156272}}]; */
+
 
 function returnPosts() {
 
@@ -167,15 +164,34 @@ function createLocationCircle(location) {
 
 
 function updateMarkers(location) {
-    posts = [] //getPosts();
+    //getPosts();
 
     removeMarkers();
-    
-    markersArr = [];
 
-    // loop through each item in marker array, create the marker and append it to the markers array
-    for (let i = 0; i < posts.length; i++) {
-        markersArr.push(addMarker(posts[i], location));
+/*     getPosts(function(err, result)  {
+        if(!err) {
+
+            //setTimeout(initializeMarkers, 8000);
+            
+            //console.log(result);
+
+            initializeMarkers(location);
+
+        }
+    
+    }); */
+
+    
+    updateOnlyLocationMarker(location);
+
+
+}
+
+function updateOnlyLocationMarker(location) {
+    markersArr = []
+
+    for (let i = 0; i < MarkerArray.length; i++) {
+        markersArr.push(addMarker(MarkerArray[i], location));
     };
 
     // create the marker cluster
@@ -183,41 +199,70 @@ function updateMarkers(location) {
 
 }
 
-function addMarker(posts, location){
+function initializeMarkers(location) {
+
+    MarkerArray = returnPosts();
+
+    markersArr = [];
+
+    // loop through each item in marker array, create the marker and append it to the markers array
+    for (let i = 0; i < MarkerArray.length; i++) {
+        markersArr.push(addMarker(MarkerArray[i], location));
+    };
+
+    // create the marker cluster
+    markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
+}
+
+function addMarker(postObject, location) {
+        
+
+    // initialize marker
+    var marker = null;
+
+    var coords = {lat: postObject.coords[0], lng: postObject.coords[1]};
 
     
 
-    marker = null;
-
+    //console.log(MarkerArray.length);
+    
     // if distance of location is over 50m of the current location then the marker is grey
-    if (over50(posts, location)) {
+    if (over50(postObject, location)) {
         marker = new google.maps.Marker({
-            position: posts.location,
+            position: coords,
             map: map,
-            icon: '../images/svg_markers/marker-dgrey.svg'
+            icon: '/images/svg_markers/marker-dgrey.svg'
         });
 
         // else marker is blue if within 50m
     } else {
         marker = new google.maps.Marker({
-            position: posts.location,
+            position: coords,
             map: map,
-            icon: '../images/svg_markers/marker-blue.svg'
+            icon: '/images/svg_markers/marker-blue.svg'
         });
     }
 
-    return marker
+    const detailWindow = new google.maps.InfoWindow({
+        // content: "testing123"
+        content: postObject.HTML
+    })
+
+    // on mouse over display detail window 
+    marker.addListener("click", () => {
+        detailWindow.open(map, marker);
+    });
+
+    // on mouse off un display it
+    marker.addListener("", () => {
+        detailWindow.close(map, marker);
+    });
+
+    
+    // return the created marker for marker cluster
+    return marker;
+    
 }
-
-
-
-
-
-
-
-
-
-
 
 
 // function to return position
@@ -317,7 +362,7 @@ function initMap() {
 
 
     // function to add a marker
-    function addMarker(postObject, permsArr) {
+    function addMarker(postObject) {
         
 
         // initialize marker
