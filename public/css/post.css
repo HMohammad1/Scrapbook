@@ -155,8 +155,12 @@ body {
     font-size: 16px;
     line-height: 21px;
     border: 2px solid red;
-    margin: 5px;
+    margin-left: 5px;
 
+}
+
+.btn-margins {
+    margin-left: 500px;
 }
 
 .comment-btn.cancel{
@@ -210,6 +214,10 @@ body {
         height: 100%;
         font-size: 20px;
         text-align: center;
+    }
+
+    .btn-margins {
+        margin-left: 200px;
     }
 
 }
