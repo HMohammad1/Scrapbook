@@ -10,9 +10,13 @@ var map, markClust, markersArr, marker;
 
 var notLoadMap = 0;
 
-var userMarker, userCircle;
+var userMarker = null, userCircle = null;
 
 var posts = [];
+var postsArray = [];
+
+
+var loadedOnce = 0;
 
 
 
@@ -46,13 +50,16 @@ function currentLocation() {
         pos.push(position.coords.latitude);
         pos.push(position.coords.longitude);
 
-        if (userMarker != undefined && userCircle != undefined) {
-            userMarker = null;
-            userCircle = null;
+        if (loadedOnce == 0) {
+            location = {lat: 0, lng: 0};
         }
+
         
-        userMarker = updateCurrentLocationMarker(location);
-        userCircle = createLocationCircle(location);
+        
+        updateCurrentLocationMarker(location);
+        createLocationCircle(location);
+
+        
 
         //updateMarkers(location);
 
@@ -80,8 +87,7 @@ function currentLocation() {
 
 
 
-function getPosts() {
-    //posts = []
+function getPosts(callback) {
 
     $.get(`/API/getAllPosts`, function(data, textStatus, xhr){
         if(xhr.status == 200){
@@ -97,22 +103,17 @@ function getPosts() {
                         posts.push(element);
                     }
 
+                    
                 });
 
+                return(callback(null, posts));
             }
-            
-            //console.log(posts[0]);
-            //return data;
         }
         else{
             console.log(textStatus);
-
+            return(callback(true, null));
         }
-        
-    })
-
-    
-    
+    }) 
 }
 
 /* var posts = [{location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
@@ -128,18 +129,28 @@ function returnPosts() {
 
 function updateCurrentLocationMarker(location) {
 
-    var marker = new google.maps.Marker({
+    if (userMarker) {
+        userMarker.setMap(null);
+        userMarker = null;
+    }
+
+    userMarker = new google.maps.Marker({
         position: location,
         map: map,
         icon: '../images/svg_markers/marker-user.svg'
     });
 
-    return marker;
+    //return userMarker;
 }
 
 function createLocationCircle(location) {
 
-    var locCircle = new google.maps.Circle({
+    if (userCircle) {
+        userCircle.setMap(null);
+        userCircle = null;
+    }
+
+    userCircle = new google.maps.Circle({
         strokeColor: "#FF0000",
         strokeOpacity: 0.5,
         strokeWeight: 1,
@@ -150,7 +161,7 @@ function createLocationCircle(location) {
         radius: 50
     });
 
-    return locCircle;
+    //return locCircle;
 }
 
 
@@ -243,7 +254,7 @@ function over50(property, currentLocation) {
 
     //console.log(currentLocation.lat);
     // get distance between point 1 and point 2
-    var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
+    var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.coords[0], property.coords[1]);
     
     // if distance is over 50 metres return true else return false
     if (distance > 50) {
@@ -282,24 +293,30 @@ function initMap() {
         disableDefaultUI: true
     });
 
-    getPosts();
+    getPosts(function(err, result)  {
+        if(!err) {
 
+            //setTimeout(initializeMarkers, 8000);
+            
+            //console.log(result);
+
+            initializeMarkers();
+
+            // Create the DIV to hold the control.
+            const centerControlDiv = document.createElement("div");
+            // Create the control.
+            const centerControl = createCenterControl(map);
+
+            // Append the control to the DIV.
+            centerControlDiv.appendChild(centerControl);
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+        }
     
-    setTimeout(initializeMarkers, 8000);
-
-    // Create the DIV to hold the control.
-    const centerControlDiv = document.createElement("div");
-    // Create the control.
-    const centerControl = createCenterControl(map);
-
-    // Append the control to the DIV.
-    centerControlDiv.appendChild(centerControl);
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-
+    });
 
 
     // function to add a marker
-    function addMarker(postObject) {
+    function addMarker(postObject, permsArr) {
         
 
         // initialize marker
@@ -307,14 +324,33 @@ function initMap() {
 
         var coords = {lat: postObject.coords[0], lng: postObject.coords[1]};
 
-        
+    
 
-        marker = new google.maps.Marker({
+        //console.log(MarkerArray.length);
+        
+        // if distance of location is over 50m of the current location then the marker is grey
+        if (over50(postObject, location)) {
+            marker = new google.maps.Marker({
+                position: coords,
+                map: map,
+                icon: '/images/svg_markers/marker-dgrey.svg'
+            });
+
+            // else marker is blue if within 50m
+        } else {
+            marker = new google.maps.Marker({
+                position: coords,
+                map: map,
+                icon: '/images/svg_markers/marker-blue.svg'
+            });
+        }
+        
+        /* marker = new google.maps.Marker({
             position: coords,
             map: map,
             icon: '../images/svg_markers/marker-dgrey.svg',
             id: postObject.postID
-        });
+        }); */
 
         //console.log(postObject);
 
@@ -324,12 +360,12 @@ function initMap() {
         })
 
         // on mouse over display detail window 
-        marker.addListener("mouseover", () => {
+        marker.addListener("click", () => {
             detailWindow.open(map, marker);
         });
     
         // on mouse off un display it
-        marker.addListener("mouseout", () => {
+        marker.addListener("", () => {
             detailWindow.close(map, marker);
         });
 
@@ -346,7 +382,22 @@ function initMap() {
     function initializeMarkers() {
 
         MarkerArray = returnPosts();
-        console.log(MarkerArray.length);
+
+        console.log(MarkerArray);
+
+
+        //console.log(MarkerArray.length);
+
+        /* MarkerArray.forEach(element => {
+            if (postsArray.length != MarkerArray.length){
+                postsArray.push(element.postID);
+            };
+            
+        }) */
+
+        
+
+        
 
 
         // markers array to store created markers for the marker cluster
@@ -359,13 +410,35 @@ function initMap() {
         
 
        
-        updateCurrentLocationMarker(location);
-        createLocationCircle(location);
+        userMarker = updateCurrentLocationMarker(location);
+        userCircle = createLocationCircle(location);
 
         // create the marker cluster
         markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
     }
 
+}
+
+function getPermsArray(postsIDArray) {
+    $.get('/API/updateMap', function(data, textStatus, xhr){
+        if(xhr.status == 200){
+            //console.log(data);
+            
+            //permsArray = data;
+
+            //console.log(data);
+            
+            data.forEach(element =>  {
+                postsArray.push(element);
+            });
+            
+            return postsArray;
+            
+        }
+        else{
+            console.log(textStatus);
+        }
+    }) 
 }
 
 function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
@@ -412,63 +485,63 @@ function updatePost(postID, perm){
 
 
 // 
-// function updateLocation(){
+function updateLocation(){
 
-//     // TESTING COORDS -- MAPS API OUTPUT GOES HERE
-//     /* newLat = 55.9091;
-//     newLong = -3.31959; */
-//     currentLocation();
-//     newLat = getPosition()[0];
-//     newLong = getPosition()[1];
+    // TESTING COORDS -- MAPS API OUTPUT GOES HERE
+    /* newLat = 55.9091;
+    newLong = -3.31959; */
+    currentLocation();
+    newLat = getPosition()[0];
+    newLong = getPosition()[1];
 
 
 
-//     $.post("/API/updateLocation", {lat: newLat, long: newLong}, function(data, textStatus, xhr){
+    $.post("/API/updateLocation", {lat: newLat, long: newLong}, function(data, textStatus, xhr){
 
-//         // reset the timer
-//         updateTimer = setTimeout(updateLocation, updateWindow);
+        // reset the timer
+        updateTimer = setTimeout(updateLocation, updateWindow);
 
-//         // error check -- only update visibility when success
-//         if(xhr.status == 200){
+        // error check -- only update visibility when success
+        if(xhr.status == 200){
 
-//             // init array for holding postIDs
-//             var postIDs = [];
-//             // this will only get icons on screen at the time
-//             // NEEDS EXPANDED FOR MAP MARKERS
-//             $(".post-icon").each(function(){
+            // init array for holding postIDs
+            var postIDs = [];
+            // this will only get icons on screen at the time
+            // NEEDS EXPANDED FOR MAP MARKERS
+            $(".post-icon").each(function(){
 
-//                 postID = $(this).attr("id");
-//                 // ID could already be in as 
-//                 if(!postIDs.includes(postID)){
-//                     postIDs.push(postID);
-//                 }
+                postID = $(this).attr("id");
+                // ID could already be in as 
+                if(!postIDs.includes(postID)){
+                    postIDs.push(postID);
+                }
 
-//             });
-//             // send new call for post perms
-//             $.get("/API/updateMap", {postIDs: postIDs}, function(data, textStatus, xhr){
+            });
+            // send new call for post perms
+            $.get("/API/updateMap", {postIDs: postIDs}, function(data, textStatus, xhr){
 
-//                 if(xhr.status == 200){
+                if(xhr.status == 200){
 
-//                     for(i=0; i<data.length; i++){
-//                         updatePost(data[i][0], data[i][1]);
-//                     }
-//                 }
-//                 else{
-//                     console.log(xhr);
-//                 }
-//             });
-//         }
+                    for(i=0; i<data.length; i++){
+                        updatePost(data[i][0], data[i][1]);
+                    }
+                }
+                else{
+                    console.log(xhr);
+                }
+            });
+        }
 
-//     });
+    });
 
-// };
+};
 
 $(document).ready(function(){
 
     
 
     // set location after page load
-    //updateLocation();
+    updateLocation();
 
     //console.log(getPosts());
 
