@@ -236,7 +236,7 @@ function over50(property, currentLocation) {
 
     //console.log(currentLocation.lat);
     // get distance between point 1 and point 2
-    var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.location.lat, property.location.lng);
+    var distance = getDistanceFromLatLonInM(currentLocation.lat, currentLocation.lng, property.coords[0], property.coords[1]);
     
     // if distance is over 50 metres return true else return false
     if (distance > 50) {
@@ -304,13 +304,29 @@ function initMap() {
 
         //console.log(MarkerArray.length);
         
+        // if distance of location is over 50m of the current location then the marker is grey
+        if (over50(postObject, location)) {
+            marker = new google.maps.Marker({
+                position: coords,
+                map: map,
+                icon: '../images/svg_markers/marker-dgrey.svg'
+            });
 
-        marker = new google.maps.Marker({
+            // else marker is blue if within 50m
+        } else {
+            marker = new google.maps.Marker({
+                position: coords,
+                map: map,
+                icon: '../images/svg_markers/marker-blue.svg'
+            });
+        }
+        
+        /* marker = new google.maps.Marker({
             position: coords,
             map: map,
             icon: '../images/svg_markers/marker-dgrey.svg',
             id: postObject.postID
-        });
+        }); */
 
         //console.log(postObject);
 
@@ -343,16 +359,16 @@ function initMap() {
 
         MarkerArray = returnPosts();
 
-        getPermsArray();
+        //getPermsArray();
 
         //console.log(MarkerArray.length);
 
-        MarkerArray.forEach(element => {
+        /* MarkerArray.forEach(element => {
             if (postsArray.length != MarkerArray.length){
                 postsArray.push(element.postID);
             };
             
-        })
+        }) */
 
         
 
