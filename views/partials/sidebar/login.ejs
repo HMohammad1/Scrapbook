@@ -1,6 +1,12 @@
     <link rel="stylesheet" href="/css/login.css">
     <script type ="text/javascript" src="/public/js/signUpValidator.js"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+                crossorigin="anonymous"></script>
+    <script type="text/javascript" scr="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+    <script src="js/validation.js"></script>
+   
     <div class="col userDetails">
         <div class="tab">
             <button class="tablinks login active">Login</button>
@@ -11,55 +17,37 @@
             <form id="signupForm" name="contact-details" action="/API/signup" method="post">
                 <div class="personal-info">
                     <div class="row contact-name">
-
-                        <input id="fname" class="col form-control" name="fname" placeholder="First Name" required>
-                        <input id="lname" class="col form-control" name="lname" placeholder="Last Name" required>
+                        <input id="fname" minlength="3" class="col form-control" name="fname" placeholder="First Name" required >
+                        <input id="lname" minlength="3" class="col form-control" name="lname" placeholder="Last Name"  required>
                     </div>
 <!-- -------------------------- Validated data -->
                         <label for="email"><% if (typeof(emailError) !== 'undefined' && emailError === true) { %>
                             <%= message %>
                         <% } %> </label>
-                        <input id="email" name="email" class="form-control" placeholder="Email Address" required>
-                         <label for="emailcheck" id="emailcheck" style="color: red;font-size:0.5em;">
-                                Your email must be a valid email!
-                         </label>
-
-                        <!-- <label for="dobcheck"><span STYLE="font-size:0.5em;color: red;">(required, You need to be older then 16 years old)</span></label> -->
-                        <input type="date" id="DOB" class="form-control"name="DOB" required/>
-                         <label for="dobcheck" id="dobcheck" style="color: red;font-size:0.5em;">
-                            **You need to be over 16 years old
-                        </label>
+                        <input id="email" type="email" name="email" class="form-control" placeholder="Email Address"id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required >
+                        <input type="date" id="DOB" class="form-control"name="DOB"  required/>
                 </div>
-
                 <div class="user">
                     <label for="usercheck"> <% if (typeof(usernameError) !== 'undefined' && usernameError === true) { %>
                             <%= message %>
                         <% } %> </label>
-                    <input id="username" name="username" class="form-control" placeholder="Username" required/>
-                     <label for="usercheck" id="usercheck" style="color: red; font-size: 0.5em;">
-                            **Username is missing!
-                        </label>
+                    <input id="username" minlength="4" name="username"  class="form-control" placeholder="Username" required/>
                     <input id="disp_name" name="disp_name" class="form-control" placeholder="Display Name" required/>
                 </div>
                 <div class="contact-details">
                 </div>
                 <div class="password">
-                    <!-- <label for="passcheck"><span STYLE="font-size:0.5em; color: red;">(required, invalid password)</span></label> -->
-                    <input type="password" id="pw1" name="pw1" class="form-control" placeholder="Password" required/>
-                    <label for="passcheck" id="passcheck" style="color: red; font-size: 0.5em;">
-                        **Password is missing!
-                    </label>
-                    <!-- <span STYLE="font-size:0.5em; color: red;">(required, password do not match)</span> -->
+                    <input type="password" minlength="8" id="pw1" name="pw1" class="form-control" placeholder="Password"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    onchange="this.setCustomValidity(this.validity.patternMismatch ? 
+                    'Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters' : ''); 
+                    if(this.checkValidity()) form.pw2.pattern = this.value;" required/>
                     <label for="passcheck2"> <% if (typeof(passwordError) !== 'undefined' && passwordError === true) { %>
                             <%= message %>
                         <% } %> </label>
-                    <input  type="password" id="pw2" name="pw2" class="form-control" placeholder="Confirm Password" required/>
-                     <label for="passcheck2" id="passcheck2" style="color: red; font-size: 0.5em;">
-                        ** Password does not match!
-                    </label>
+                    <input  type="password" id="pw2" minlength="8" name="pw2" class="form-control" placeholder="Confirm Password" 
+                    onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" required />
                 </div>
                 <div class="row">
-                    <!-- <button class="btn btn-danger" disabled="disabled" type="submit" name="submitBtn" id="submitBtn"> Sign-up </button> -->
                     <button class="btn btn-danger" type="submit" name="submit" id="submit"> Sign-up </button>
                
                 </div>

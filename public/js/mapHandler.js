@@ -148,7 +148,7 @@ function createLocationCircle(location) {
 
 
 function updateMarkers(location) {
-    posts = getPosts();
+    posts = [] //getPosts();
 
     removeMarkers();
     

@@ -3,13 +3,13 @@
 <div class="row p-1">
     <div class="col-6 ">
         <a href="/">
-        <button style="width: 40px; height: 40px" class="btn btn-default btn-lg button"><i class="fa fa-close"></i></button>
+        <button style="width: 40px; height: 40px" class="btn btn-default btn-lg button logout-close"><i class="fa fa-close"></i></button>
         </a>
     </div>
 
     <% if (myprofile) { %>
         <div class="col-6 d-flex justify-content-end">
-            <button type="button" class="btn btn-default btn-lg text-center"><a href="/API/logout"><i
+            <button type="button" class="btn btn-default btn-lg text-center logout-close"><a href="/API/logout"><i
                             class="fa fa-sign-out"></i><br>Logout</a></button>
         </div>
     <% } %>
@@ -42,7 +42,7 @@
 <% } %>
 <div class="row p-2" id="myDIV2">
     <div class="col-12 p-0">
-        <div class="posts-holder no-scroll-bar" id="<%= profile.userID %>">
+        <div class="posts-holder no-scroll-bar" id="<%= profile.userID %>" >
             <div class="spinner-border text-danger" role="status">
                 <span class="sr-only">Loading <%= profile.disp_name %>'s Posts</span>
             </div>

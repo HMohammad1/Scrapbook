@@ -29,7 +29,9 @@ $(document).ready(function(){
     }
 
     // get comments on page load
-    getComments();
+    if($(".post-comments").length > 0){
+        getComments();
+    }
 
 
     // hover for react icons
@@ -56,6 +58,8 @@ $(document).ready(function(){
 
     // add a react when icon clicked
     $("body").on("click", ".reaction >.bi", function(){
+
+        console.log("react click event");
 
         // add spinner
         $("#reacts-row").html($('<div class="spinner-border text-danger" role="status"><span class="sr-only">Updating Reactions...</span></div>'));
@@ -176,6 +180,8 @@ $(document).ready(function(){
 
     $("body").on("click", ".comment-btn.add", function(){
 
+        console.log("comment click event");
+
         // set spinner
         $(this).text('<span class="spinner-border spinner-border-sm text-light" role="status"><span class="sr-only">Adding comment...</span></span>');
 
@@ -194,3 +200,9 @@ $(document).ready(function(){
 
 
 });
+
+function viewButton() {
+
+    document.getElementById("overlay").style.display = "block";
+
+}

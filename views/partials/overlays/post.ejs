@@ -1,8 +1,8 @@
 <script type ="text/javascript" src="/js/post.js"></script>
 <link rel="stylesheet" href="/css/post.css">
 
-<div class="map-overlay post-holder no-scroll-bar" id="<%= post.postID %>">
-        <div class="container p-0">
+<div class="map-overlay post-holder no-scroll-bar" id="<%= post.postID %>" >
+        <div class="container p-0 fullHeight">
             <div class="row">
                 <div class="col post-heading">
                     <%= post.title %>
@@ -31,7 +31,9 @@
                 <% if (post.allowReacts == 1) { %>
                     <%- include('../post/reactions', {reacts: post.reacts, user: user}); %>
                 <% } else {%>
+                    <div class="noComments-reactions">
                     This post doesn't allow reactions.
+                    </div>
                 <% } %>
             </div>
             <div class="row post-desc pt-2">
@@ -62,17 +64,21 @@
                 </div>
             </div>
             <div class="row all-comments p-3">
+                <% if (post.allowComments) { %>
                 <div class="col">
-                    <% if (post.allowComments) { %>
                         <div class="post-comments">
                             <div class="spinner-border text-danger" role="status">
                                 <span class="sr-only">Loading comments</span>
                             </div>
                         </div>
-                    <% } else {%>
-                        This post does not allow comments.
-                    <% } %>
                 </div>
+                    <% } else {%>
+                        <div class="col noComments-reactions">
+                            This post doesn't allow comments.
+                        </div>
+                    <% } %>
+
+
 
             </div>
 

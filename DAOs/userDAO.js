@@ -400,13 +400,14 @@ function deleteFriendRequest(user1, user2, callback){
 
 function areFriends(user1, user2, callback){
 
-    let query = "SELECT accepted FROM friend_requests WHERE req_from = (? OR ?) AND req_to = (? OR ?)";
+    let query = "SELECT accepted FROM friend_requests WHERE req_from IN (?, ?) AND req_to IN (?, ?) ORDER BY accepted DESC";
     let params = [user1, user2, user1, user2];
 
     DB.executeQuery(query, params, function(err, rows, fields){
         
         if(!err){
-            if(rows[0] && rows[0].accepted){
+            if(rows[0] && rows[0].accepted == 1){
+                console.log("USERS ARE FRIENDS");
                 return callback(null, true);
             }
             else{

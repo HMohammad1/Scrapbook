@@ -58,8 +58,27 @@
 
 }
 
+body {
+    height: 100%;
+}
+
 .all-comments {
     width: 100%;
+}
+
+.noComments-reactions {
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
+    text-align: center;
+}
+
+.noComments-reactions:hover {
+    cursor: not-allowed;
+}
+
+.col.noComments-reactions {
+    height: 100%;
 }
 
 .react-counter{
@@ -156,7 +175,23 @@
     font-weight: normal;
 }
 
+/*#overlay {*/
+/*    position: fixed;*/
+/*    display: none;*/
+/*    width: 10%;*/
+/*    height: 10%;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    right: 0;*/
+/*    bottom: 0;*/
+/*    background-color: rgba(0,0,0,0.5);*/
+/*    z-index: 4;*/
+/*    cursor: pointer;*/
+/*}*/
 
+.fullHeight {
+    height: 100vh;
+}
 
 @media (max-width: 500px) {
 
@@ -168,6 +203,14 @@
         width: 100vw !important;
         margin: 0;
     }
+
+    .noComments-reactions {
+        width: 100%;
+        height: 100%;
+        font-size: 20px;
+        text-align: center;
+    }
+
 }
 
 
