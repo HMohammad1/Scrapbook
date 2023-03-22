@@ -95,7 +95,7 @@ const updateMap = (req, res) =>{
             // check perms for each post
             postArr.forEach(post => {
                 
-                postServices.canViewPost(req.session.user, post, function(resukt){
+                postServices.canViewPost(req.session.user, post, function(result){
                     postPerms.push([post.postID, result]);
                     if(postPerms.length == postArr.length){
                         res.status(200);

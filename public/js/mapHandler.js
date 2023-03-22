@@ -1,5 +1,5 @@
 // 15s between updates
-var updateWindow = 15000;
+var updateWindow = 2000;
 var updateTimer, onLoadLocationTimer;
 
 //const postDAO = require ('../../DAOs/postDAO.js');
@@ -50,9 +50,10 @@ function currentLocation() {
         pos.push(position.coords.latitude);
         pos.push(position.coords.longitude);
 
-        if (loadedOnce == 0) {
-            location = {lat: 0, lng: 0};
-        }
+        /* if (loadedOnce == 0) {
+            
+            location = {lat: 55.9115, lng: -3.32047};
+        } */
 
         
         
@@ -410,8 +411,8 @@ function initMap() {
         
 
        
-        userMarker = updateCurrentLocationMarker(location);
-        userCircle = createLocationCircle(location);
+        updateCurrentLocationMarker(location);
+        createLocationCircle(location);
 
         // create the marker cluster
         markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
