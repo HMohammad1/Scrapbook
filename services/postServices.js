@@ -336,7 +336,7 @@ const getPostByID = (req, res) => {
                 }
                 rowToPost(postData, function(post){
                     // if public or friends only or own post
-                        canViewPost(req.session.user, post, function(result){
+                    canViewPost(req.session.user, post, function(result){
                         if(result){
                             res.status(200);
                             return res.render("partials/overlays/post", {post: post, user:req.session.user});

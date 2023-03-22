@@ -95,12 +95,13 @@ const updateMap = (req, res) =>{
             // check perms for each post
             postArr.forEach(post => {
                 
-                var perm = postServices.canViewPost(req.session.user, post);
-                postPerms.push([post.postID, perm]);
-                if(postPerms.length == postArr.length){
-                    res.status(200);
-                    return res.send(postPerms);
-                }
+                postServices.canViewPost(req.session.user, post, function(resukt){
+                    postPerms.push([post.postID, result]);
+                    if(postPerms.length == postArr.length){
+                        res.status(200);
+                        return res.send(postPerms);
+                    }
+                });
             });
         });
     }
