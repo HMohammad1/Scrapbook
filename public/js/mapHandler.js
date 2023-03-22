@@ -333,7 +333,7 @@ function initMap() {
 
     // create map with location and map style
     map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
+        zoom: 18.2,
         center: location,
         mapId: '4a11e687fb2c35f2',
         disableDefaultUI: true
