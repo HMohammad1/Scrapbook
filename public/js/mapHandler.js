@@ -13,6 +13,7 @@ var notLoadMap = 0;
 var userMarker, userCircle;
 
 var posts = [];
+var postsArray = [];
 
 
 
@@ -46,7 +47,10 @@ function currentLocation() {
         pos.push(position.coords.latitude);
         pos.push(position.coords.longitude);
 
-        if (userMarker != undefined && userCircle != undefined) {
+        if (userMarker) {
+            userMarker.setMap(null);
+            userCircle.setMap(null);
+
             userMarker = null;
             userCircle = null;
         }
@@ -81,7 +85,6 @@ function currentLocation() {
 
 
 function getPosts() {
-    //posts = []
 
     $.get(`/API/getAllPosts`, function(data, textStatus, xhr){
         if(xhr.status == 200){
@@ -96,23 +99,13 @@ function getPosts() {
                     if (!posts.includes(element)) {
                         posts.push(element);
                     }
-
                 });
-
             }
-            
-            //console.log(posts[0]);
-            //return data;
         }
         else{
             console.log(textStatus);
-
         }
-        
-    })
-
-    
-    
+    }) 
 }
 
 /* var posts = [{location: {lat: 55.955330274019374, lng:-3.1886875079554837}},
@@ -299,7 +292,7 @@ function initMap() {
 
 
     // function to add a marker
-    function addMarker(postObject) {
+    function addMarker(postObject, permsArr) {
         
 
         // initialize marker
@@ -307,6 +300,9 @@ function initMap() {
 
         var coords = {lat: postObject.coords[0], lng: postObject.coords[1]};
 
+    
+
+        //console.log(MarkerArray.length);
         
 
         marker = new google.maps.Marker({
@@ -346,7 +342,19 @@ function initMap() {
     function initializeMarkers() {
 
         MarkerArray = returnPosts();
-        console.log(MarkerArray.length);
+
+        getPermsArray();
+
+        //console.log(MarkerArray.length);
+
+        MarkerArray.forEach(element => {
+            if (postsArray.length != MarkerArray.length){
+                postsArray.push(element.postID);
+            };
+            
+        })
+
+        
 
 
         // markers array to store created markers for the marker cluster
@@ -359,13 +367,31 @@ function initMap() {
         
 
        
-        updateCurrentLocationMarker(location);
-        createLocationCircle(location);
+        userMarker = updateCurrentLocationMarker(location);
+        userCircle = createLocationCircle(location);
 
         // create the marker cluster
         markClust = new markerClusterer.MarkerClusterer({ markers: markersArr, map });
     }
 
+}
+
+function getPermsArray(postsIDArray) {
+    $.get('/API/updateMap', function(data, textStatus, xhr){
+        if(xhr.status == 200){
+            //console.log(data);
+            
+            permsArray = data;
+
+            
+            
+            
+            
+        }
+        else{
+            console.log(textStatus);
+        }
+    }) 
 }
 
 function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
