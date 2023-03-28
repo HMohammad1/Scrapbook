@@ -6,13 +6,32 @@ from flask import Flask, request
 import subprocess
 import json
 import time
+import datetime
+import sys
+
+WRITE_LOGS = True
+
+for arg in sys.argv:
+	if arg.lower() == "--nologs":
+		WRITE_LOGS = False
+		print("no logs")
 
 app = Flask(__name__)
 
 main_folder = join(getcwd(), "../")
 scripts_folder = join(getcwd(), "scripts/")
+logs_folder = join(getcwd(), "logs/")
 
 server_running = False
+
+def writeLog(file_suffix, contents, file_type=".log"):
+	if not WRITE_LOGS: return
+
+	timestamp = datetime.datetime.now().isoformat()
+	filename = timestamp + " " + file_suffix + file_type
+	logfile = open(join(logs_folder, filename), "w")
+	logfile.write(contents)
+	logfile.close()
 
 @app.route("/")
 def index_page():
@@ -90,6 +109,8 @@ def gitpull():
 	print("Git pull:")
 	print(msg)
 
+	writeLog("git_pull", res.stdout.decode('utf-8'))
+
 	return json.dumps({"msg": msg}), 200, {'Content-Type': 'application/json'}
 
 @app.route("/api/gitstatus")
@@ -100,6 +121,8 @@ def gitstatus():
 
 	print("Git status:")
 	print(msg)
+
+	writeLog("git_status", res.stdout.decode('utf-8'))
 
 	return json.dumps({"msg": msg}), 200, {'Content-Type': 'application/json'}
 
@@ -115,6 +138,8 @@ def dbexecute():
 
 	print("mysql output:")
 	print(res.stdout.strip())
+
+	writeLog("sql_execute", "## SQL Input:\n```sql\n%s\n```\n## MySQL Output:\n```\n%s\n```" % (sql[1:-1], res.stdout.decode('utf-8')), ".md")
 
 	return json.dumps({"msg": res.stdout.decode('utf-8').replace('\n', '<br>')}), 200, {'Content-Type': 'application/json'}
 
