@@ -139,7 +139,11 @@ def dbexecute():
 	print("mysql output:")
 	print(res.stdout.strip())
 
-	writeLog("sql_execute", "## SQL Input:\n```sql\n%s\n```\n## MySQL Output:\n```\n%s\n```" % (sql[1:-1], res.stdout.decode('utf-8')), ".md")
+	# Remove quotation marks from sql
+	if sql[0] == '"': sql = sql[1:]
+	if sql[-1] == '"': sql = sql[:-1]
+
+	writeLog("sql_execute", "## SQL Input:\n```sql\n%s\n```\n## MySQL Output:\n```\n%s\n```" % (sql, res.stdout.decode('utf-8')), ".md")
 
 	return json.dumps({"msg": res.stdout.decode('utf-8').replace('\n', '<br>')}), 200, {'Content-Type': 'application/json'}
 
