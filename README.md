@@ -1,7 +1,7 @@
 # Scrapbook
 Prototype of a new social-networking platform that uses real-world positioning data to allow users to leave and interact with scrapbook-style posts knows as scraps on a global map shared by all the users. Works on samller mobile devices too. 
 
-To run fork the project and run the express server through your IDE. Create the MySQL DB via the schema and connect to the express server:
+To run fork the project and run the express server through your IDE. Create the MySQL DB via the schema below and connect to the express server:
 
 <img width="578" alt="image" src="https://github.com/user-attachments/assets/28635b84-a4b0-4a6f-8b39-2ce1e0100385" />
 
